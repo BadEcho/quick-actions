@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Title>Quick Actions</Title>
+		<AssemblyTitle>$(Title)</AssemblyTitle>
+		<Product>$(Title)</Product>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="$(PresentationPath)\Presentation\BadEcho.Presentation.csproj" />
+		<ProjectReference Include="$(PresentationPath)\Presentation.Hosting\BadEcho.Presentation.Hosting.csproj" />
+		<ProjectReference Include="$(ExtensibilityPath)\Extensibility.Hosting\BadEcho.Extensibility.Hosting.csproj" />
+		<ProjectReference Include="$(CorePath)\Common\BadEcho.Common.csproj" />
+		<ProjectReference Include="$(CorePath)\Extensions.Logging\BadEcho.Extensions.Logging.csproj" />
+	</ItemGroup>
+
+</Project>
