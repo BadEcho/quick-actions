@@ -1,0 +1,8 @@
+<Project>
+	<PropertyGroup>
+		<CorePath Condition="'$(CorePath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\Core\src'))</CorePath>
+		<ExtensibilityPath Condition="'$(ExtensibilityPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\Extensibility\src'))</ExtensibilityPath>
+		<PresentationPath Condition="'$(PresentationPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\Presentation\src'))</PresentationPath>
+	</PropertyGroup>
+	<Import Project="..\build\Build.props"/>
+</Project>

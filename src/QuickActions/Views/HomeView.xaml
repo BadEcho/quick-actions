@@ -1,0 +1,44 @@
+﻿<!--
+    <copyright>
+		Created by Matt Weber <matt@badecho.com>
+		Copyright @ 2025 Bad Echo LLC. All rights reserved.
+
+		Bad Echo Technologies are licensed under the
+		GNU Affero General Public License v3.0.
+
+		See accompanying file LICENSE.md or a copy at:
+		https://www.gnu.org/licenses/agpl-3.0.html
+    </copyright>
+-->
+<badEcho:View x:Class="BadEcho.QuickActions.Views.HomeView"
+              x:ClassModifier="internal"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
+              xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
+              mc:Ignorable="d"
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
+    <d:DesignProperties.DataContext>
+        <vm:HomeViewModel ActionsCount="3" MappingsCount="2"/>
+    </d:DesignProperties.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>  
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}There are currently {0} actions associated with {1} mappings.">
+                    <Binding Path="ActionsCount"/>
+                    <Binding Path="MappingsCount"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <TextBlock  Text="Hello"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Grid.Row="1"
+                    />
+    </Grid>
+</badEcho:View>

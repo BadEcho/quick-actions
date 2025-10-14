@@ -8,14 +8,35 @@
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<IsPackable>false</IsPackable>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<NoWarn>$(NoWarn);CS7022;CA1812</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+		<Resource Include="Assets\Logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="$(PresentationPath)\Presentation\BadEcho.Presentation.csproj" />
-		<ProjectReference Include="$(PresentationPath)\Presentation.Hosting\BadEcho.Presentation.Hosting.csproj" />
-		<ProjectReference Include="$(ExtensibilityPath)\Extensibility.Hosting\BadEcho.Extensibility.Hosting.csproj" />
 		<ProjectReference Include="$(CorePath)\Common\BadEcho.Common.csproj" />
-		<ProjectReference Include="$(CorePath)\Extensions.Logging\BadEcho.Extensions.Logging.csproj" />
+		<ProjectReference Include="$(CorePath)\Extensions\BadEcho.Extensions.csproj" />
+		<ProjectReference Include="$(ExtensibilityPath)\Extensibility.Extensions\BadEcho.Extensibility.Extensions.csproj" />
+		<ProjectReference Include="$(PresentationPath)\Presentation.Extensions\BadEcho.Presentation.Extensions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+
+		<Page Include="Properties\DesignTimeResources.xaml"
+		      Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+			<ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+		</Page>
+
 	</ItemGroup>
 
 </Project>
