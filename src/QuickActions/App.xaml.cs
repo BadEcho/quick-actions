@@ -37,8 +37,6 @@ internal sealed partial class App
     /// to have a default constructor, even though our own application entry point in Program.cs is what will actually
     /// be called.
     /// </remarks>
-    private App()
-    {
-        InitializeComponent();
-    }
+    private App() 
+        => InitializeComponent();
 }

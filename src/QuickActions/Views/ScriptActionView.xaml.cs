@@ -11,16 +11,25 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Input;
+
 namespace BadEcho.QuickActions.Views;
 
 /// <summary>
-/// Provides a view for a navigation pane.
+/// Provides a view for displaying a script action.
 /// </summary>
-internal sealed partial class NavigationPaneView
+internal sealed partial class ScriptActionView 
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NavigationPaneView"/> class.
-    /// </summary>
-    public NavigationPaneView() 
+    /// <inheritdoc/>
+    public ScriptActionView() 
         => InitializeComponent();
+
+    /// <inheritdoc/>
+    protected override void OnGotFocus(RoutedEventArgs e)
+    {
+        base.OnGotFocus(e);
+
+        FocusManager.SetFocusedElement(this, PathTextBox);
+    }
 }

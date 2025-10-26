@@ -11,16 +11,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace BadEcho.QuickActions.Views;
+using System.Collections.ObjectModel;
+using BadEcho.QuickActions.Extensibility;
+
+namespace BadEcho.QuickActions.Options;
 
 /// <summary>
-/// Provides a view for a navigation pane.
+/// Provides the user's configuration settings regarding script actions.
 /// </summary>
-internal sealed partial class NavigationPaneView
+internal class ScriptActionsOptions : Collection<ScriptAction>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="NavigationPaneView"/> class.
+    /// The name of the configuration section the script actions are sourced from.
     /// </summary>
-    public NavigationPaneView() 
-        => InitializeComponent();
+    public static string SectionName
+        => "Scripts";
 }

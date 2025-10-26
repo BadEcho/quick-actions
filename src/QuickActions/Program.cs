@@ -4,6 +4,8 @@ using BadEcho.Extensibility.Extensions;
 using BadEcho.Presentation.Extensions;
 using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions;
+using BadEcho.QuickActions.Options;
+using BadEcho.QuickActions.Services;
 using BadEcho.QuickActions.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +23,14 @@ builder.Configuration
        .AddJsonFile(userSettingsPath, optional: true, reloadOnChange: true);
 
 builder.Services
-       .AddEventSourceLogForwarder()
-       .AddApplication<App>();
+       .Configure<ScriptActionsOptions>(builder.Configuration.GetSection(ScriptActionsOptions.SectionName), userSettingsPath);
 
 builder.Services
+       .AddEventSourceLogForwarder()
+       .AddApplication<App>();
+    
+builder.Services
+       .AddSingleton<UserSettingsService>()
        .AddSingleton<Mediator>();
 
 builder.Services

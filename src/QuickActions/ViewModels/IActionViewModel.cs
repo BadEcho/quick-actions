@@ -11,16 +11,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace BadEcho.QuickActions.Views;
+using BadEcho.Presentation;
+using BadEcho.Presentation.ViewModels;
+using BadEcho.QuickActions.Extensibility;
+
+namespace BadEcho.QuickActions.ViewModels;
 
 /// <summary>
-/// Provides a view for a navigation pane.
+/// Defines a view model that facilitates the display of an action that can be executed by Quick Actions.
 /// </summary>
-internal sealed partial class NavigationPaneView
+internal interface IActionViewModel : IViewModel, IModelProvider<IAction>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="NavigationPaneView"/> class.
+    /// Gets or sets the displayed name of the bound action.
     /// </summary>
-    public NavigationPaneView() 
-        => InitializeComponent();
+    string Name { get; set; }
 }

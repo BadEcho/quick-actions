@@ -23,6 +23,7 @@
 		<ProjectReference Include="$(CorePath)\Extensions\BadEcho.Extensions.csproj" />
 		<ProjectReference Include="$(ExtensibilityPath)\Extensibility.Extensions\BadEcho.Extensibility.Extensions.csproj" />
 		<ProjectReference Include="$(PresentationPath)\Presentation.Extensions\BadEcho.Presentation.Extensions.csproj" />
+		<ProjectReference Include="..\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,7 +31,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 
-		<Page Include="Properties\DesignTimeResources.xaml"
+		<Page Include="Properties\DesignTimeResources.xaml" 
 		      Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>

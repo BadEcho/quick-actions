@@ -28,27 +28,27 @@ public sealed class ScriptAction : IAction
     { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the type of shell program whose script interpreter is used to execute the script.
+    /// Gets or sets the type of shell program whose script interpreter is used to execute the action's script.
     /// </summary>
     public ShellType ShellType 
     { get; set; }
     
     /// <summary>
-    /// Gets or sets the path to the script.
+    /// Gets or sets the path to the action's script.
     /// </summary>
     public string Path 
     { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the arguments passed to the script.
+    /// Gets or sets the arguments passed to the action's script.
     /// </summary>
     public string Arguments 
     { get; set; } = string.Empty;
 
     /// <summary>
-    /// Executes the script.
+    /// Executes the action's script.
     /// </summary>
-    /// <returns>Value indicating if the script executed successfully.</returns>
+    /// <returns>Value indicating if the action's script executed successfully.</returns>
     public bool Execute()
     {
         throw new NotImplementedException();

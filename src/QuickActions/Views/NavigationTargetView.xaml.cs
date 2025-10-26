@@ -21,8 +21,6 @@ internal sealed partial class NavigationTargetView
     /// <summary>
     /// Initializes a new instance of the <see cref="NavigationTargetView"/> class.
     /// </summary>
-    public NavigationTargetView()
-    {
-        InitializeComponent();
-    }
+    public NavigationTargetView() 
+        => InitializeComponent();
 }

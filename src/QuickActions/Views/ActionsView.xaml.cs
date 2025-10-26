@@ -11,6 +11,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Input;
+
 namespace BadEcho.QuickActions.Views;
 
 /// <summary>
@@ -21,8 +24,9 @@ internal sealed partial class ActionsView
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionsView"/> class.
     /// </summary>
-    public ActionsView()
-    {
-        InitializeComponent();
-    }
+    public ActionsView() 
+        => InitializeComponent();
+
+    private void AddScriptClick(object sender, RoutedEventArgs e) 
+        => FocusManager.SetFocusedElement(this, ScriptAction);
 }
