@@ -1,4 +1,17 @@
-﻿using System.IO;
+﻿// -----------------------------------------------------------------------
+// <copyright>
+//      Created by Matt Weber <matt@badecho.com>
+//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//
+//      Bad Echo Technologies are licensed under the
+//      GNU Affero General Public License v3.0.
+//
+//      See accompanying file LICENSE.md or a copy at:
+//      https://www.gnu.org/licenses/agpl-3.0.html
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.IO;
 using BadEcho.Extensions;
 using BadEcho.Extensibility.Extensions;
 using BadEcho.Presentation.Extensions;
@@ -23,7 +36,8 @@ builder.Configuration
        .AddJsonFile(userSettingsPath, optional: true, reloadOnChange: true);
 
 builder.Services
-       .Configure<ScriptActionsOptions>(builder.Configuration.GetSection(ScriptActionsOptions.SectionName), userSettingsPath);
+       .Configure<ScriptActionsOptions>(builder.Configuration.GetSection(ScriptActionsOptions.SectionName), userSettingsPath)
+       .Configure<AppearanceOptions>(builder.Configuration.GetSection(AppearanceOptions.SectionName), userSettingsPath);
 
 builder.Services
        .AddEventSourceLogForwarder()

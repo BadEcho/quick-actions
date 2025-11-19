@@ -14,6 +14,7 @@
 using BadEcho.Extensions;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
+using Microsoft.Extensions.Hosting;
 
 namespace BadEcho.QuickActions.Services;
 
@@ -23,36 +24,39 @@ namespace BadEcho.QuickActions.Services;
 internal sealed class UserSettingsService
 {
     private readonly IWritableOptions<ScriptActionsOptions> _scriptOptions;
+    private readonly IWritableOptions<AppearanceOptions> _appearanceOptions;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserSettingsService"/> class.
     /// </summary>
-    public UserSettingsService(IWritableOptions<ScriptActionsOptions> scriptOptions)
+    public UserSettingsService(IHostApplicationLifetime hostLifetime,
+                               IWritableOptions<ScriptActionsOptions> scriptOptions,
+                               IWritableOptions<AppearanceOptions> appearanceOptions)
     {
         _scriptOptions = scriptOptions;
+        _appearanceOptions = appearanceOptions;
+
+        hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
     }
 
     /// <summary>
     /// Gets the script actions configured by the user.
     /// </summary>
-    public IEnumerable<ScriptAction> Scripts
-    {
+    public IEnumerable<ScriptAction> Scripts 
+        => _scriptOptions.CurrentValue;
 
-        get
-        {
-
-            return _scriptOptions.CurrentValue;
-        }
-    }
+    /// <summary>
+    /// Gets the configuration settings for the user interface.
+    /// </summary>
+    public AppearanceOptions Appearance 
+        => _appearanceOptions.CurrentValue;
 
     /// <summary>
     /// Adds a new script action to the user's configuration settings.
     /// </summary>
     /// <param name="action">The script action to add.</param>
-    public void Add(ScriptAction action)
-    {
-        _scriptOptions.CurrentValue.Add(action);
-    }
+    public void Add(ScriptAction action) 
+        => _scriptOptions.CurrentValue.Add(action);
 
     /// <summary>
     /// Deletes a script action from the user's configuration settings.
@@ -61,12 +65,21 @@ internal sealed class UserSettingsService
     public void Delete(ScriptAction action)
     {
         if (_scriptOptions.CurrentValue.Remove(action))
-            Save();
+            SaveScripts();
     }
 
     /// <summary>
-    /// Persists the current state of the user's configuration settings.
+    /// Persists the current configuration for the user's script actions.
     /// </summary>
-    public void Save() 
+    public void SaveScripts() 
         => _scriptOptions.Save(null);
+
+    /// <summary>
+    /// Persists the current configuration for the user interface.
+    /// </summary>
+    public void SaveAppearance() 
+        => _appearanceOptions.Save(null);
+
+    private void OnApplicationStopping() 
+        => SaveAppearance();
 }

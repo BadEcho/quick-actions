@@ -25,6 +25,8 @@ internal sealed partial class App
     {
         InitializeComponent();
 
+        MainWindow = window;
+
         window.InitializeComponent();
         window.Show();
     }

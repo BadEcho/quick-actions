@@ -21,8 +21,6 @@
         xmlns:v="clr-namespace:BadEcho.QuickActions.Views"
         mc:Ignorable="d"
         Title="QuickActionsWindow"  
-        Height="450" 
-        Width="780"
         d:DesignStyle="{StaticResource DesignTimeControlStyle}">
     <d:DesignProperties.DataContext>
         <vm:MainViewModel>

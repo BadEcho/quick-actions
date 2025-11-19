@@ -11,19 +11,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-using BadEcho.QuickActions.Extensibility;
+using System.Text.Json.Serialization;
+using System.Windows;
+using BadEcho.Presentation;
 
 namespace BadEcho.QuickActions.Options;
 
 /// <summary>
-/// Provides the user's configuration settings pertaining to script actions.
+/// Provides the user's configuration settings pertaining to the user interface.
 /// </summary>
-internal class ScriptActionsOptions : Collection<ScriptAction>
+internal sealed class AppearanceOptions
 {
     /// <summary>
-    /// The name of the configuration section the script actions are sourced from.
+    /// The name of the configuration section the appearance options are sourced from.
     /// </summary>
     public static string SectionName
-        => "Scripts";
+        => "Appearance";
+
+    /// <summary>
+    /// Gets or sets the last position and size of the main window.
+    /// </summary>
+    [JsonConverter(typeof(JsonRectConverter))]
+    public Rect WindowArea
+    { get; set; }
 }
