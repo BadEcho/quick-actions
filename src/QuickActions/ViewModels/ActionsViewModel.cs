@@ -30,8 +30,6 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
 {
     private readonly UserSettingsService? _userSettingsService;
 
-    private ScriptActionViewModel? _selectedScriptViewModel;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionsViewModel"/> class.
     /// </summary>
@@ -41,6 +39,9 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
         _userSettingsService = userSettingsService;
 
         Bind(userSettingsService.Scripts);
+
+        SelectedScriptViewModel = Items.OfType<ScriptActionViewModel>()
+                                       .FirstOrDefault();
     }
 
     /// <summary>
@@ -71,8 +72,8 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
     /// </summary>
     public ScriptActionViewModel? SelectedScriptViewModel
     {
-        get => _selectedScriptViewModel;
-        set => NotifyIfChanged(ref _selectedScriptViewModel, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -103,13 +104,13 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
         if (viewModel is { ActiveModel: not null })
         {
             _userSettingsService?.Delete(viewModel.ActiveModel);
-
+           
             Unbind(viewModel.ActiveModel);
         }
     }
 
     private void HandleScriptSaveRequested(object? sender, ScriptAction e) => 
-        _userSettingsService?.Save();
+        _userSettingsService?.SaveScripts();
 
     private void HandleScriptCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
