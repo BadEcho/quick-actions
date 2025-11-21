@@ -21,8 +21,8 @@
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:extensibility="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
               mc:Ignorable="d"
-              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
-              d:DesignHeight="280">
+              d:DesignHeight="280"
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
     <d:DesignProperties.DataContext>
         <vm:ScriptActionViewModel Name="SampleScript.ps1"
                                   Path="D:\scripts\echoDuma.cmd"
@@ -49,6 +49,11 @@
     </badEcho:View.Resources>
 
     <StackPanel Orientation="Vertical">
+        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+                   Text="{Binding Name}"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,8,0"
+                   />
         <TextBlock Style="{StaticResource HeaderTextStyle}"
                    Text="Path"
                    />
