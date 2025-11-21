@@ -20,12 +20,33 @@
         xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
         xmlns:v="clr-namespace:BadEcho.QuickActions.Views"
         mc:Ignorable="d"
-        Title="QuickActionsWindow"  
+        Title="QuickActionsWindow"
+        d:DesignWidth="850" 
+        
         d:DesignStyle="{StaticResource DesignTimeControlStyle}">
     <d:DesignProperties.DataContext>
         <vm:MainViewModel>
             <vm:MainViewModel.CurrentViewModel>
-                <vm:HomeViewModel ActionsCount="3" MappingsCount="2"/>
+                <vm:ActionsViewModel>
+                    <vm:ActionsViewModel.Items>
+                        <vm:ScriptActionViewModel Path="D:\scripts\SampleScript.ps1"
+                                                  Arguments="-d 10"
+                                                  ShellType="PowerShell"
+                                                  />
+                        <vm:ScriptActionViewModel Path="D:\scripts\SampleScript.cmd"
+                                                  Arguments="-e 22 -f 9"
+                                                  ShellType="Command"
+                                                  />
+                        <vm:ScriptActionViewModel Path="D:\scripts\SampleScript.cmd"
+                                                  Arguments="-e 22 -f 9"
+                                                  ShellType="Command"
+                                                  />
+                        <vm:ScriptActionViewModel Path="D:\scripts\SampleScript11.cmd"
+                                                  Arguments="-e 22 -f 9"
+                                                  ShellType="Command"
+                                                  />
+                    </vm:ActionsViewModel.Items>
+                </vm:ActionsViewModel>
             </vm:MainViewModel.CurrentViewModel>
         </vm:MainViewModel>
     </d:DesignProperties.DataContext>
@@ -67,7 +88,7 @@
                                   DockPanel.Dock="Top"
                                   />
             <Button HorizontalContentAlignment="Left"
-                    Width="150"
+                    Width="100"
                     Margin="5"
                     DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal">
@@ -82,8 +103,11 @@
             </Button>
         </DockPanel>
 
-        <Border Margin="4,0,0,0"
-                Padding="24,16,24,0"
+        <Border BorderBrush="{StaticResource DividerStrokeColorDefaultBrush}"
+                Margin="4,0,0,0"
+                Padding="8,8,8,0"                
+                BorderThickness="1,1,0,0"
+                CornerRadius="8,0,0,0"
                 Grid.Column="1">
             <UserControl Content="{Binding CurrentViewModel}"
                          ContentTemplateSelector="{StaticResource ContextSelector}"
