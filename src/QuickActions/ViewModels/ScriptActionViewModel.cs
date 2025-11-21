@@ -11,9 +11,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.IO;
 using System.Windows.Input;
 using BadEcho.Presentation;
 using BadEcho.QuickActions.Extensibility;
+using BadEcho.QuickActions.Properties;
+using Microsoft.Win32;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -22,20 +25,13 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
 {
-    private string _path = string.Empty;
-    private string _arguments = string.Empty;
-    
-    private ShellType _shellType;
-    private string _shellTypeIcon = string.Empty;
-    private bool _isShellTypeIconLiteral;
-    private bool _isDirty;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ScriptActionViewModel"/> class.
     /// </summary>
     public ScriptActionViewModel()
     {
         SaveCommand = new DelegateCommand(SaveAction);
+        OpenFileCommand = new DelegateCommand(OpenFile);
     }
 
     /// <summary>
@@ -50,14 +46,26 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     { get; }
 
     /// <summary>
+    /// Gets a command that, when executed opens a file dialog allowing the user to locate the script
+    /// on the file system.
+    /// </summary>
+    public ICommand OpenFileCommand
+    { get; }
+
+    /// <summary>
     /// Gets or sets the path to the bound action's script.
     /// </summary>
     public string Path
     {
-        get => _path;
+        get => field ?? string.Empty;
         set
         {
-            NotifyIfChanged(ref _path, value);
+            NotifyIfChanged(ref field, value);
+
+            if (!File.Exists(field))
+                MarkInvalid(Strings.ScriptFileNotExist);
+            else
+                MarkValid();
 
             Name = System.IO.Path.GetFileName(value);
         }
@@ -68,8 +76,8 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </summary>
     public string Arguments
     {
-        get => _arguments;
-        set => NotifyIfChanged(ref _arguments, value);
+        get => field ?? string.Empty;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -77,10 +85,10 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </summary>
     public ShellType ShellType
     {
-        get => _shellType;
+        get;
         set
         {
-            NotifyIfChanged(ref _shellType, value);
+            NotifyIfChanged(ref field, value);
 
             switch (value)
             {
@@ -102,8 +110,8 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </summary>
     public string ShellTypeIcon
     {
-        get => _shellTypeIcon;
-        private set => NotifyIfChanged(ref _shellTypeIcon, value);
+        get => field ?? string.Empty;
+        private set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -114,8 +122,8 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </remarks>
     public bool IsShellTypeIconLiteral
     {
-        get => _isShellTypeIconLiteral;
-        private set => NotifyIfChanged(ref _isShellTypeIconLiteral, value);
+        get;
+        private set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -123,8 +131,8 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </summary>
     public bool IsDirty
     {
-        get => _isDirty;
-        set => NotifyIfChanged(ref _isDirty, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <inheritdoc/>
@@ -173,5 +181,19 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
         SaveRequested?.Invoke(this, ActiveModel);
 
         IsDirty = false;
+    }
+
+    private void OpenFile(object? parameter)
+    {
+        var dialog = new OpenFileDialog
+                     {
+                         FileName = Path,
+                         Filter = "Script Files |*.cmd;*.bat;*.ps1|All files (*.*)|*.*"
+                     };
+
+        bool? result = dialog.ShowDialog();
+
+        if (result == true) 
+            Path = dialog.FileName;
     }
 }

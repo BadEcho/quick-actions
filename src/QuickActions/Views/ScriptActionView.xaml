@@ -21,10 +21,11 @@
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:extensibility="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
               mc:Ignorable="d"
-              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              d:DesignHeight="280">
     <d:DesignProperties.DataContext>
         <vm:ScriptActionViewModel Name="SampleScript.ps1"
-                                  Path="D:\scripts\SampleScript.ps1"
+                                  Path="D:\scripts\echoDuma.cmd"
                                   Arguments="-d 10"
                                   ShellType="PowerShell"
                                   />
@@ -33,9 +34,10 @@
         <Style x:Key="HeaderTextStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="Foreground" Value="{StaticResource TextFillColorTertiaryBrush}"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
         <Style x:Key="InputTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Margin" Value="0,0,0,24"/>
         </Style>
         <ObjectDataProvider x:Key="ShellTypeFromEnum"
                             MethodName="GetValues"
@@ -45,33 +47,56 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </badEcho:View.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
+    <StackPanel Orientation="Vertical">
         <TextBlock Style="{StaticResource HeaderTextStyle}"
                    Text="Path"
-                   Grid.Row="0" 
                    />
-
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="PathTextBox" 
-                    Style="{StaticResource InputTextBoxStyle}" 
-                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"
-                     Grid.Column="0" 
-                     />
-            <Button Margin="4,0,0,4"
+            <TextBox x:Name="PathTextBox"
+                     Style="{StaticResource InputTextBoxStyle}" 
+                     Text="{Binding Path, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"
+                     Grid.Column="0">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate >
+                        <DockPanel>
+                            <TextBlock Foreground="Red" 
+                                       FontStyle="Italic"
+                                       Text="{Binding [0].ErrorContent}" 
+                                       DockPanel.Dock="Bottom"
+                                       Margin="0,3,0,0"
+                                       />
+                            <AdornedElementPlaceholder DockPanel.Dock="Top"/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+                <badEcho:FrameworkBehaviors.Triggers>
+                    <badEcho:Trigger Property="Validation.HasError" Value="True">
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused">
+                            <badEcho:OverrideResourceAction.Value>
+                                <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
+                                    <LinearGradientBrush.RelativeTransform>
+                                        <ScaleTransform ScaleY="-1" CenterY="0.5" />
+                                    </LinearGradientBrush.RelativeTransform>
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="1.0" Color="Red" />
+                                        <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </badEcho:OverrideResourceAction.Value>
+                        </badEcho:OverrideResourceAction>
+                    </badEcho:Trigger>
+                    <badEcho:Trigger Property="Validation.HasError" Value="False">
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"/>
+                    </badEcho:Trigger>
+                </badEcho:FrameworkBehaviors.Triggers>
+            </TextBox>
+            <Button Command="{Binding OpenFileCommand}"
+                    Margin="4,0,0,24"
                     Grid.Column="1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -79,28 +104,25 @@
                                Margin="0,3,0,0"
                                />
                     <TextBlock Text="Open"
-                               Margin="8,0,0,0"/>
+                               Margin="8,0,0,0"
+                               />
                 </StackPanel>
             </Button>
         </Grid>
 
         <TextBlock Style="{StaticResource HeaderTextStyle}"
                    Text="Arguments"
-                   Grid.Row="2"
                    />
         <TextBox Style="{StaticResource InputTextBoxStyle}"
                  Text="{Binding Arguments, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.Row="3"
                  />
 
         <TextBlock Style="{StaticResource HeaderTextStyle}"
                    Text="Shell Type"
-                   Grid.Row="4"
                    />
         <ComboBox ItemsSource="{Binding Source={StaticResource ShellTypeFromEnum}}"
                   SelectedValue="{Binding ShellType}"
-                  Margin="0,0,0,4"
-                  Grid.Row="5"
+                  Margin="0,0,0,24"
                   />
 
         <Button Style="{StaticResource AccentButtonStyle}"
@@ -108,7 +130,7 @@
                 IsEnabled="{Binding IsDirty}"
                 Content="Save"
                 HorizontalAlignment="Center"
-                Grid.Row="6"
+                VerticalAlignment="Bottom"
                 />
-    </Grid>
+    </StackPanel>
 </badEcho:View>
