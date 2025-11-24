@@ -1,10 +1,10 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-		Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2025 Bad Echo LLC. All rights reserved.
 
-		Bad Echo Technologies are licensed under the
-		GNU Affero General Public License v3.0.
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
 
-		See accompanying file LICENSE.md or a copy at:
+    See accompanying file LICENSE.md or a copy at:
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <badEcho:View x:Class="BadEcho.QuickActions.Views.ActionsView"
               x:ClassModifier="internal"
@@ -16,26 +16,27 @@
               xmlns:v="clr-namespace:BadEcho.QuickActions.Views"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
               d:DesignWidth="705"
-              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
+              >
     <d:DesignProperties.DataContext>
         <vm:ActionsViewModel>
             <vm:ActionsViewModel.Items>
                 <vm:ScriptActionViewModel Arguments="-d 10"
                                           Path="D:\scripts\SampleScript1.ps1"
-                                          ShellType="PowerShell" 
+                                          ShellType="PowerShell"
                                           />
                 <vm:ScriptActionViewModel Arguments="-e 22 -f 9"
                                           Path="D:\scripts\SampleScript2.cmd"
-                                          ShellType="Command" 
+                                          ShellType="Command"
                                           />
                 <vm:ScriptActionViewModel Arguments="-e 22 -f 9"
                                           Path="D:\scripts\SampleScript3.cmd"
-                                          ShellType="Command" 
+                                          ShellType="Command"
                                           />
                 <vm:ScriptActionViewModel Arguments="-e 22 -f 9"
                                           Path="D:\scripts\SampleScript4.cmd"
-                                          ShellType="Command" 
+                                          ShellType="Command"
                                           />
             </vm:ActionsViewModel.Items>
         </vm:ActionsViewModel>
@@ -44,84 +45,86 @@
         <badEcho:BooleanToStyleConverter x:Key="ShellTypeIconStyleConverter">
             <badEcho:BooleanToStyleConverter.StyleWhenFalse>
                 <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="MaxWidth" Value="16"/>
+                    <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="MaxWidth" Value="16" />
                 </Style>
             </badEcho:BooleanToStyleConverter.StyleWhenFalse>
             <badEcho:BooleanToStyleConverter.StyleWhenTrue>
                 <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center" />
                 </Style>
             </badEcho:BooleanToStyleConverter.StyleWhenTrue>
         </badEcho:BooleanToStyleConverter>
     </badEcho:View.Resources>
-    <TabControl HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch">
+    <TabControl BorderBrush="{StaticResource DividerStrokeColorDefaultBrush}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                >
         <TabItem>
             <TabItem.Header>
                 <TextBlock Text="Script Actions" />
             </TabItem.Header>
             <Grid>
                 <badEcho:GridBehaviors.Compaction>
-                    <badEcho:GridCompactor Range="2" SizeToCompact="315"/>
+                    <badEcho:GridCompactor Range="2" SizeToCompact="315" />
                 </badEcho:GridBehaviors.Compaction>
-                <Border >
+                <Border>
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
                                 <Trigger Property="badEcho:ElementLayout.IsCompact" Value="False">
                                     <Setter Property="Margin" Value="0,0,8,0" />
-                                    <Setter Property="BorderBrush"
-                                            Value="{DynamicResource TabViewBorderBrush}"
-                                            />
-                                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource DividerStrokeColorDefaultBrush}" />
+                                    <Setter Property="BorderThickness" Value="0,0,1,0" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
                     <DockPanel>
                         <ListBox x:Name="ScriptActions"
-                                         ItemsSource="{Binding ScriptView}"
-                                         SelectedItem="{Binding SelectedScriptViewModel}"
-                                         Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
-                                         HorizontalContentAlignment="Stretch"
-                                         Margin="0,0,0,24"
-                                         DockPanel.Dock="Top"
-                                         Grid.IsSharedSizeScope="True">
+                                 Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
+                                 DockPanel.Dock="Top"
+                                 Grid.IsSharedSizeScope="True"
+                                 ItemsSource="{Binding ScriptView}"
+                                 SelectedItem="{Binding SelectedScriptViewModel}"
+                                 Margin="0,0,0,24"
+                                 HorizontalContentAlignment="Stretch"
+                                 >
                             <ListBox.ItemContainerStyle>
                                 <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Border.CornerRadius" Value="8"/>
-                                    <Setter Property="Padding" Value="12,4,12,4"/>
+                                    <Setter Property="Border.CornerRadius" Value="8" />
+                                    <Setter Property="Padding" Value="12,4,12,4" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:ScriptActionViewModel}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition SharedSizeGroup="NameColumn" Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Name}" 
-                                                   VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Name}"
                                                    Margin="0,0,16,0"
+                                                   VerticalAlignment="Center"
                                                    Grid.Column="0"
                                                    />
-                                        <TextBlock Style="{Binding  IsShellTypeIconLiteral, 
-                                                                        Converter={StaticResource ShellTypeIconStyleConverter}}"
-                                                   Text="{Binding ShellTypeIcon}" 
-                                                   VerticalAlignment="Center"
+
+                                        <TextBlock Style="{Binding IsShellTypeIconLiteral, Converter={StaticResource ShellTypeIconStyleConverter}}"
+                                                   Text="{Binding ShellTypeIcon}"
                                                    Margin="0,0,16,0"
+                                                   VerticalAlignment="Center"
                                                    Grid.Column="1"
                                                    />
-                                        <Button Command="{Binding   DataContext.DeleteScriptCommand,   
-                                                                    RelativeSource={RelativeSource AncestorType={x:Type badEcho:View}}}"
+
+                                        <Button Command="{Binding DataContext.DeleteScriptCommand, RelativeSource={RelativeSource AncestorType={x:Type badEcho:View}}}"
                                                 CommandParameter="{Binding}"
                                                 Padding="4"
-                                                Grid.Column="2">
-                                            <TextBlock Text="&#xE74D;" 
-                                                       FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                Grid.Column="2"
+                                                >
+                                            <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                       Text="&#xE74D;"
                                                        MaxWidth="16"
                                                        />
                                         </Button>
@@ -129,28 +132,33 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Margin="0,0,0,4"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
+
+                        <Button Style="{StaticResource AccentButtonStyle}"
                                 Click="AddScriptClick"
                                 Command="{Binding AddScriptCommand}"
                                 Content="Add"
                                 DockPanel.Dock="Bottom"
-                                Style="{StaticResource AccentButtonStyle}" 
+                                Margin="0,0,0,4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
                                 />
                     </DockPanel>
                 </Border>
                 <ScrollViewer Focusable="False"
                               Grid.Row="1"
-                              Grid.Column="1">
+                              Grid.Column="1"
+                              >
                     <v:ScriptActionView x:Name="ScriptAction"
                                         DataContext="{Binding SelectedScriptViewModel}"
-                                        Margin="0,0,0,4">
+                                        Margin="0,0,0,4"
+                                        >
                         <v:ScriptActionView.Style>
                             <Style TargetType="{x:Type v:ScriptActionView}">
                                 <Setter Property="IsEnabled" Value="True" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=ScriptActions, Path=SelectedItem}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding ElementName=ScriptActions, Path=SelectedItem}"
+                                                 Value="{x:Null}"
+                                                 >
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>

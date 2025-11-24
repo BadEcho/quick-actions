@@ -1,77 +1,78 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-		Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2025 Bad Echo LLC. All rights reserved.
 
-		Bad Echo Technologies are licensed under the
-		GNU Affero General Public License v3.0.
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
 
-		See accompanying file LICENSE.md or a copy at:
+    See accompanying file LICENSE.md or a copy at:
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <badEcho:View x:Class="BadEcho.QuickActions.Views.ScriptActionView"
               x:ClassModifier="internal"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
-              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
-              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:extensibility="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignHeight="280"
-              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              >
     <d:DesignProperties.DataContext>
         <vm:ScriptActionViewModel Name="SampleScript.ps1"
-                                  Path="D:\scripts\echoDuma.cmd"
                                   Arguments="-d 10"
+                                  Path="D:\scripts\echoDuma.cmd"
                                   ShellType="PowerShell"
                                   />
     </d:DesignProperties.DataContext>
     <badEcho:View.Resources>
-        <Style x:Key="HeaderTextStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="{StaticResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,4"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-        </Style>
-        <Style x:Key="InputTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="Margin" Value="0,0,0,24"/>
+        <Style x:Key="InputTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="0,0,0,24" />
         </Style>
         <ObjectDataProvider x:Key="ShellTypeFromEnum"
                             MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
+                            ObjectType="{x:Type sys:Enum}"
+                            >
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="extensibility:ShellType"/>
+                <x:Type TypeName="extensibility:ShellType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </badEcho:View.Resources>
 
     <StackPanel Orientation="Vertical">
-        <TextBlock Style="{DynamicResource BodyStrongTextBlockStyle}"
+        <TextBlock Style="{DynamicResource SmallSubtitleTextBlockStyle}"
                    Text="{Binding Name}"
+                   Margin="0,4,8,0"
                    HorizontalAlignment="Right"
-                   Margin="0,0,8,0"
                    />
-        <TextBlock Style="{StaticResource HeaderTextStyle}"
+        <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                    Text="Path"
+                   Margin="0,-4,0,4"
                    />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+
             <TextBox x:Name="PathTextBox"
-                     Style="{StaticResource InputTextBoxStyle}" 
+                     Style="{StaticResource InputTextBoxStyle}"
                      Text="{Binding Path, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"
-                     Grid.Column="0">
+                     Grid.Column="0"
+                     >
                 <Validation.ErrorTemplate>
-                    <ControlTemplate >
+                    <ControlTemplate>
                         <DockPanel>
-                            <TextBlock Foreground="Red" 
+                            <TextBlock DockPanel.Dock="Bottom"
                                        FontStyle="Italic"
-                                       Text="{Binding [0].ErrorContent}" 
-                                       DockPanel.Dock="Bottom"
+                                       Foreground="Red"
+                                       Text="{Binding [0].ErrorContent}"
                                        Margin="0,3,0,0"
                                        />
-                            <AdornedElementPlaceholder DockPanel.Dock="Top"/>
+
+                            <AdornedElementPlaceholder DockPanel.Dock="Top" />
                         </DockPanel>
                     </ControlTemplate>
                 </Validation.ErrorTemplate>
@@ -81,7 +82,7 @@
                             <badEcho:OverrideResourceAction.Value>
                                 <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
                                     <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform ScaleY="-1" CenterY="0.5" />
+                                        <ScaleTransform CenterY="0.5" ScaleY="-1" />
                                     </LinearGradientBrush.RelativeTransform>
                                     <LinearGradientBrush.GradientStops>
                                         <GradientStop Offset="1.0" Color="Red" />
@@ -92,18 +93,20 @@
                         </badEcho:OverrideResourceAction>
                     </badEcho:Trigger>
                     <badEcho:Trigger Property="Validation.HasError" Value="False">
-                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"/>
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
                     </badEcho:Trigger>
                 </badEcho:FrameworkBehaviors.Triggers>
             </TextBox>
             <Button Command="{Binding OpenFileCommand}"
                     Margin="4,0,0,24"
-                    Grid.Column="1">
+                    Grid.Column="1"
+                    >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
                                Text="&#xE8E5;"
                                Margin="0,3,0,0"
                                />
+
                     <TextBlock Text="Open"
                                Margin="8,0,0,0"
                                />
@@ -111,14 +114,14 @@
             </Button>
         </Grid>
 
-        <TextBlock Style="{StaticResource HeaderTextStyle}"
+        <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                    Text="Arguments"
                    />
         <TextBox Style="{StaticResource InputTextBoxStyle}"
                  Text="{Binding Arguments, UpdateSourceTrigger=PropertyChanged}"
                  />
 
-        <TextBlock Style="{StaticResource HeaderTextStyle}"
+        <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                    Text="Shell Type"
                    />
         <ComboBox ItemsSource="{Binding Source={StaticResource ShellTypeFromEnum}}"
@@ -128,8 +131,8 @@
 
         <Button Style="{StaticResource AccentButtonStyle}"
                 Command="{Binding SaveCommand}"
-                IsEnabled="{Binding IsDirty}"
                 Content="Save"
+                IsEnabled="{Binding IsDirty}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 />
