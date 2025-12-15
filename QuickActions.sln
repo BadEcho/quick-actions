@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadEcho.QuickActions", "src\QuickActions\BadEcho.QuickActions.csproj", "{7CCBC7DF-6C2F-4491-AB01-37D074B548FD}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadEcho.Presentation.Extensions", "src\Presentation\src\Presentation.Extensions\BadEcho.Presentation.Extensions.csproj", "{1EEA32E7-D632-E0D9-BB2A-B5A97D5BFEC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadEcho.QuickActions.Extensibility", "src\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj", "{94DC5C46-CB58-421A-B774-CA6338629179}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadEcho.QuickActions.DisplaySettings", "src\QuickActions.DisplaySettings\BadEcho.QuickActions.DisplaySettings.csproj", "{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{94DC5C46-CB58-421A-B774-CA6338629179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94DC5C46-CB58-421A-B774-CA6338629179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94DC5C46-CB58-421A-B774-CA6338629179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{49E16836-BC8F-4128-79F0-C31D314833B1} = {ADA13899-A37B-4C53-BD66-C572157C7949}
 		{1EEA32E7-D632-E0D9-BB2A-B5A97D5BFEC7} = {ADA13899-A37B-4C53-BD66-C572157C7949}
 		{94DC5C46-CB58-421A-B774-CA6338629179} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{AD4305BE-2A0A-4E54-9298-6DC79DFBA1DB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26F8939C-13DC-4FE4-BC3E-40BF27F184EC}

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Title>Quick Actions Display Settings Plugin</Title>
+		<AssemblyTitle>$(Title)</AssemblyTitle>
+		<Product>Quick Actions</Product>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<Target Name="CopyPlugin" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(OutputPath)\plugins\" />
+	</Target>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Extensibility\src\Extensibility\BadEcho.Extensibility.csproj" />
+		<ProjectReference Include="..\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Strings.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>
