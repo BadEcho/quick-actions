@@ -11,7 +11,7 @@
         <ResourceDictionary Source="Resources/ViewContexts.xaml" />
         <ResourceDictionary Source="Resources/BrushOverrides.xaml" />
 
-        <!--Text styles-->
+        <!--  Text styles  -->
         <ResourceDictionary Source="Resources/SmallSubtitleTextBlockStyle.xaml" />
         <ResourceDictionary Source="Resources/HeaderTextBlockStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>

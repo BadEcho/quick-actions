@@ -6,7 +6,9 @@
 
     See accompanying file LICENSE.md or a copy at:
     https://www.gnu.org/licenses/agpl-3.0.html-->
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
 
     <!--  ListBox brushes  -->
     <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="{DynamicResource SubtleFillColorSecondary}" />
