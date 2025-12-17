@@ -20,16 +20,13 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class HomeViewModel : ViewModel
 {
-    private int _actionsCount;
-    private int _mappingsCount;
-
     /// <summary>
     /// Gets or sets the number of available actions.
     /// </summary>
     public int ActionsCount
     {
-        get => _actionsCount;
-        set => NotifyIfChanged(ref _actionsCount, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -37,8 +34,8 @@ internal sealed class HomeViewModel : ViewModel
     /// </summary>
     public int MappingsCount
     {
-        get => _mappingsCount;
-        set => NotifyIfChanged(ref _mappingsCount, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <inheritdoc/>

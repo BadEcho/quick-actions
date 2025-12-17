@@ -23,14 +23,12 @@ namespace BadEcho.QuickActions.ViewModels;
 internal class ActionViewModel<TAction> : ViewModel<IAction, TAction>, IActionViewModel
     where TAction : IAction
 {
-    private string _name = string.Empty;
-
     /// <inheritdoc/>
     public string Name
     {
-        get => _name;
-        set => NotifyIfChanged(ref _name, value);
-    }
+        get;
+        set => NotifyIfChanged(ref field, value);
+    } = string.Empty;
 
     /// <inheritdoc/>
     protected override void OnBinding(TAction model)

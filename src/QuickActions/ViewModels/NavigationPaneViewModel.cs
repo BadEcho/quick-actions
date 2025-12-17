@@ -25,9 +25,6 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
 {
     private readonly NavigationService? _navigationService;
 
-    private NavigationTargetViewModel? _selectedViewModel;
-    private ICommand? _selectionCommand;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="NavigationPaneViewModel"/> class.
     /// </summary>
@@ -51,8 +48,8 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
     /// </summary>
     public NavigationTargetViewModel? SelectedViewModel
     {
-        get => _selectedViewModel;
-        set => NotifyIfChanged(ref _selectedViewModel, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -60,8 +57,8 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
     /// </summary>
     public ICommand? SelectionCommand
     {
-        get => _selectionCommand;
-        set => NotifyIfChanged(ref _selectionCommand, value);
+        get;
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <inheritdoc/>

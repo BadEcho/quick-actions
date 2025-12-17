@@ -21,8 +21,6 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MainViewModel : ViewModel, INavigationHost
 {
-    private IViewModel? _currentViewModel;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
     /// </summary>
@@ -63,16 +61,16 @@ internal sealed class MainViewModel : ViewModel, INavigationHost
     /// <inheritdoc/>
     public IViewModel? CurrentViewModel
     {
-        get => _currentViewModel;
+        get;
         set
         {
-            NotifyIfChanged(ref _currentViewModel, value);
+            NotifyIfChanged(ref field, value);
 
-            if (_currentViewModel == null)
+            if (field == null)
                 return;
 
-            NavigationViewModel.SelectedViewModel = 
-                NavigationViewModel.Items.FirstOrDefault(n => n.ViewModelType == _currentViewModel.GetType());
+            NavigationViewModel.SelectedViewModel =
+                NavigationViewModel.Items.FirstOrDefault(n => n.ViewModelType == field.GetType());
         }
     }
 
