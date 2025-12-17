@@ -56,6 +56,12 @@ internal sealed class MainViewModel : ViewModel, INavigationHost
                                       IconGlyph = "\uE700",
                                       ViewModelType = typeof(ActionsViewModel)
                                   });
+        NavigationViewModel.Bind(new NavigationTarget
+                                 {
+                                     Name = "mappings",
+                                     IconGlyph = "\uE707",
+                                     ViewModelType = typeof(MappingsViewModel)
+                                 });
     }
 
     /// <inheritdoc/>

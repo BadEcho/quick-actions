@@ -27,4 +27,12 @@
         <v:ActionsView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:MappingsViewModel}">
+        <v:MappingsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:MappingViewModel}">
+        <v:MappingView />
+    </DataTemplate>
+
 </ResourceDictionary>

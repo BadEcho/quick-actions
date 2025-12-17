@@ -11,19 +11,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-using BadEcho.QuickActions.Extensibility;
+using System.Windows.Controls;
+using BadEcho.Presentation;
 
-namespace BadEcho.QuickActions.Options;
+namespace BadEcho.QuickActions.Views;
 
 /// <summary>
-/// Provides the user's configuration settings pertaining to script actions.
+/// Provides a view for displaying a mapping between a key combination and an action.
 /// </summary>
-internal sealed class ScriptActionsOptions : Collection<ScriptAction>
+internal sealed partial class MappingView : View
 {
-    /// <summary>
-    /// The name of the configuration section the script actions are sourced from.
-    /// </summary>
-    public static string SectionName
-        => "Scripts";
+    /// <inheritdoc/>
+    public MappingView() 
+        => InitializeComponent();
+
+    private void KeysTextChanged(object sender, TextChangedEventArgs e) 
+        => Keys.CaretIndex = Keys.Text.Length;
 }

@@ -26,6 +26,9 @@
                 <vm:NavigationTargetViewModel Name="actions"
                                               IconGlyph="&#xE700;"
                                               />
+                <vm:NavigationTargetViewModel Name="mappings"
+                                              IconGlyph="&#xE707;"
+                                              />
             </vm:NavigationPaneViewModel.Items>
         </vm:NavigationPaneViewModel>
     </d:DesignProperties.DataContext>

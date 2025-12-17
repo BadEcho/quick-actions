@@ -11,19 +11,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-using BadEcho.QuickActions.Extensibility;
-
-namespace BadEcho.QuickActions.Options;
+namespace BadEcho.QuickActions.Views;
 
 /// <summary>
-/// Provides the user's configuration settings pertaining to script actions.
+/// Provides a view for the page where individual mappings can be defined and viewed.
 /// </summary>
-internal sealed class ScriptActionsOptions : Collection<ScriptAction>
+internal sealed partial class MappingsView
 {
     /// <summary>
-    /// The name of the configuration section the script actions are sourced from.
+    /// Initializes a new instance of the <see cref="MappingsView"/> class.
     /// </summary>
-    public static string SectionName
-        => "Scripts";
+    public MappingsView() 
+        => InitializeComponent();
 }
