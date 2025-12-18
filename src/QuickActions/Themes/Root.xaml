@@ -14,5 +14,8 @@
         <!--  Text styles  -->
         <ResourceDictionary Source="Resources/SmallSubtitleTextBlockStyle.xaml" />
         <ResourceDictionary Source="Resources/HeaderTextBlockStyle.xaml" />
+
+        <!--  Button styles  -->
+        <ResourceDictionary Source="Resources/GarbageButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -15,6 +15,7 @@ using System.Windows.Input;
 using BadEcho.Interop;
 using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
+using BadEcho.QuickActions.Extensibility;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -23,9 +24,22 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingViewModel : ViewModel<Mapping>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MappingViewModel"/> class.
+    /// </summary>
+    public MappingViewModel(IEnumerable<IAction> actions)
+        : this()
+    {
+        Actions = actions.ToList();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MappingViewModel"/> class.
+    /// </summary>
     public MappingViewModel()
     {
         KeyInputCommand = new DelegateCommand(ProcessKeyInput);
+        Actions = [];
     }
 
     /// <summary>
@@ -37,22 +51,55 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     /// <summary>
     /// Gets or sets the text describing the bound mapping's key combination.
     /// </summary>
-    public string MappingText
+    public string KeysText
     {
         get;
         set => NotifyIfChanged(ref field, value);
     } = string.Empty;
 
+    /// <summary>
+    /// Gets or sets the selected action.
+    /// </summary>
+    public IAction? SelectedAction
+    {
+        get;
+        set
+        {
+            NotifyIfChanged(ref field, value);
+
+            ActiveModel?.ActionId = value?.Id ?? Guid.Empty;
+        }
+    }
+
+    /// <summary>
+    /// Gets a collection of all actions available for selection.
+    /// </summary>
+    public ICollection<IAction> Actions
+    { get; init; }
+
     /// <inheritdoc/>
     protected override void OnBinding(Mapping model)
     {
-        MappingText = DescribeMapping(model);
+        KeysText = DescribeMapping(model);
+        SelectedAction = Actions.FirstOrDefault(a => a.Id == model.ActionId);
     }
 
     /// <inheritdoc/>
     protected override void OnUnbound(Mapping model)
     {
-        MappingText = string.Empty;
+        KeysText = string.Empty;
+        SelectedAction = null;
+    }
+
+    private static string DescribeMapping(Mapping mapping)
+    {
+        var keySequence = mapping.ModifierKeys
+                                 .Select(Enum.GetName)
+                                 .Concat(mapping.Keys.Select(Enum.GetName));
+        
+        string description = string.Join(" + ", keySequence);
+
+        return description;
     }
 
     private void ProcessKeyInput(object? parameter)
@@ -89,17 +136,6 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
             }
         }
         
-        MappingText = DescribeMapping(ActiveModel);
-    }
-
-    private static string DescribeMapping(Mapping mapping)
-    {
-        var keySequence = mapping.ModifierKeys
-                                 .Select(Enum.GetName)
-                                 .Concat(mapping.Keys.Select(Enum.GetName));
-        
-        string description = string.Join(" + ", keySequence);
-
-        return description;
+        KeysText = DescribeMapping(ActiveModel);
     }
 }

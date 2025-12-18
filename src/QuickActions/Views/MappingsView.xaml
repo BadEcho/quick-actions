@@ -12,23 +12,64 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:e="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              d:DesignWidth="800"
               >
     <d:DesignProperties.DataContext>
         <vm:MappingsViewModel>
             <vm:MappingsViewModel.Items>
-                <vm:MappingViewModel MappingText="Shift + A" />
+                <vm:MappingViewModel KeysText="Shift + A">
+                    <vm:MappingViewModel.Actions>
+                        <e:ScriptAction Name="An Action" />
+                    </vm:MappingViewModel.Actions>
+                </vm:MappingViewModel>
+                <vm:MappingViewModel KeysText="Shift + B">
+                    <vm:MappingViewModel.Actions>
+                        <e:ScriptAction Name="Another Action" />
+                    </vm:MappingViewModel.Actions>
+                </vm:MappingViewModel>
             </vm:MappingsViewModel.Items>
         </vm:MappingsViewModel>
     </d:DesignProperties.DataContext>
-    <DockPanel>
-        <ListBox Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
-                 DockPanel.Dock="Top"
+    <DockPanel Grid.IsSharedSizeScope="True">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                       Text="Key Combination"
+                       Margin="12,0,0,4"
+                       Grid.Column="0"
+                       />
+            <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                       Text="Action"
+                       Margin="16,0,0,4"
+                       Grid.Column="1"
+                       />
+        </Grid>
+        <ListBox x:Name="Mappings"
+                 Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
+                 BorderBrush="{StaticResource DividerStrokeColorDefaultBrush}"
+                 BorderThickness="0,1,0,0"
                  ItemsSource="{Binding Items}"
+                 Margin="0,0,0,24"
                  HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Center"
+                 DockPanel.Dock="Top"
                  />
+
+        <Button Style="{StaticResource AccentButtonStyle}"
+                Click="AddMappingClick"
+                Command="{Binding AddMappingCommand}"
+                Content="Add"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Bottom"
+                />
     </DockPanel>
 </badEcho:View>

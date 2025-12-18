@@ -12,18 +12,33 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:e="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
               >
+    <d:DesignProperties.DataContext>
+        <vm:MappingViewModel KeysText="Control + S">
+            <vm:MappingViewModel.Actions>
+                <e:ScriptAction Name="An Action" />
+            </vm:MappingViewModel.Actions>
+        </vm:MappingViewModel>
+    </d:DesignProperties.DataContext>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <TextBox x:Name="Keys"
                  CaretIndex="{x:Static sys:Int32.MaxValue}"
-                 Text="{Binding MappingText, Mode=OneWay}"
+                 Text="{Binding KeysText, Mode=OneWay}"
                  TextChanged="KeysTextChanged"
-                 MinWidth="200"
+                 Width="200"
+                 Margin="0,0,16,0"
+                 Grid.Column="0"
                  >
             <badEcho:FrameworkBehaviors.EventTriggers>
                 <badEcho:EventTrigger EventName="PreviewKeyDown">
@@ -31,5 +46,15 @@
                 </badEcho:EventTrigger>
             </badEcho:FrameworkBehaviors.EventTriggers>
         </TextBox>
+        <ComboBox d:SelectedIndex="0"
+                  DisplayMemberPath="Name"
+                  ItemsSource="{Binding Actions}"
+                  SelectedItem="{Binding SelectedAction}"
+                  Margin="0,0,16,0"
+                  Grid.Column="1"
+                  />
+        <Button Style="{StaticResource GarbageButtonStyle}"
+                Grid.Column="2"
+                />
     </Grid>
 </badEcho:View>

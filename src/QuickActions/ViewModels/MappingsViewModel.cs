@@ -11,7 +11,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows.Input;
+using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
+using BadEcho.QuickActions.Services;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -21,17 +24,39 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
+    private readonly ActionsService? _actionService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
+    /// </summary>
+    public MappingsViewModel(ActionsService actionService)
+        : this()
+    {
+        _actionService = actionService;
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
     public MappingsViewModel()
         : base(new CollectionViewModelOptions { OffloadBatchBindings = false })
-    { }
+    {
+        AddMappingCommand = new DelegateCommand(AddMapping);
+    }
+    
+    /// <summary>
+    /// Gets a command that, when executed, will create a new mapping.
+    /// </summary>
+    public ICommand AddMappingCommand
+    { get; }
 
     /// <inheritdoc/>
     public override MappingViewModel CreateItem(Mapping model)
     {
-        var viewModel = new MappingViewModel();
+        var viewModel = new MappingViewModel
+                        {
+                            Actions = [.. _actionService?.Actions ?? []]
+                        };
 
         viewModel.Bind(model);
 
@@ -44,5 +69,12 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         var existingChild = FindItem<MappingViewModel>(model);
 
         existingChild?.Bind(model);
+    }
+
+    private void AddMapping(object? parameter)
+    {
+        var mapping = new Mapping();
+
+        Bind(mapping);
     }
 }

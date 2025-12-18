@@ -34,9 +34,9 @@ internal sealed class Mapping
     { get; } = [];
 
     /// <summary>
-    /// Gets or sets the action executed if the keys defined in <see cref="ModifierKeys"/> and <see cref="Keys"/>
-    /// are pressed.
+    /// Gets or sets the identifier for the action executed if the keys defined in <see cref="ModifierKeys"/> and
+    /// <see cref="Keys"/> are pressed.
     /// </summary>
-    public IAction? Action
+    public Guid ActionId
     { get; set; }
 }

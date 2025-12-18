@@ -11,6 +11,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
 namespace BadEcho.QuickActions.Views;
 
 /// <summary>
@@ -23,4 +27,11 @@ internal sealed partial class MappingsView
     /// </summary>
     public MappingsView() 
         => InitializeComponent();
+
+    private void AddMappingClick(object sender, RoutedEventArgs e)
+    {
+        var container = (ListBoxItem) Mappings.ItemContainerGenerator.ContainerFromItem(Mappings.SelectedItem);
+
+        FocusManager.SetFocusedElement(this, container);
+    }
 }

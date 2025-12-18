@@ -35,7 +35,7 @@ internal sealed class UserSettingsService
     {
         _scriptOptions = scriptOptions;
         _appearanceOptions = appearanceOptions;
-
+        
         hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
     }
 

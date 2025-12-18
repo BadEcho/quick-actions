@@ -17,7 +17,7 @@
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
-              d:DesignWidth="705"
+              d:DesignWidth="805"
               >
     <d:DesignProperties.DataContext>
         <vm:ActionsViewModel>
@@ -84,12 +84,12 @@
                     <DockPanel>
                         <ListBox x:Name="ScriptActions"
                                  Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
-                                 DockPanel.Dock="Top"
                                  Grid.IsSharedSizeScope="True"
                                  ItemsSource="{Binding ScriptView}"
                                  SelectedItem="{Binding SelectedScriptViewModel}"
                                  Margin="0,0,0,24"
                                  HorizontalContentAlignment="Stretch"
+                                 DockPanel.Dock="Top"
                                  >
                             <ListBox.ItemContainerStyle>
                                 <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
@@ -118,16 +118,11 @@
                                                    Grid.Column="1"
                                                    />
 
-                                        <Button Command="{Binding DataContext.DeleteScriptCommand, RelativeSource={RelativeSource AncestorType={x:Type badEcho:View}}}"
+                                        <Button Style="{StaticResource GarbageButtonStyle}"
+                                                Command="{Binding DataContext.DeleteScriptCommand, RelativeSource={RelativeSource AncestorType={x:Type badEcho:View}}}"
                                                 CommandParameter="{Binding}"
-                                                Padding="4"
                                                 Grid.Column="2"
-                                                >
-                                            <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                       Text="&#xE74D;"
-                                                       MaxWidth="16"
-                                                       />
-                                        </Button>
+                                                />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -137,10 +132,10 @@
                                 Click="AddScriptClick"
                                 Command="{Binding AddScriptCommand}"
                                 Content="Add"
-                                DockPanel.Dock="Bottom"
                                 Margin="0,0,0,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
+                                DockPanel.Dock="Bottom"
                                 />
                     </DockPanel>
                 </Border>

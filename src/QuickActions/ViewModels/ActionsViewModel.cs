@@ -104,7 +104,7 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
         if (viewModel is { ActiveModel: not null })
         {
             _userSettingsService?.Delete(viewModel.ActiveModel);
-           
+            viewModel.SaveRequested -= HandleScriptSaveRequested;
             Unbind(viewModel.ActiveModel);
         }
     }

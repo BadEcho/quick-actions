@@ -45,6 +45,7 @@ builder.Services
     
 builder.Services
        .AddSingleton<UserSettingsService>()
+       .AddSingleton<ActionsService>()
        .AddSingleton<Mediator>();
 
 builder.Services
@@ -52,7 +53,8 @@ builder.Services
        .AddSingleton<MainViewModel>()
        .AddSingleton<NavigationPaneViewModel>()
        .AddTransient<HomeViewModel>()
-       .AddTransient<ActionsViewModel>();
+       .AddTransient<ActionsViewModel>()
+       .AddTransient<MappingsViewModel>();
 
 var app = builder.Build();
 
