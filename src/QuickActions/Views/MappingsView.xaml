@@ -20,7 +20,7 @@
               d:DesignWidth="800"
               >
     <d:DesignProperties.DataContext>
-        <vm:MappingsViewModel>
+        <vm:MappingsViewModel IsDirty="True">
             <vm:MappingsViewModel.Items>
                 <vm:MappingViewModel KeysText="Shift + A">
                     <vm:MappingViewModel.Actions>
@@ -62,14 +62,26 @@
                  VerticalContentAlignment="Center"
                  DockPanel.Dock="Top"
                  />
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Bottom"
+                    >
 
-        <Button Style="{StaticResource AccentButtonStyle}"
-                Click="AddMappingClick"
-                Command="{Binding AddMappingCommand}"
-                Content="Add"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                DockPanel.Dock="Bottom"
-                />
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    Click="AddMappingClick"
+                    Command="{Binding AddMappingCommand}"
+                    Content="Add"
+                    Margin="0,0,16,0"
+                    />
+
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    Command="{Binding SaveMappingCommand}"
+                    Content="Save"
+                    IsEnabled="{Binding IsDirty}"
+                    />
+
+        </StackPanel>
+
     </DockPanel>
 </badEcho:View>

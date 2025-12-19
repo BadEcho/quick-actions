@@ -77,6 +77,15 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     public ICollection<IAction> Actions
     { get; init; }
 
+    /// <summary>
+    /// Gets or sets a value indicating if any of the bound mapping's fields contain unsaved changes.
+    /// </summary>
+    public bool IsDirty
+    {
+        get;
+        set => NotifyIfChanged(ref field, value);
+    }
+
     /// <inheritdoc/>
     protected override void OnBinding(Mapping model)
     {
@@ -89,6 +98,15 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = string.Empty;
         SelectedAction = null;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(string? propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        if (propertyName != nameof(IsDirty))
+            IsDirty = true;
     }
 
     private static string DescribeMapping(Mapping mapping)

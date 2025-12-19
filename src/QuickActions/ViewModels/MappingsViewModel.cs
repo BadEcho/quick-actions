@@ -11,10 +11,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Windows.Input;
 using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
 using BadEcho.QuickActions.Services;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -43,12 +44,21 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     {
         AddMappingCommand = new DelegateCommand(AddMapping);
     }
-    
+
     /// <summary>
     /// Gets a command that, when executed, will create a new mapping.
     /// </summary>
     public ICommand AddMappingCommand
     { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating if any of the bound mappings contain unsaved changes.
+    /// </summary>
+    public bool IsDirty
+    {
+        get;
+        set => NotifyIfChanged(ref field, value);
+    }
 
     /// <inheritdoc/>
     public override MappingViewModel CreateItem(Mapping model)
@@ -69,6 +79,15 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         var existingChild = FindItem<MappingViewModel>(model);
 
         existingChild?.Bind(model);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnItemChanged(MappingViewModel? child, PropertyChangedEventArgs e)
+    {
+        base.OnItemChanged(child, e);
+
+        if (child is { IsDirty: true })
+            IsDirty = true;
     }
 
     private void AddMapping(object? parameter)
