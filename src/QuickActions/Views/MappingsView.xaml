@@ -43,6 +43,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                        Text="Key Combination"
+                       MinWidth="200"
                        Margin="12,0,0,4"
                        Grid.Column="0"
                        />
