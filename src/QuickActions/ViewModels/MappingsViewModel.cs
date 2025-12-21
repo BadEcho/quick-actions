@@ -117,6 +117,8 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         {
             mapping.IsDirty = false;
         }
+
+        IsDirty = false;
     }
 
     private void HandleDeleteRequested(object? sender, EventArgs e)

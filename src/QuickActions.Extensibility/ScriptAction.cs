@@ -53,4 +53,8 @@ public sealed class ScriptAction : IAction
     {
         throw new NotImplementedException();
     }
+
+    /// <inheritdoc/>
+    public override string? ToString()
+        => $"{Name} (Script)";
 }

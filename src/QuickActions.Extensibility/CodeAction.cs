@@ -44,4 +44,8 @@ public abstract class CodeAction : IAction
 
     /// <inheritdoc/>
     public abstract bool Execute();
+
+    /// <inheritdoc/>
+    public override string? ToString()
+        => $"{Name} (Code)";
 }

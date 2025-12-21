@@ -47,10 +47,9 @@
             </badEcho:FrameworkBehaviors.EventTriggers>
         </TextBox>
         <ComboBox d:SelectedIndex="0"
-                  DisplayMemberPath="Name"
                   ItemsSource="{Binding Actions}"
                   SelectedItem="{Binding SelectedAction}"
-                  Margin="0,0,16,0"
+                  Margin="0,0,16,0" 
                   Grid.Column="1"
                   />
         <Button Style="{StaticResource GarbageButtonStyle}"
