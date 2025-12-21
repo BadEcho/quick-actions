@@ -37,6 +37,7 @@ builder.Configuration
 
 builder.Services
        .Configure<ScriptActionsOptions>(builder.Configuration.GetSection(ScriptActionsOptions.SectionName), userSettingsPath)
+       .Configure<MappingOptions>(builder.Configuration.GetSection(MappingOptions.SectionName), userSettingsPath)
        .Configure<AppearanceOptions>(builder.Configuration.GetSection(AppearanceOptions.SectionName), userSettingsPath);
 
 builder.Services

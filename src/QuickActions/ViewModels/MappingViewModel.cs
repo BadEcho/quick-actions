@@ -91,6 +91,8 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = DescribeMapping(model);
         SelectedAction = Actions.FirstOrDefault(a => a.Id == model.ActionId);
+
+        IsDirty = false;
     }
 
     /// <inheritdoc/>
@@ -98,6 +100,8 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = string.Empty;
         SelectedAction = null;
+
+        IsDirty = false;
     }
 
     /// <inheritdoc/>

@@ -76,7 +76,7 @@
                     />
 
             <Button Style="{StaticResource AccentButtonStyle}"
-                    Command="{Binding SaveMappingCommand}"
+                    Command="{Binding SaveMappingsCommand}"
                     Content="Save"
                     IsEnabled="{Binding IsDirty}"
                     />

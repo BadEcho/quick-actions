@@ -24,6 +24,7 @@ namespace BadEcho.QuickActions.Services;
 internal sealed class UserSettingsService
 {
     private readonly IWritableOptions<ScriptActionsOptions> _scriptOptions;
+    private readonly IWritableOptions<MappingOptions> _mappingOptions;
     private readonly IWritableOptions<AppearanceOptions> _appearanceOptions;
 
     /// <summary>
@@ -31,9 +32,11 @@ internal sealed class UserSettingsService
     /// </summary>
     public UserSettingsService(IHostApplicationLifetime hostLifetime,
                                IWritableOptions<ScriptActionsOptions> scriptOptions,
+                               IWritableOptions<MappingOptions> mappingOptions,
                                IWritableOptions<AppearanceOptions> appearanceOptions)
     {
         _scriptOptions = scriptOptions;
+        _mappingOptions = mappingOptions;
         _appearanceOptions = appearanceOptions;
         
         hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
@@ -44,6 +47,9 @@ internal sealed class UserSettingsService
     /// </summary>
     public IEnumerable<ScriptAction> Scripts 
         => _scriptOptions.CurrentValue;
+
+    public IEnumerable<Mapping> Mappings
+        => _mappingOptions.CurrentValue;
 
     /// <summary>
     /// Gets the configuration settings for the user interface.
@@ -73,6 +79,26 @@ internal sealed class UserSettingsService
     /// </summary>
     public void SaveScripts() 
         => _scriptOptions.Save(null);
+
+    /// <summary>
+    /// Adds a new mapping to the user's configuration settings.
+    /// </summary>
+    /// <param name="mapping">The mapping to add.</param>
+    public void Add(Mapping mapping) 
+        => _mappingOptions.CurrentValue.Add(mapping);
+
+    /// <summary>
+    /// Deletes a mapping from the user's configuration settings.
+    /// </summary>
+    /// <param name="mapping">The mapping to delete.</param>
+    public void Delete(Mapping mapping) 
+        => _mappingOptions.CurrentValue.Remove(mapping);
+
+    /// <summary>
+    /// Persists the current configuration for the user's mappings.
+    /// </summary>
+    public void SaveMappings() 
+        => _mappingOptions.Save(null);
 
     /// <summary>
     /// Persists the current configuration for the user interface.

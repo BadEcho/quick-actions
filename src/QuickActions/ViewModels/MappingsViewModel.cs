@@ -26,14 +26,18 @@ namespace BadEcho.QuickActions.ViewModels;
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
     private readonly ActionsService? _actionService;
+    private readonly UserSettingsService? _userSettingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
-    public MappingsViewModel(ActionsService actionService)
+    public MappingsViewModel(ActionsService actionService, UserSettingsService userSettingsService)
         : this()
     {
         _actionService = actionService;
+        _userSettingsService = userSettingsService;
+
+        Bind(userSettingsService.Mappings);
     }
 
     /// <summary>
@@ -43,12 +47,19 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         : base(new CollectionViewModelOptions { OffloadBatchBindings = false })
     {
         AddMappingCommand = new DelegateCommand(AddMapping);
+        SaveMappingsCommand = new DelegateCommand(SaveMappings);
     }
 
     /// <summary>
     /// Gets a command that, when executed, will create a new mapping.
     /// </summary>
     public ICommand AddMappingCommand
+    { get; }
+
+    /// <summary>
+    /// Gets a command that, when executed, will save any added or modified mappings.
+    /// </summary>
+    public ICommand SaveMappingsCommand
     { get; }
 
     /// <summary>
@@ -94,6 +105,18 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     {
         var mapping = new Mapping();
 
+        _userSettingsService?.Add(mapping);
+
         Bind(mapping);
+    }
+
+    private void SaveMappings(object? obj)
+    {
+        _userSettingsService?.SaveMappings();
+
+        foreach (var mapping in Items)
+        {
+            mapping.IsDirty = false;
+        }
     }
 }

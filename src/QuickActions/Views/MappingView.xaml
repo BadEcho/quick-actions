@@ -34,7 +34,7 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="Keys"
                  CaretIndex="{x:Static sys:Int32.MaxValue}"
-                 Text="{Binding KeysText, Mode=OneWay}"
+                 Text="{Binding KeysText, Mode=TwoWay}"
                  TextChanged="KeysTextChanged"
                  Width="200"
                  Margin="0,0,16,0"
