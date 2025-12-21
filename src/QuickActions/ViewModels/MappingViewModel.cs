@@ -39,13 +39,25 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     public MappingViewModel()
     {
         KeyInputCommand = new DelegateCommand(ProcessKeyInput);
+        DeleteCommand = new DelegateCommand(DeleteMapping);
         Actions = [];
     }
+
+    /// <summary>
+    /// Occurs when the user clicks on the Delete button.
+    /// </summary>
+    public event EventHandler? DeleteRequested; 
 
     /// <summary>
     /// Gets a command that, when executed, adds or removes a key press to the bound mapping based on the incoming input.
     /// </summary>
     public ICommand KeyInputCommand
+    { get; }
+
+    /// <summary>
+    /// Gets a command that, when executed, deletes the bound mapping.
+    /// </summary>
+    public ICommand DeleteCommand
     { get; }
 
     /// <summary>
@@ -160,4 +172,7 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         
         KeysText = DescribeMapping(ActiveModel);
     }
+
+    private void DeleteMapping(object? parameter)
+        => DeleteRequested?.Invoke(this, EventArgs.Empty);
 }

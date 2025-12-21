@@ -91,8 +91,11 @@ internal sealed class UserSettingsService
     /// Deletes a mapping from the user's configuration settings.
     /// </summary>
     /// <param name="mapping">The mapping to delete.</param>
-    public void Delete(Mapping mapping) 
-        => _mappingOptions.CurrentValue.Remove(mapping);
+    public void Delete(Mapping mapping)
+    {
+        if (_mappingOptions.CurrentValue.Remove(mapping))
+            SaveMappings();
+    }
 
     /// <summary>
     /// Persists the current configuration for the user's mappings.

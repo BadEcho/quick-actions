@@ -54,6 +54,7 @@
                   Grid.Column="1"
                   />
         <Button Style="{StaticResource GarbageButtonStyle}"
+                Command="{Binding DeleteCommand}"
                 Grid.Column="2"
                 />
     </Grid>

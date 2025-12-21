@@ -80,6 +80,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
                         };
 
         viewModel.Bind(model);
+        viewModel.DeleteRequested += HandleDeleteRequested;
 
         return viewModel;
     }
@@ -118,5 +119,17 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         {
             mapping.IsDirty = false;
         }
+    }
+
+    private void HandleDeleteRequested(object? sender, EventArgs e)
+    {
+        var viewModel = (MappingViewModel?) sender;
+
+        if (viewModel is not { ActiveModel: not null })
+            return;
+
+        _userSettingsService?.Delete(viewModel.ActiveModel);
+        viewModel.DeleteRequested -= HandleDeleteRequested;
+        Unbind(viewModel.ActiveModel);
     }
 }
