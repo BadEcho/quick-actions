@@ -25,16 +25,14 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
-    private readonly ActionsService? _actionService;
     private readonly UserSettingsService? _userSettingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
-    public MappingsViewModel(ActionsService actionService, UserSettingsService userSettingsService)
+    public MappingsViewModel(UserSettingsService userSettingsService)
         : this()
     {
-        _actionService = actionService;
         _userSettingsService = userSettingsService;
 
         Bind(userSettingsService.Mappings);
@@ -76,7 +74,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     {
         var viewModel = new MappingViewModel
                         {
-                            Actions = [.. _actionService?.Actions ?? []]
+                            Actions = [.. _userSettingsService?.Actions ?? []]
                         };
 
         viewModel.Bind(model);

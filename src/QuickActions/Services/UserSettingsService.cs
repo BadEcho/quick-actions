@@ -11,6 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using BadEcho.Extensibility.Hosting;
 using BadEcho.Extensions;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
@@ -23,6 +24,8 @@ namespace BadEcho.QuickActions.Services;
 /// </summary>
 internal sealed class UserSettingsService
 {
+    private readonly Dictionary<Guid, IAction> _actionsMap;
+
     private readonly IWritableOptions<ScriptActionsOptions> _scriptOptions;
     private readonly IWritableOptions<MappingOptions> _mappingOptions;
     private readonly IWritableOptions<AppearanceOptions> _appearanceOptions;
@@ -40,7 +43,13 @@ internal sealed class UserSettingsService
         _appearanceOptions = appearanceOptions;
         
         hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
+
+        IEnumerable<IAction> codeActions = PluginHost.Load<IAction>();
+        _actionsMap = Scripts.Concat(codeActions).ToDictionary(kv => kv.Id);
     }
+
+    public IEnumerable<IAction> Actions
+        => _actionsMap.Values;
 
     /// <summary>
     /// Gets the script actions configured by the user.
@@ -57,12 +66,18 @@ internal sealed class UserSettingsService
     public AppearanceOptions Appearance 
         => _appearanceOptions.CurrentValue;
 
+    public IAction GetAction(Guid id)
+        => _actionsMap[id];
+
     /// <summary>
     /// Adds a new script action to the user's configuration settings.
     /// </summary>
     /// <param name="action">The script action to add.</param>
-    public void Add(ScriptAction action) 
-        => _scriptOptions.CurrentValue.Add(action);
+    public void Add(ScriptAction action)
+    {
+        _scriptOptions.CurrentValue.Add(action);
+        _actionsMap.Add(action.Id, action);
+    }
 
     /// <summary>
     /// Deletes a script action from the user's configuration settings.
@@ -71,7 +86,10 @@ internal sealed class UserSettingsService
     public void Delete(ScriptAction action)
     {
         if (_scriptOptions.CurrentValue.Remove(action))
+        {
+            _actionsMap.Remove(action.Id);
             SaveScripts();
+        }
     }
 
     /// <summary>

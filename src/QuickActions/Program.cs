@@ -46,7 +46,6 @@ builder.Services
     
 builder.Services
        .AddSingleton<UserSettingsService>()
-       .AddSingleton<ActionsService>()
        .AddSingleton<Mediator>();
 
 builder.Services
