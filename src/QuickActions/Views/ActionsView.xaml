@@ -85,18 +85,13 @@
                         <ListBox x:Name="ScriptActions"
                                  Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
                                  Grid.IsSharedSizeScope="True"
+                                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                                  ItemsSource="{Binding ScriptView}"
                                  SelectedItem="{Binding SelectedScriptViewModel}"
                                  Margin="0,0,0,24"
                                  HorizontalContentAlignment="Stretch"
                                  DockPanel.Dock="Top"
                                  >
-                            <ListBox.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Border.CornerRadius" Value="8" />
-                                    <Setter Property="Padding" Value="12,4,12,4" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:ScriptActionViewModel}">
                                     <Grid>

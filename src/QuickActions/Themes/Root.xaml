@@ -17,5 +17,8 @@
 
         <!--  Button styles  -->
         <ResourceDictionary Source="Resources/GarbageButtonStyle.xaml" />
+
+        <!--  Container styles  -->
+        <ResourceDictionary Source="Resources/RoundedListBoxItemStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
