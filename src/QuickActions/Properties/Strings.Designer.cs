@@ -61,6 +61,24 @@ namespace BadEcho.QuickActions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Key combination cannot be empty..
+        /// </summary>
+        internal static string KeysTextEmpty {
+            get {
+                return ResourceManager.GetString("KeysTextEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An action must be selected..
+        /// </summary>
+        internal static string NoActionSelected {
+            get {
+                return ResourceManager.GetString("NoActionSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File does not exist..
         /// </summary>
         internal static string ScriptFileNotExist {

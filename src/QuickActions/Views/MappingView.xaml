@@ -26,7 +26,34 @@
             </vm:MappingViewModel.Actions>
         </vm:MappingViewModel>
     </d:DesignProperties.DataContext>
+    <badEcho:View.Resources>
+        <badEcho:MultiBooleanConverter x:Key="BooleanOrConverter"
+                                       Operation="Or"
+                                       />
+    </badEcho:View.Resources>
     <Grid>
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <MultiDataTrigger />
+                    <DataTrigger Value="True">
+                        <DataTrigger.Binding>
+                            <MultiBinding Converter="{StaticResource BooleanOrConverter}">
+                                <Binding ElementName="Keys"
+                                         Path="(Validation.HasError)"
+                                         />
+                                <Binding ElementName="Actions"
+                                         Path="(Validation.HasError)"
+                                         />
+                            </MultiBinding>
+                        </DataTrigger.Binding>
+                        <DataTrigger.Setters>
+                            <Setter Property="Margin" Value="0,0,0,24" />
+                        </DataTrigger.Setters>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -34,8 +61,9 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="Keys"
                  CaretIndex="{x:Static sys:Int32.MaxValue}"
-                 Text="{Binding KeysText, Mode=TwoWay}"
+                 Text="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                  TextChanged="KeysTextChanged"
+                 Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
                  Width="200"
                  Margin="0,0,16,0"
                  Grid.Column="0"
@@ -45,11 +73,24 @@
                     <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
                 </badEcho:EventTrigger>
             </badEcho:FrameworkBehaviors.EventTriggers>
+            <badEcho:FrameworkBehaviors.Triggers>
+                <badEcho:Trigger Property="Validation.HasError" Value="True">
+                    <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
+                                                    Value="{StaticResource ErrorTextControlBorderBrushFocused}"
+                                                    />
+                </badEcho:Trigger>
+                <badEcho:Trigger Property="Validation.HasError" Value="False">
+                    <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
+                </badEcho:Trigger>
+            </badEcho:FrameworkBehaviors.Triggers>
         </TextBox>
-        <ComboBox d:SelectedIndex="0"
+
+        <ComboBox x:Name="Actions"
+                  d:SelectedIndex="0"
                   ItemsSource="{Binding Actions}"
-                  SelectedItem="{Binding SelectedAction}"
-                  Margin="0,0,16,0" 
+                  SelectedItem="{Binding SelectedAction, ValidatesOnNotifyDataErrors=True}"
+                  Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
+                  Margin="0,0,16,0"
                   Grid.Column="1"
                   />
         <Button Style="{StaticResource GarbageButtonStyle}"

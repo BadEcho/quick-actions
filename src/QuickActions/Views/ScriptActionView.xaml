@@ -60,37 +60,14 @@
             <TextBox x:Name="PathTextBox"
                      Style="{StaticResource InputTextBoxStyle}"
                      Text="{Binding Path, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"
+                     Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
                      Grid.Column="0"
                      >
-                <Validation.ErrorTemplate>
-                    <ControlTemplate>
-                        <DockPanel>
-                            <TextBlock DockPanel.Dock="Bottom"
-                                       FontStyle="Italic"
-                                       Foreground="Red"
-                                       Text="{Binding [0].ErrorContent}"
-                                       Margin="0,3,0,0"
-                                       />
-
-                            <AdornedElementPlaceholder DockPanel.Dock="Top" />
-                        </DockPanel>
-                    </ControlTemplate>
-                </Validation.ErrorTemplate>
                 <badEcho:FrameworkBehaviors.Triggers>
                     <badEcho:Trigger Property="Validation.HasError" Value="True">
-                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused">
-                            <badEcho:OverrideResourceAction.Value>
-                                <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,2">
-                                    <LinearGradientBrush.RelativeTransform>
-                                        <ScaleTransform CenterY="0.5" ScaleY="-1" />
-                                    </LinearGradientBrush.RelativeTransform>
-                                    <LinearGradientBrush.GradientStops>
-                                        <GradientStop Offset="1.0" Color="Red" />
-                                        <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
-                                    </LinearGradientBrush.GradientStops>
-                                </LinearGradientBrush>
-                            </badEcho:OverrideResourceAction.Value>
-                        </badEcho:OverrideResourceAction>
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
+                                                        Value="{StaticResource ErrorTextControlBorderBrushFocused}"
+                                                        />
                     </badEcho:Trigger>
                     <badEcho:Trigger Property="Validation.HasError" Value="False">
                         <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
@@ -98,7 +75,7 @@
                 </badEcho:FrameworkBehaviors.Triggers>
             </TextBox>
             <Button Command="{Binding OpenFileCommand}"
-                    Margin="4,0,0,24"
+                    Margin="8,0,0,24"
                     Grid.Column="1"
                     >
                 <StackPanel Orientation="Horizontal">

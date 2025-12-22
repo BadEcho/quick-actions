@@ -101,4 +101,10 @@
 	<data name="ScriptFileNotExist" xml:space="preserve">
 		<value>File does not exist.</value>
 	</data>
+	<data name="KeysTextEmpty" xml:space="preserve">
+		<value>Key combination cannot be empty.</value>
+	</data>
+	<data name="NoActionSelected" xml:space="preserve">
+		<value>An action must be selected.</value>
+	</data>
 </root>

@@ -16,6 +16,7 @@ using BadEcho.Interop;
 using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
 using BadEcho.QuickActions.Extensibility;
+using BadEcho.QuickActions.Properties;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -66,7 +67,15 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     public string KeysText
     {
         get;
-        set => NotifyIfChanged(ref field, value);
+        set
+        {
+            NotifyIfChanged(ref field, value);
+
+            if (string.IsNullOrEmpty(field))
+                MarkInvalid(Strings.KeysTextEmpty);
+            else
+                MarkValid();
+        }
     } = string.Empty;
 
     /// <summary>
@@ -78,6 +87,11 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         set
         {
             NotifyIfChanged(ref field, value);
+
+            if (field == null)
+                MarkInvalid(Strings.NoActionSelected);
+            else
+                MarkValid();
 
             ActiveModel?.ActionId = value?.Id ?? Guid.Empty;
         }
