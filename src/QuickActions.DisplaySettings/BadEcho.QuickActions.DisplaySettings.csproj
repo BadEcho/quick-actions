@@ -12,7 +12,7 @@
 	</Target>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Extensibility\src\Extensibility\BadEcho.Extensibility.csproj" />
+		<ProjectReference Include="$(ExtensibilityPath)\Extensibility\BadEcho.Extensibility.csproj" />
 		<ProjectReference Include="..\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj" />
 	</ItemGroup>
 
