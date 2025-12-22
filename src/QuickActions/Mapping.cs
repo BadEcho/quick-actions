@@ -12,7 +12,7 @@
 // -----------------------------------------------------------------------
 
 using BadEcho.Interop;
-using BadEcho.QuickActions.Extensibility;
+using BadEcho.Extensions;
 
 namespace BadEcho.QuickActions;
 
@@ -21,6 +21,12 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed class Mapping
 {
+    /// <summary>
+    /// Gets the unique identifier of the mapping.
+    /// </summary>
+    public Guid Id 
+    { get; init; } = Guid.NewGuid();
+
     /// <summary>
     /// Gets the set of modifier keys that must be pressed in order to execute the action.
     /// </summary>
@@ -39,4 +45,17 @@ internal sealed class Mapping
     /// </summary>
     public Guid ActionId
     { get; set; }
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Mapping other)
+            return false;
+
+        return Id == other.Id;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+        => this.GetHashCode(Id);
 }

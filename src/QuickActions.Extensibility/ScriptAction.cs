@@ -11,6 +11,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using BadEcho.Extensions;
+
 namespace BadEcho.QuickActions.Extensibility;
 
 /// <summary>
@@ -57,4 +59,17 @@ public sealed class ScriptAction : IAction
     /// <inheritdoc/>
     public override string? ToString()
         => $"{Name} (Script)";
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        if (obj is not ScriptAction other)
+            return false;
+
+        return Id == other.Id;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+        => this.GetHashCode(Id);
 }
