@@ -85,10 +85,10 @@
             <v:NavigationPaneView DataContext="{Binding NavigationViewModel}"
                                   DockPanel.Dock="Top"
                                   />
-            <Button DockPanel.Dock="Bottom"
-                    Width="100"
+            <Button Width="100"
                     Margin="5"
                     HorizontalContentAlignment="Left"
+                    DockPanel.Dock="Bottom"
                     >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}"

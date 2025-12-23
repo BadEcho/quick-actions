@@ -17,7 +17,6 @@
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
-              d:DesignHeight="280"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
               >
     <d:DesignProperties.DataContext>

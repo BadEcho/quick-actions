@@ -10,31 +10,34 @@
               x:ClassModifier="internal"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
-              d:DesignStyle="{StaticResource DesignTimeControlStyle}">
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              >
     <d:DesignProperties.DataContext>
-        <vm:HomeViewModel ActionsCount="3" MappingsCount="2"/>
+        <vm:HomeViewModel ActionsCount="3"
+                          MappingsCount="2"
+                          />
     </d:DesignProperties.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>  
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource BodyTextBlockStyle}">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}There are currently {0} actions associated with {1} mappings.">
-                    <Binding Path="ActionsCount"/>
-                    <Binding Path="MappingsCount"/>
+                    <Binding Path="ActionsCount" />
+                    <Binding Path="MappingsCount" />
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
-        <TextBlock  Text="Hello"
-                    Style="{StaticResource BodyTextBlockStyle}"
-                    Grid.Row="1"
-                    />
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                   Text="Hello"
+                   Grid.Row="1"
+                   />
     </Grid>
 </badEcho:View>
