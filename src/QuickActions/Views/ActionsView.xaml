@@ -56,6 +56,11 @@
                 </Style>
             </badEcho:BooleanToStyleConverter.StyleWhenTrue>
         </badEcho:BooleanToStyleConverter>
+        <BooleanToVisibilityConverter x:Key="BooleanVisibilityConverter" />
+        <badEcho:ValueConverterGroup x:Key="InverseVisibilityConverter">
+            <badEcho:InverseValueConverter />
+            <BooleanToVisibilityConverter />
+        </badEcho:ValueConverterGroup>
     </badEcho:View.Resources>
     <TabControl BorderBrush="{StaticResource DividerStrokeColorDefaultBrush}"
                 HorizontalAlignment="Stretch"
@@ -88,6 +93,7 @@
                                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                                  ItemsSource="{Binding ScriptView}"
                                  SelectedItem="{Binding SelectedScriptViewModel}"
+                                 Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
                                  Margin="0,0,0,24"
                                  HorizontalContentAlignment="Stretch"
                                  DockPanel.Dock="Top"
@@ -122,6 +128,14 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                   Text="No script actions have been defined.&#x0d;&#x0a;Hit &quot;Add&quot; to create one."
+                                   Visibility="{Binding HasItems, Converter={StaticResource InverseVisibilityConverter}}"
+                                   Margin="8,8,8,24"
+                                   HorizontalAlignment="Center"
+                                   DockPanel.Dock="Top"
+                                   />
 
                         <Button Style="{StaticResource AccentButtonStyle}"
                                 Click="AddScriptClick"

@@ -35,8 +35,17 @@
             </vm:MappingsViewModel.Items>
         </vm:MappingsViewModel>
     </d:DesignProperties.DataContext>
+    <badEcho:View.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanVisibilityConverter" />
+        <badEcho:ValueConverterGroup x:Key="InverseVisibilityConverter">
+            <badEcho:InverseValueConverter />
+            <BooleanToVisibilityConverter />
+        </badEcho:ValueConverterGroup>
+    </badEcho:View.Resources>
     <DockPanel Grid.IsSharedSizeScope="True">
-        <Grid DockPanel.Dock="Top">
+        <Grid Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
+              DockPanel.Dock="Top"
+              >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -59,11 +68,19 @@
                  BorderThickness="0,1,0,0"
                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                  ItemsSource="{Binding Items}"
+                 Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
                  Margin="0,0,0,24"
                  HorizontalContentAlignment="Stretch"
                  VerticalContentAlignment="Center"
                  DockPanel.Dock="Top"
                  />
+        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                   Text="No mappings have been defined. Hit &quot;Add&quot; to create one."
+                   Visibility="{Binding HasItems, Converter={StaticResource InverseVisibilityConverter}}"
+                   Margin="0,0,0,24"
+                   HorizontalAlignment="Center"
+                   DockPanel.Dock="Top"
+                   />
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
