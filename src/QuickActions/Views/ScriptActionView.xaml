@@ -28,7 +28,7 @@
     </d:DesignProperties.DataContext>
     <badEcho:View.Resources>
         <Style x:Key="InputTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
-            <Setter Property="Margin" Value="0,0,0,24" />
+            <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
         </Style>
         <ObjectDataProvider x:Key="ShellTypeFromEnum"
                             MethodName="GetValues"
@@ -102,7 +102,7 @@
                    />
         <ComboBox ItemsSource="{Binding Source={StaticResource ShellTypeFromEnum}}"
                   SelectedValue="{Binding ShellType}"
-                  Margin="0,0,0,24"
+                  Margin="{StaticResource VerticalSpacing}"
                   />
 
         <Button Style="{StaticResource AccentButtonStyle}"

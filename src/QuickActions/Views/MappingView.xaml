@@ -48,7 +48,7 @@
                             </MultiBinding>
                         </DataTrigger.Binding>
                         <DataTrigger.Setters>
-                            <Setter Property="Margin" Value="0,0,0,24" />
+                            <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
                         </DataTrigger.Setters>
                     </DataTrigger>
                 </Style.Triggers>
