@@ -38,6 +38,12 @@
                                           Path="D:\scripts\SampleScript4.cmd"
                                           ShellType="Command"
                                           />
+                <vm:CodeActionViewModel Name="Spawn Socket Server"
+                                        Description="This is a sample code action. Executing this will spawn an uber sockets server that will receive connections from the mothership."
+                                        />
+                <vm:CodeActionViewModel Name="Kill Socket Server"
+                                        Description="This is a sample code action. Executing this will destroy the uber sockets server, closing all connections made to the mothership."
+                                        />
             </vm:ActionsViewModel.Items>
         </vm:ActionsViewModel>
     </d:DesignProperties.DataContext>
@@ -61,6 +67,16 @@
             <badEcho:InverseValueConverter />
             <BooleanToVisibilityConverter />
         </badEcho:ValueConverterGroup>
+        <Style x:Key="ActionsBorderStyle" TargetType="Border">
+            <Setter Property="Padding" Value="0,4,0,0" />
+            <Style.Triggers>
+                <Trigger Property="badEcho:ElementLayout.IsCompact" Value="False">
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DividerStrokeColorDefaultBrush}" />
+                    <Setter Property="BorderThickness" Value="0,0,1,0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </badEcho:View.Resources>
     <TabControl BorderBrush="{StaticResource DividerStrokeColorDefaultBrush}"
                 HorizontalAlignment="Stretch"
@@ -74,18 +90,7 @@
                 <badEcho:GridBehaviors.Compaction>
                     <badEcho:GridCompactor Range="2" SizeToCompact="315" />
                 </badEcho:GridBehaviors.Compaction>
-                <Border>
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Style.Triggers>
-                                <Trigger Property="badEcho:ElementLayout.IsCompact" Value="False">
-                                    <Setter Property="Margin" Value="0,0,8,0" />
-                                    <Setter Property="BorderBrush" Value="{StaticResource DividerStrokeColorDefaultBrush}" />
-                                    <Setter Property="BorderThickness" Value="0,0,1,0" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+                <Border Style="{StaticResource ActionsBorderStyle}">
                     <DockPanel>
                         <ListBox x:Name="ScriptActions"
                                  Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
@@ -93,8 +98,8 @@
                                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                                  ItemsSource="{Binding ScriptView}"
                                  SelectedItem="{Binding SelectedScriptViewModel}"
-                                 Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
-                                 Margin="0,0,0,24"
+                                 Visibility="{Binding HasScriptItems, Converter={StaticResource BooleanVisibilityConverter}}"
+                                 Margin="{StaticResource VerticalSpacing}"
                                  HorizontalContentAlignment="Stretch"
                                  DockPanel.Dock="Top"
                                  >
@@ -131,7 +136,7 @@
 
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                                    Text="No script actions have been defined.&#x0d;&#x0a;Hit &quot;Add&quot; to create one."
-                                   Visibility="{Binding HasItems, Converter={StaticResource InverseVisibilityConverter}}"
+                                   Visibility="{Binding HasScriptItems, Converter={StaticResource InverseVisibilityConverter}}"
                                    Margin="8,8,8,24"
                                    HorizontalAlignment="Center"
                                    DockPanel.Dock="Top"
@@ -176,6 +181,61 @@
             <TabItem.Header>
                 <TextBlock Text="Code Actions" />
             </TabItem.Header>
+            <Grid>
+                <badEcho:GridBehaviors.Compaction>
+                    <badEcho:GridCompactor Range="2" SizeToCompact="315" />
+                </badEcho:GridBehaviors.Compaction>
+                <Border Style="{StaticResource ActionsBorderStyle}">
+                    <DockPanel>
+                        <ListBox x:Name="CodeActions"
+                                 Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
+                                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                                 ItemsSource="{Binding CodeView}"
+                                 SelectedItem="{Binding SelectedCodeViewModel}"
+                                 Visibility="{Binding HasCodeItems, Converter={StaticResource BooleanVisibilityConverter}}"
+                                 Margin="{StaticResource VerticalSpacing}"
+                                 HorizontalContentAlignment="Stretch"
+                                 DockPanel.Dock="Top"
+                                 >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:CodeActionViewModel}">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                   xml:space="preserve"
+                                   Visibility="{Binding HasCodeItems, Converter={StaticResource InverseVisibilityConverter}}"
+                                   Margin="8,8,8,24"
+                                   HorizontalAlignment="Center"
+                                   DockPanel.Dock="Top"
+                                   >No code actions were found.
+Code action plugins can be installed <Hyperlink Command="{Binding OpenPluginFolderCommand}">here</Hyperlink>.
+                        </TextBlock>
+                    </DockPanel>
+                </Border>
+                <ScrollViewer Focusable="False">
+                    <v:CodeActionView DataContext="{Binding SelectedCodeViewModel}"
+                                      Margin="0,0,0,4"
+                                      >
+                        <v:CodeActionView.Style>
+                            <Style TargetType="{x:Type v:CodeActionView}">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=CodeActions, Path=SelectedItem}"
+                                                 Value="{x:Null}"
+                                                 >
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </v:CodeActionView.Style>
+                    </v:CodeActionView>
+                </ScrollViewer>
+            </Grid>
         </TabItem>
     </TabControl>
 </badEcho:View>
