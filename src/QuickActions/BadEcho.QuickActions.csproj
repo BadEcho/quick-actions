@@ -9,7 +9,7 @@
 		<UseWPF>true</UseWPF>
 		<IsPackable>false</IsPackable>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
-		<NoWarn>$(NoWarn);CS7022;CA1812</NoWarn>
+		<NoWarn>$(NoWarn);CS7022;CA1812;CA2007</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
