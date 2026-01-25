@@ -46,6 +46,7 @@ builder.Services
     
 builder.Services
        .AddSingleton<UserSettingsService>()
+       .AddHostedService<KeyboardListenerService>()
        .AddSingleton<Mediator>();
 
 builder.Services

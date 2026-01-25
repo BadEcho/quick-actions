@@ -21,6 +21,7 @@
 		<ProjectReference Include="$(PresentationPath)\Presentation\BadEcho.Presentation.csproj" />
 		<ProjectReference Include="$(CorePath)\Common\BadEcho.Common.csproj" />
 		<ProjectReference Include="$(CorePath)\Extensions\BadEcho.Extensions.csproj" />
+		<ProjectReference Include="$(CorePath)\Hooks\BadEcho.Hooks.csproj" />
 		<ProjectReference Include="$(ExtensibilityPath)\Extensibility.Extensions\BadEcho.Extensibility.Extensions.csproj" />
 		<ProjectReference Include="$(PresentationPath)\Presentation.Extensions\BadEcho.Presentation.Extensions.csproj" />
 		<ProjectReference Include="..\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj" />

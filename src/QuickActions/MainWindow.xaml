@@ -47,7 +47,9 @@
         </vm:MainViewModel>
     </d:DesignProperties.DataContext>
     <badEcho:WindowBehaviors.NonClientArea>
-        <badEcho:TitleBar ContentLocation="BeforeNavigation"
+        <badEcho:TitleBar BackCommand="{Binding NavigateBackCommand}"
+                          CanGoBack="{Binding CanNavigateBack}"
+                          ContentLocation="BeforeNavigation"
                           Padding="4,0,0,0"
                           HorizontalContentAlignment="Left"
                           VerticalContentAlignment="Center"

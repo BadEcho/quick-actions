@@ -33,4 +33,12 @@ internal static class VirtualKeyExtensions
             VirtualKey.LeftControl or VirtualKey.RightControl => VirtualKey.Control,
             _ => source
         };
+
+    /// <summary>
+    /// Determines if this key is a (normalized) modifier key.
+    /// </summary>
+    /// <param name="source">An enumeration value that specifies a virtual-key code.</param>
+    /// <returns>True if <c>source</c> is a modifier key; otherwise, false.</returns>
+    public static bool IsModifier(this VirtualKey source)
+        => source is VirtualKey.Alt or VirtualKey.Shift or VirtualKey.Control;
 }
