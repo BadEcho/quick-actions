@@ -12,7 +12,6 @@
 // -----------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
-using BadEcho.QuickActions.Extensibility;
 
 namespace BadEcho.QuickActions.Options;
 

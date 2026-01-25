@@ -12,7 +12,7 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-              xmlns:e="clr-namespace:BadEcho.QuickActions.Extensibility;assembly=BadEcho.QuickActions.Extensibility"
+              xmlns:local="clr-namespace:BadEcho.QuickActions"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
@@ -22,7 +22,7 @@
     <d:DesignProperties.DataContext>
         <vm:MappingViewModel KeysText="Control + S">
             <vm:MappingViewModel.Actions>
-                <e:ScriptAction Name="An Action" />
+                <local:ScriptAction Name="An Action" />
             </vm:MappingViewModel.Actions>
         </vm:MappingViewModel>
     </d:DesignProperties.DataContext>

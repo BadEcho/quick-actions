@@ -11,12 +11,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions;
 
 /// <summary>
 /// Specifies the type of command interpreter used to execute a script.
 /// </summary>
-public enum ShellType
+internal enum ShellType
 {
     /// <summary>
     /// Windows Command shell (cmd.exe) is used to execute the script.

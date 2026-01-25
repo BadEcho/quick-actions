@@ -13,13 +13,14 @@
 
 using System.Diagnostics;
 using BadEcho.Extensions;
+using BadEcho.QuickActions.Extensibility;
 
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions;
 
 /// <summary>
 /// Provides an action that executes a script residing on the file system.
 /// </summary>
-public sealed class ScriptAction : IAction
+internal sealed class ScriptAction : IAction
 {
     /// <inheritdoc/>
     /// <remarks>Script actions generate their own ID when initially created.</remarks>

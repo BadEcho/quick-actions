@@ -12,14 +12,13 @@
 // -----------------------------------------------------------------------
 
 using System.Windows.Controls;
-using BadEcho.Presentation;
 
 namespace BadEcho.QuickActions.Views;
 
 /// <summary>
 /// Provides a view for displaying a mapping between a key combination and an action.
 /// </summary>
-internal sealed partial class MappingView : View
+internal sealed partial class MappingView
 {
     /// <inheritdoc/>
     public MappingView() 
