@@ -155,9 +155,12 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         if (ActiveModel == null || parameter is not KeyEventArgs keyArgs)
             return;
 
-        keyArgs.Handled = true;
-        
         VirtualKey key = (VirtualKey) KeyInterop.VirtualKeyFromKey(keyArgs.Key);
+
+        if (key == VirtualKey.Tab)
+            return;
+
+        keyArgs.Handled = true;
 
         if (key == VirtualKey.Backspace)
         {
@@ -170,18 +173,10 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         {
             key = key.NormalizeModifiers();
 
-            switch (key)
-            {
-                case VirtualKey.Alt:
-                case VirtualKey.Control:
-                case VirtualKey.Shift:
-                    ActiveModel.ModifierKeys.Add(key);
-                    break;
-
-                default:
-                    ActiveModel.Keys.Add(key);
-                    break;
-            }
+            if (key.IsModifier())
+                ActiveModel.ModifierKeys.Add(key);
+            else
+                ActiveModel.Keys.Add(key);
         }
         
         KeysText = DescribeMapping(ActiveModel);
