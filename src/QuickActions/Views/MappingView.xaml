@@ -64,7 +64,7 @@
                  Text="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                  TextChanged="KeysTextChanged"
                  Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
-                 Width="200"
+                 MinWidth="200"
                  Margin="0,0,16,0"
                  Grid.Column="0"
                  >
