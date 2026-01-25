@@ -36,13 +36,5 @@
              Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
              ItemsSource="{Binding Items}"
              SelectedItem="{Binding SelectedViewModel}"
-             >
-        <badEcho:FrameworkBehaviors.EventTriggers>
-            <badEcho:EventTrigger EventName="SelectionChanged">
-                <badEcho:CommandAction Command="{Binding SelectionCommand}"
-                                       Parameter="{Binding ElementName=NavigationPane, Path=SelectedItem}"
-                                       />
-            </badEcho:EventTrigger>
-        </badEcho:FrameworkBehaviors.EventTriggers>
-    </ListBox>
+             />
 </badEcho:View>

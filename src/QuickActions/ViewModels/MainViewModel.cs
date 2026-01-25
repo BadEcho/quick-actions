@@ -11,6 +11,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows.Input;
+using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
 using BadEcho.Presentation.Navigation;
 
@@ -29,15 +31,18 @@ internal sealed class MainViewModel : ViewModel, INavigationHost
     {
         navigationService.SetHost(this);
         navigationService.Navigate<HomeViewModel>();
+
+        NavigateBackCommand = new DelegateCommand(_ => navigationService.NavigateBack());
+        navigationService.Navigating += HandleNavigating;
     }
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
     /// </summary>
     public MainViewModel()
         : this(new NavigationPaneViewModel())
     { }
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
     /// </summary>
@@ -75,8 +80,9 @@ internal sealed class MainViewModel : ViewModel, INavigationHost
             if (field == null)
                 return;
 
-            NavigationViewModel.SelectedViewModel =
-                NavigationViewModel.Items.FirstOrDefault(n => n.ViewModelType == field.GetType());
+            var selectedVm = NavigationViewModel.Items.FirstOrDefault(n => n.ViewModelType == field.GetType());
+
+            NavigationViewModel.ChangeSelection(selectedVm);
         }
     }
 
@@ -86,7 +92,30 @@ internal sealed class MainViewModel : ViewModel, INavigationHost
     public NavigationPaneViewModel NavigationViewModel 
     { get; }
 
+    /// <summary>
+    /// Gets a command that, when executed, will navigate to the previous view.
+    /// </summary>
+    public ICommand? NavigateBackCommand
+    { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating if it is possible to navigate backwards.
+    /// </summary>
+    public bool CanNavigateBack
+    {
+        get;
+        set => NotifyIfChanged(ref field, value);
+    }
+
     /// <inheritdoc/>
     public override void Disconnect()
     { }
+
+    private void HandleNavigating(object? sender, EventArgs<Type> e)
+    {
+        if (sender is not NavigationService navigationService)
+            return;
+        
+        CanNavigateBack = navigationService.CanNavigateBack;
+    }
 }

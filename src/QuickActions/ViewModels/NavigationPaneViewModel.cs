@@ -11,9 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Presentation;
 using BadEcho.Presentation.ViewModels;
-using System.Windows.Input;
 using BadEcho.Presentation.Navigation;
 
 namespace BadEcho.QuickActions.ViewModels;
@@ -21,7 +19,7 @@ namespace BadEcho.QuickActions.ViewModels;
 /// <summary>
 /// Provides a view model for a navigation pane.
 /// </summary>
-internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTarget, NavigationTargetViewModel>
+internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTarget, NavigationTargetViewModel>, IHandlerBypassable
 {
     private readonly NavigationService? _navigationService;
 
@@ -32,8 +30,6 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
         : this()
     {
         _navigationService = navigationService;
-
-        SelectionCommand = new DelegateCommand(NavigateToSelection);
     }
 
     /// <summary>
@@ -49,16 +45,14 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
     public NavigationTargetViewModel? SelectedViewModel
     {
         get;
-        set => NotifyIfChanged(ref field, value);
-    }
+        set
+        {
+            if (!NotifyIfChanged(ref field, value) || this.IsHandlingBypassed())
+                return;
 
-    /// <summary>
-    /// Gets or sets the command execution when a selection is made.
-    /// </summary>
-    public ICommand? SelectionCommand
-    {
-        get;
-        set => NotifyIfChanged(ref field, value);
+            if (value is { ViewModelType: not null })
+                _navigationService?.Navigate(value.ViewModelType);
+        }
     }
 
     /// <inheritdoc/>
@@ -79,11 +73,16 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
         existingChild?.Bind(model);
     }
 
-    private void NavigateToSelection(object? parameter)
+    /// <summary>
+    /// Changes the selected navigation target view model programmatically, rather than in response to changes in the view,
+    /// bypassing the normal navigation request made to the navigation service.
+    /// </summary>
+    /// <param name="viewModel">The navigation target view model to set as the current selection.</param>
+    public void ChangeSelection(NavigationTargetViewModel? viewModel)
     {
-        var viewModel = (NavigationTargetViewModel?) parameter;
-
-        if (viewModel is { ViewModelType: not null })
-            _navigationService?.Navigate(viewModel.ViewModelType);
+        this.BypassHandlers(() =>
+        {
+            SelectedViewModel = viewModel;
+        });
     }
 }
