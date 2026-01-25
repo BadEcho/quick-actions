@@ -11,6 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics;
 using BadEcho.Extensions;
 
 namespace BadEcho.QuickActions.Extensibility;
@@ -53,11 +54,26 @@ public sealed class ScriptAction : IAction
     /// <returns>Value indicating if the action's script executed successfully.</returns>
     public bool Execute()
     {
-        throw new NotImplementedException();
+        var startInfo = ShellType switch
+        {
+            ShellType.Command => new ProcessStartInfo
+                                 {
+                                     FileName = "cmd.exe",
+                                     Arguments = $"/c \"\"{Path}\" {Arguments}\""
+                                 },
+            ShellType.PowerShell => new ProcessStartInfo
+                                    {
+                                        FileName = "powershell.exe",
+                                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{Path}\" {Arguments}",
+                                    },
+            _ => throw new InvalidOperationException("Invalid shell type for action.")
+        };
+
+        return ExecuteScript(startInfo);
     }
 
     /// <inheritdoc/>
-    public override string? ToString()
+    public override string ToString()
         => $"{Name} (Script)";
 
     /// <inheritdoc/>
@@ -72,4 +88,22 @@ public sealed class ScriptAction : IAction
     /// <inheritdoc/>
     public override int GetHashCode()
         => this.GetHashCode(Id);
+
+    private static bool ExecuteScript(ProcessStartInfo startInfo)
+    {
+        startInfo.UseShellExecute = false;
+        startInfo.RedirectStandardError = true;
+        startInfo.CreateNoWindow = true;
+        
+        using (var process = Process.Start(startInfo))
+        {
+            if (process == null)
+                return false;
+
+            string errors = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            return string.IsNullOrEmpty(errors);
+        }
+    }
 }
