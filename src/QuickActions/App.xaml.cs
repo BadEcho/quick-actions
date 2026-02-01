@@ -11,24 +11,34 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.ComponentModel;
+
 namespace BadEcho.QuickActions;
 
 /// <summary>
 /// Provides the Quick Actions application.
 /// </summary>
-internal sealed partial class App
+internal sealed partial class App : IDisposable
 {
+    private readonly NotificationArea? _notificationArea;
+
+    private bool _exiting;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
     public App(MainWindow window)
     {
         InitializeComponent();
-
+        
         MainWindow = window;
-
+        MainWindow.Closing += HandleMainWindowClosing;
+        
         window.InitializeComponent();
         window.Show();
+
+        _notificationArea = new NotificationArea(MainWindow);
+        _notificationArea.QuitClicked += HandleQuitClicked;
     }
 
     /// <summary>
@@ -41,4 +51,25 @@ internal sealed partial class App
     /// </remarks>
     private App() 
         => InitializeComponent();
+
+    /// <inheritdoc/>
+    public void Dispose() 
+        => _notificationArea?.Dispose();
+
+    private void HandleMainWindowClosing(object? sender, CancelEventArgs e)
+    {
+        if (_exiting)
+            return;
+
+        e.Cancel = true;
+
+        MainWindow?.Hide();
+        _notificationArea?.EnableOpen();
+    }
+
+    private void HandleQuitClicked(object? sender, EventArgs e)
+    {
+        _exiting = true;
+        MainWindow?.Close();
+    }
 }

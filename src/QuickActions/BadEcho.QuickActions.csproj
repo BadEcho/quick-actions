@@ -15,6 +15,8 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
 		<Resource Include="Assets\Logo.png" />
+		<Resource Include="Assets\Icon.ico" />
+		<Resource Include="Assets\LogoMenu.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,6 +43,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Properties\Images.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Images.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Properties\Strings.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -49,6 +56,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Images.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Images.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Properties\Strings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>

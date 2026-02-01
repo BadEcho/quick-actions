@@ -11,9 +11,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.IO;
-using BadEcho.Extensions;
 using BadEcho.Extensibility.Extensions;
+using BadEcho.Extensions;
+using BadEcho.Interop;
 using BadEcho.Presentation.Extensions;
 using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions;
@@ -23,6 +23,10 @@ using BadEcho.QuickActions.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+
+// Enable dark mode for context menus.
+Theming.EnableDarkMenus();
 
 var builder = Host.CreateApplicationBuilder();
 

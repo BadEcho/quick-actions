@@ -19,6 +19,7 @@
         Title="QuickActionsWindow"
         d:DesignStyle="{StaticResource DesignTimeControlStyle}"
         d:DesignWidth="850"
+        Icon="pack://application:,,,/Assets/Icon.ico"
         >
     <d:DesignProperties.DataContext>
         <vm:MainViewModel>
