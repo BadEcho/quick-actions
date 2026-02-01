@@ -61,6 +61,15 @@ namespace BadEcho.QuickActions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to create process to run script action..
+        /// </summary>
+        internal static string FailedToStartScriptProcess {
+            get {
+                return ResourceManager.GetString("FailedToStartScriptProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key combination cannot be empty..
         /// </summary>
         internal static string KeysTextEmpty {

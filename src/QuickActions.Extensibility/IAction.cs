@@ -31,6 +31,6 @@ public interface IAction
     /// <summary>
     /// Executes the action.
     /// </summary>
-    /// <returns>Value indicating the success of the action's execution.</returns>
-    bool Execute();
+    /// <returns>The result of executing the action.</returns>
+    ActionResult Execute();
 }

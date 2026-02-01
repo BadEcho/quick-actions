@@ -37,7 +37,7 @@ internal sealed class ChangePrimaryDisplay : CodeAction
         => Strings.ChangePrimaryDisplayDescription;
 
     /// <inheritdoc/>
-    public override bool Execute()
+    public override ActionResult Execute()
     {
         List<Display> displays = Display.Devices.ToList();
 
@@ -50,10 +50,12 @@ internal sealed class ChangePrimaryDisplay : CodeAction
         }
         catch (Win32Exception winEx)
         {
-            Logger.Error(Strings.ChangePrimaryDisplayFailed.InvariantFormat(nextDisplay.Name), winEx);
-            return false;
+            string error = Strings.ChangePrimaryDisplayFailed.InvariantFormat(nextDisplay.Name);
+
+            Logger.Error(error, winEx);
+            return ActionResult.Fail(error);
         }
 
-        return true;
+        return ActionResult.Ok();
     }
 }

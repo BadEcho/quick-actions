@@ -13,6 +13,7 @@
 
 using System.Diagnostics;
 using BadEcho.Extensions;
+using BadEcho.QuickActions.Properties;
 using BadEcho.QuickActions.Extensibility;
 
 namespace BadEcho.QuickActions;
@@ -49,11 +50,8 @@ internal sealed class ScriptAction : IAction
     public string Arguments 
     { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Executes the action's script.
-    /// </summary>
-    /// <returns>Value indicating if the action's script executed successfully.</returns>
-    public bool Execute()
+    /// <inheritdoc/>
+    public ActionResult Execute()
     {
         var startInfo = ShellType switch
         {
@@ -90,7 +88,7 @@ internal sealed class ScriptAction : IAction
     public override int GetHashCode()
         => this.GetHashCode(Id);
 
-    private static bool ExecuteScript(ProcessStartInfo startInfo)
+    private static ActionResult ExecuteScript(ProcessStartInfo startInfo)
     {
         startInfo.UseShellExecute = false;
         startInfo.RedirectStandardError = true;
@@ -99,12 +97,15 @@ internal sealed class ScriptAction : IAction
         using (var process = Process.Start(startInfo))
         {
             if (process == null)
-                return false;
+                return ActionResult.Fail(Strings.FailedToStartScriptProcess);
 
             string errors = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
-            return string.IsNullOrEmpty(errors);
+            if (!string.IsNullOrEmpty(errors))
+                return ActionResult.Fail(errors);
+
+            return ActionResult.Ok();
         }
     }
 }
