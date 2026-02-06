@@ -88,7 +88,7 @@ internal sealed class ScriptAction : IAction
     public override int GetHashCode()
         => this.GetHashCode(Id);
 
-    private static ActionResult ExecuteScript(ProcessStartInfo startInfo)
+    private ActionResult ExecuteScript(ProcessStartInfo startInfo)
     {
         startInfo.UseShellExecute = false;
         startInfo.RedirectStandardError = true;
@@ -97,15 +97,15 @@ internal sealed class ScriptAction : IAction
         using (var process = Process.Start(startInfo))
         {
             if (process == null)
-                return ActionResult.Fail(Strings.FailedToStartScriptProcess);
+                return ActionResult.Fail(this, Strings.FailedToStartScriptProcess);
 
             string errors = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
             if (!string.IsNullOrEmpty(errors))
-                return ActionResult.Fail(errors);
+                return ActionResult.Fail(this, errors);
 
-            return ActionResult.Ok();
+            return ActionResult.Ok(this);
         }
     }
 }

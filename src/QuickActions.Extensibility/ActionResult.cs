@@ -22,10 +22,12 @@ public sealed class ActionResult
     /// Initializes a new instance of the <see cref="ActionResult"/> class.
     /// </summary>
     /// <param name="success">Value indicating if the action executed successfully.</param>
+    /// <param name="actionName">The name of the action this result pertains to.</param>
     /// <param name="error">An error message describing why the action failed.</param>
-    private ActionResult(bool success, string error)
+    private ActionResult(bool success, string actionName, string error)
     {
         Success = success;
+        ActionName = actionName;
         Error = error;
     }
 
@@ -33,6 +35,12 @@ public sealed class ActionResult
     /// Gets a value indicating if the action executed successfully.
     /// </summary>
     public bool Success
+    { get; }
+
+    /// <summary>
+    /// Gets the name of the action this result pertains to.
+    /// </summary>
+    public string ActionName
     { get; }
 
     /// <summary>
@@ -44,16 +52,26 @@ public sealed class ActionResult
     /// <summary>
     /// Creates a result that indicates success.
     /// </summary>
+    /// <param name="action">The action this result pertains to.</param>
     /// <returns>An <see cref="ActionResult"/> instance indicating success.</returns>
-    public static ActionResult Ok() 
-        => new(true, string.Empty);
+    public static ActionResult Ok(IAction action)
+    {
+        Require.NotNull(action, nameof(action));
+
+        return new ActionResult(true, action.Name, string.Empty);
+    }
 
     /// <summary>
     /// Creates a result that indicates failure.
     /// </summary>
+    /// <param name="action">The action this result pertains to.</param>
     /// <param name="error">An error message describing why the action failed.</param>
     /// <returns>An <see cref="ActionResult"/> instance indicating failure.</returns>
-    public static ActionResult Fail(string error)
-        => new(false, error);
+    public static ActionResult Fail(IAction action, string error)
+    {
+        Require.NotNull(action, nameof(action));
+
+        return new ActionResult(false, action.Name, error);
+    }
 }
 

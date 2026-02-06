@@ -53,9 +53,9 @@ internal sealed class ChangePrimaryDisplay : CodeAction
             string error = Strings.ChangePrimaryDisplayFailed.InvariantFormat(nextDisplay.Name);
 
             Logger.Error(error, winEx);
-            return ActionResult.Fail(error);
+            return ActionResult.Fail(this, error);
         }
 
-        return ActionResult.Ok();
+        return ActionResult.Ok(this);
     }
 }

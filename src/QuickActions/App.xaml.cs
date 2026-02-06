@@ -12,6 +12,7 @@
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
+using BadEcho.Presentation.Messaging;
 
 namespace BadEcho.QuickActions;
 
@@ -27,7 +28,7 @@ internal sealed partial class App : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(MainWindow window)
+    public App(MainWindow window, Mediator mediator)
     {
         InitializeComponent();
         
@@ -37,7 +38,7 @@ internal sealed partial class App : IDisposable
         window.InitializeComponent();
         window.Show();
 
-        _notificationArea = new NotificationArea(MainWindow);
+        _notificationArea = new NotificationArea(MainWindow, mediator);
         _notificationArea.QuitClicked += HandleQuitClicked;
     }
 

@@ -61,6 +61,15 @@ namespace BadEcho.QuickActions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; Had Errors.
+        /// </summary>
+        internal static string ActionErrorTitle {
+            get {
+                return ResourceManager.GetString("ActionErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to create process to run script action..
         /// </summary>
         internal static string FailedToStartScriptProcess {

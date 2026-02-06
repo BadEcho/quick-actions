@@ -15,7 +15,10 @@ using BadEcho.Interop;
 using BadEcho.Presentation.Extensions;
 using System.Drawing;
 using System.IO;
+using BadEcho.Extensions;
+using BadEcho.Presentation.Messaging;
 using BadEcho.Presentation.Windows;
+using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Properties;
 using Window = System.Windows.Window;
 
@@ -31,18 +34,24 @@ internal sealed class NotificationArea : IDisposable
     private readonly MenuItem _open;
     private readonly MenuItem _quit;
     private readonly Window _window;
-
+    
     private bool _disposed;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NotificationArea"/> class.
     /// </summary>
     /// <param name="window">The main window of the application.</param>
-    public NotificationArea(Window window)
+    /// <param name="mediator">
+    /// A <see cref="Mediator"/> instance other components use to communicate with the notification area.
+    /// </param>>
+    public NotificationArea(Window window, Mediator mediator)
     {
         Require.NotNull(window, nameof(window));
+        Require.NotNull(mediator, nameof(mediator));
         
         _window = window;
+        
+        mediator.Register(Messages.DisplayErrorRequested, MediateDisplayErrorRequested);
 
         nint handle = window.GetHandle();
         var windowWrapper = new PresentationWindowWrapper(handle);
@@ -91,6 +100,13 @@ internal sealed class NotificationArea : IDisposable
         _icon.Dispose();
 
         _disposed = true;
+    }
+
+    private void MediateDisplayErrorRequested(ActionResult result)
+    {
+        _icon.SendBalloonNotification(result.Error,
+                                      Strings.ActionErrorTitle.InvariantFormat(result.ActionName),
+                                      BalloonIconType.Error);
     }
 
     private void HandleIconLeftClicked(object? sender, EventArgs e) 

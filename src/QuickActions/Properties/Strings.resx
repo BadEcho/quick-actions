@@ -110,4 +110,7 @@
 	<data name="FailedToStartScriptProcess" xml:space="preserve">
 		<value>Failed to create process to run script action.</value>
 	</data>
+	<data name="ActionErrorTitle" xml:space="preserve">
+		<value>'{0}' Had Errors</value>
+	</data>
 </root>

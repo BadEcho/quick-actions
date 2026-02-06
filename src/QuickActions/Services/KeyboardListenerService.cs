@@ -13,6 +13,7 @@
 
 using BadEcho.Hooks;
 using BadEcho.Interop;
+using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Extensibility;
 using Microsoft.Extensions.Hosting;
 
@@ -30,12 +31,14 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
     private readonly HashSet<VirtualKey> _pressedModifierKeys = [];
     private readonly HashSet<VirtualKey> _pressedKeys = [];
     private readonly UserSettingsService _userSettingsService;
+    private readonly Mediator _mediator;
 
     private bool _disposed;
 
-    public KeyboardListenerService(UserSettingsService userSettingsService)
+    public KeyboardListenerService(UserSettingsService userSettingsService, Mediator mediator)
     {
         _userSettingsService = userSettingsService;
+        _mediator = mediator;
         _keyboard = new KeyboardSource(KeyboardProcedure);
     }
 
@@ -81,8 +84,10 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
             if (pressedMapping != null)
             {
                 IAction action = _userSettingsService.GetAction(pressedMapping.ActionId);
-
-                action.Execute();
+                ActionResult result = action.Execute();
+                
+                if (!result.Success)
+                    _mediator.Broadcast(Messages.DisplayErrorRequested, result);
             }
         }
         
