@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Title>Quick Actions Display Settings Plugin</Title>
+		<Title>Quick Actions System Settings Plugin</Title>
 		<AssemblyTitle>$(Title)</AssemblyTitle>
 		<Product>Quick Actions</Product>
+		<Description>Plugin that provides actions that manipulate Windows system settings.</Description>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 

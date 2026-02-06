@@ -16,10 +16,10 @@ using System.Composition;
 using BadEcho.Extensions;
 using BadEcho.Interop;
 using BadEcho.Logging;
-using BadEcho.QuickActions.DisplaySettings.Properties;
+using BadEcho.QuickActions.SystemSettings.Properties;
 using BadEcho.QuickActions.Extensibility;
 
-namespace BadEcho.QuickActions.DisplaySettings;
+namespace BadEcho.QuickActions.SystemSettings;
 
 
 [Export(typeof(IAction))]

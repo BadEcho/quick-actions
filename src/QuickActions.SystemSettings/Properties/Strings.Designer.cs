@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BadEcho.QuickActions.DisplaySettings.Properties {
+namespace BadEcho.QuickActions.SystemSettings.Properties {
     using System;
     
     
