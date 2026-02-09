@@ -13,8 +13,7 @@
 
 using System.ComponentModel;
 using System.Composition;
-using BadEcho.Extensions;
-using BadEcho.Interop;
+using BadEcho.Interop.Audio;
 using BadEcho.Logging;
 using BadEcho.QuickActions.SystemSettings.Properties;
 using BadEcho.QuickActions.Extensibility;
@@ -22,37 +21,39 @@ using BadEcho.QuickActions.Extensibility;
 namespace BadEcho.QuickActions.SystemSettings;
 
 /// <summary>
-/// Provides an action that changes the user's primary display device.
+/// Provides an action that toggle the mute state of the user's default input audio device.
 /// </summary>
 [Export(typeof(IAction))]
-internal sealed class ChangePrimaryDisplay : CodeAction
+internal sealed class ToggleMicrophoneMute : CodeAction
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ChangePrimaryDisplay"/> class.
+    /// Initializes a new instance of the <see cref="ToggleMicrophoneMute"/> class.
     /// </summary>
-    public ChangePrimaryDisplay() 
-        : base(new Guid("{8630C7CA-0E38-4135-A53E-64E352AE5006}"), Strings.ChangePrimaryDisplayName)
+    public ToggleMicrophoneMute() 
+        : base(new Guid("{E120FDB5-8385-4C8D-8BC5-93FD64466E56}"), Strings.ToggleMicrophoneMuteName)
     { }
 
     /// <inheritdoc/>
     public override string Description
-        => Strings.ChangePrimaryDisplayDescription;
+        => Strings.ToggleMicrophoneMuteDescription;
 
     /// <inheritdoc/>
     public override ActionResult Execute()
     {
-        List<Display> displays = Display.Devices.ToList();
-
-        int primaryIndex = displays.IndexOf(Display.Primary);
-        Display nextDisplay = displays[(primaryIndex + 1) % displays.Count];
+        var soundManager = new SoundManager();
 
         try
         {
-            nextDisplay.MakePrimary();
+            AudioDevice? defaultInput = soundManager.DefaultInputDevice;
+
+            if (defaultInput == null)
+                return ActionResult.Fail(this, Strings.NoMicrophoneFoundToToggle);
+
+            defaultInput.Mute = !defaultInput.Mute;
         }
         catch (Win32Exception winEx)
         {
-            string error = Strings.ChangePrimaryDisplayFailed.InvariantFormat(nextDisplay.Name);
+            string error = Strings.ToggleMicrophoneMuteFailed;
 
             Logger.Error(error, winEx);
             return ActionResult.Fail(this, error);

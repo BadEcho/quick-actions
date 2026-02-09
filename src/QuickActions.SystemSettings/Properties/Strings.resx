@@ -105,6 +105,18 @@
 		<value>Changes the primary display to the next monitor to the right, according to the arrangement defined in the user's display settings. If the current primary display device is already the rightmost monitor, then the leftmost monitor will be made the primary display device.</value>
 	</data>
 	<data name="ChangePrimaryDisplayFailed" xml:space="preserve">
-		<value>Change Primary Display action failed to make the monitor '{0}' the primary display device.</value>
+		<value>Failed to make the monitor '{0}' the primary display device.</value>
+	</data>
+	<data name="ToggleMicrophoneMuteName" xml:space="preserve">
+		<value>Toggle Microphone Mute</value>
+	</data>
+	<data name="ToggleMicrophoneMuteDescription" xml:space="preserve">
+		<value>Toggles the mute state of the system's default input audio device.</value>
+	</data>
+	<data name="NoMicrophoneFoundToToggle" xml:space="preserve">
+		<value>Failed to locate a default input audio device.</value>
+	</data>
+	<data name="ToggleMicrophoneMuteFailed" xml:space="preserve">
+		<value>Failed to toggle the mute state of the default input audio device.</value>
 	</data>
 </root>

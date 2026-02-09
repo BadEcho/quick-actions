@@ -39,7 +39,7 @@ namespace BadEcho.QuickActions.SystemSettings.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BadEcho.QuickActions.DisplaySettings.Properties.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BadEcho.QuickActions.SystemSettings.Properties.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace BadEcho.QuickActions.SystemSettings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Primary Display action failed to make the monitor &apos;{0}&apos; the primary display device..
+        ///   Looks up a localized string similar to Failed to make the monitor &apos;{0}&apos; the primary display device..
         /// </summary>
         internal static string ChangePrimaryDisplayFailed {
             get {
@@ -84,6 +84,42 @@ namespace BadEcho.QuickActions.SystemSettings.Properties {
         internal static string ChangePrimaryDisplayName {
             get {
                 return ResourceManager.GetString("ChangePrimaryDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to locate a default input audio device..
+        /// </summary>
+        internal static string NoMicrophoneFoundToToggle {
+            get {
+                return ResourceManager.GetString("NoMicrophoneFoundToToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggles the mute state of the system&apos;s default input audio device..
+        /// </summary>
+        internal static string ToggleMicrophoneMuteDescription {
+            get {
+                return ResourceManager.GetString("ToggleMicrophoneMuteDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to toggle the mute state of the default input audio device..
+        /// </summary>
+        internal static string ToggleMicrophoneMuteFailed {
+            get {
+                return ResourceManager.GetString("ToggleMicrophoneMuteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Microphone Mute.
+        /// </summary>
+        internal static string ToggleMicrophoneMuteName {
+            get {
+                return ResourceManager.GetString("ToggleMicrophoneMuteName", resourceCulture);
             }
         }
     }
