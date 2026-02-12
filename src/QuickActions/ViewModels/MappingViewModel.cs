@@ -11,6 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.IO;
 using System.Windows.Input;
 using BadEcho.Interop;
 using BadEcho.Presentation;
@@ -25,6 +26,11 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingViewModel : ViewModel<Mapping>
 {
+    private const string NO_COMPLETION_SOUND = "None";
+
+    private static readonly string _MediaFolder =
+        Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Media");
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingViewModel"/> class.
     /// </summary>
@@ -42,6 +48,15 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         KeyInputCommand = new DelegateCommand(ProcessKeyInput);
         DeleteCommand = new DelegateCommand(DeleteMapping);
         Actions = [];
+
+        CompletionSounds = [NO_COMPLETION_SOUND, ..Directory.GetFiles(_MediaFolder, "*.wav").Select(GetFileName)];
+        SelectedCompletionSound = NO_COMPLETION_SOUND;
+
+        // This gets around a current issue with nullability attributes being ignored inside method groups.
+        static string GetFileName(string path)
+        {
+            return Path.GetFileName(path);
+        }
     }
 
     /// <summary>
@@ -104,6 +119,28 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     { get; init; }
 
     /// <summary>
+    /// Gets or sets the selected completion sound.
+    /// </summary>
+    public string SelectedCompletionSound
+    {
+        get;
+        set
+        {
+            NotifyIfChanged(ref field, value);
+
+            string? soundPath = value == NO_COMPLETION_SOUND ? null : Path.Combine(_MediaFolder, value);
+
+            ActiveModel?.CompletionSoundPath = soundPath;
+        }
+    }
+
+    /// <summary>
+    /// Gets a collection of possible completion sounds.
+    /// </summary>
+    public ICollection<string> CompletionSounds
+    { get; init; }
+
+    /// <summary>
     /// Gets or sets a value indicating if any of the bound mapping's fields contain unsaved changes.
     /// </summary>
     public bool IsDirty
@@ -118,6 +155,13 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         KeysText = DescribeMapping(model);
         SelectedAction = Actions.FirstOrDefault(a => a.Id == model.ActionId);
 
+        string completionSound = NO_COMPLETION_SOUND;
+
+        if (!string.IsNullOrEmpty(model.CompletionSoundPath))
+            completionSound = Path.GetFileName(model.CompletionSoundPath);
+
+        SelectedCompletionSound = completionSound;
+
         IsDirty = false;
     }
 
@@ -126,6 +170,7 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = string.Empty;
         SelectedAction = null;
+        SelectedCompletionSound = NO_COMPLETION_SOUND;
 
         IsDirty = false;
     }

@@ -11,6 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Media;
 using BadEcho.Hooks;
 using BadEcho.Interop;
 using BadEcho.Presentation.Messaging;
@@ -85,9 +86,19 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
             {
                 IAction action = _userSettingsService.GetAction(pressedMapping.ActionId);
                 ActionResult result = action.Execute();
-                
+
                 if (!result.Success)
+                {
                     _mediator.Broadcast(Messages.DisplayErrorRequested, result);
+                }
+                else if(!string.IsNullOrEmpty(pressedMapping.CompletionSoundPath))
+                {
+                    using (var soundPlayer = new SoundPlayer(pressedMapping.CompletionSoundPath))
+                    {
+                        soundPlayer.Load();
+                        soundPlayer.Play();
+                    }
+                }
             }
         }
         

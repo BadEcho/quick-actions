@@ -17,7 +17,7 @@
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
-              d:DesignWidth="800"
+              d:DesignWidth="600"
               >
     <d:DesignProperties.DataContext>
         <vm:MappingsViewModel IsDirty="True">
@@ -48,18 +48,24 @@
               >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="ActionsColumn" Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                        Text="Key Combination"
                        MinWidth="200"
-                       Margin="12,0,0,4"
+                       Margin="13,0,0,4"
                        Grid.Column="0"
                        />
             <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                        Text="Action"
-                       Margin="16,0,0,4"
+                       Margin="13,0,0,4"
                        Grid.Column="1"
+                       />
+            <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                       Text="Completion Sound"
+                       Margin="13,0,0,4"
+                       Grid.Column="2"
                        />
         </Grid>
         <ListBox x:Name="Mappings"

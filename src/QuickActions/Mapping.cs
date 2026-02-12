@@ -45,6 +45,12 @@ internal sealed class Mapping
     /// </summary>
     public Guid ActionId
     { get; set; }
+    
+    /// <summary>
+    /// Gets or sets a path to a .wav file to play following the successful execution of the action.
+    /// </summary>
+    public string? CompletionSoundPath 
+    { get; set; }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj)
