@@ -1,0 +1,12 @@
+﻿<!--Created by Matt Weber <matt@badecho.com>
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
+
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
+
+    See accompanying file LICENSE.md or a copy at:
+    https://www.gnu.org/licenses/agpl-3.0.html-->
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
+    <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />
+    <String Id="ActionText" Value="Installing Quick Actions..." />
+</WixLocalization>

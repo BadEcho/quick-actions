@@ -1,0 +1,28 @@
+﻿<!--Created by Matt Weber <matt@badecho.com>
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
+
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
+
+    See accompanying file LICENSE.md or a copy at:
+    https://www.gnu.org/licenses/agpl-3.0.html-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
+            <Component Id="ApplicationComponent">
+                <File Id="ApplicationFile" Source="BadEcho.QuickActions.exe" />
+            </Component>
+            <Component Id="NativeHooksComponent">
+                <File Source="BadEcho.Hooks.Native.dll" />
+            </Component>
+            <Component Id="ApplicationSettingsComponent">
+                <File Source="appsettings.json" />
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="PluginComponents" Directory="PluginsFolder">
+            <Component Id="SystemSettingsComponent">
+                <File Source="BadEcho.QuickActions.SystemSettings.dll" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

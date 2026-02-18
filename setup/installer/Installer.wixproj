@@ -1,0 +1,23 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.2">
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);FileVersion=$(FileVersion)</DefineConstants>
+        <DebugType>full</DebugType>
+        <OutputName>QuickActions</OutputName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <Cultures>;</Cultures>
+    </PropertyGroup>
+    <ItemGroup>
+        <BindPath Include="..\..\bin\publish" />
+        <Content Include="Defines.wxi" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Core\src\DarkWix\BadEcho.DarkWix.wixproj" />
+        <ProjectReference Include="..\..\src\QuickActions\BadEcho.QuickActions.csproj" Publish="true">
+            <AdditionalProperties>SelfContained=false;PublishSingleFile=true;PublishReadyToRun=true</AdditionalProperties>
+        </ProjectReference>
+    </ItemGroup>
+</Project>

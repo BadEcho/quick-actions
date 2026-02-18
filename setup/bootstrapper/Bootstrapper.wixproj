@@ -1,0 +1,16 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.2">
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);FileVersion=$(FileVersion)</DefineConstants>
+        <OutputType>Bundle</OutputType>
+        <DebugType>full</DebugType>
+        <OutputName>QuickActions</OutputName>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="WixToolset.BootstrapperApplications.wixext" Version="6.0.2" />
+        <PackageReference Include="WixToolset.Util.wixext" Version="6.0.2" />
+        <None Include="Theme.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\installer\Installer.wixproj" />
+    </ItemGroup>
+</Project>

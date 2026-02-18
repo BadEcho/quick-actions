@@ -10,6 +10,9 @@
 		<IsPackable>false</IsPackable>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<NoWarn>$(NoWarn);CS7022;CA1812;CA2007</NoWarn>
+		<Architecture>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</Architecture>
+		<RuntimeIdentifier>win-$(Architecture.ToLower())</RuntimeIdentifier>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -39,31 +42,48 @@
 			<SubType>Designer</SubType>
 			<ContainsDesignTimeResources>true</ContainsDesignTimeResources>
 		</None>
-
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Properties\Images.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Images.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Properties\Strings.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Strings.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Properties\Images.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Images.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Images.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Images.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Strings.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Images.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Images.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Strings.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
+
+	<Target Name="SetPublishDir" BeforeTargets="PrepareForPublish">
+		<!--A top-level PublishDir element will have its value changed during the execution phase of the build. In order to have the final say,
+				we need to set it before the PrepareForPublish event. -->
+		<PropertyGroup>
+			<PublishDir>$(OutputPath)\..\publish\</PublishDir>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="FinalizePublishOutput" AfterTargets="Publish">
+		<ItemGroup>
+			<PluginAssemblies Include="$(OutputPath)\plugins\*.*" />
+			<FilesToDelete Include="$(PublishDir)*.xml" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PluginAssemblies)" DestinationFolder="$(PublishDir)plugins\" />
+		<Copy SourceFiles="$(OutputPath)\BadEcho.Hooks.Native.dll" DestinationFolder="$(PublishDir)" />
+		<Delete Files="@(FilesToDelete)" />
+	</Target>
 
 </Project>
