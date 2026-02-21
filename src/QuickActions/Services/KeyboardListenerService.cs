@@ -96,7 +96,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
 
                 if (!result.Success)
                 {
-                    _mediator.Broadcast(Messages.DisplayErrorRequested, result);
+                    _mediator.Broadcast(Messages.DisplayError, result);
                 }
                 else if(!string.IsNullOrEmpty(pressedMapping.CompletionSoundPath))
                 {

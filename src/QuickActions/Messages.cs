@@ -24,8 +24,8 @@ internal static class Messages
     /// <summary>
     /// Gets a message requesting that an error notification be displayed.
     /// </summary>
-    public static MediatorMessage DisplayErrorRequested
-    { get; } = new (nameof(DisplayErrorRequested), typeof(Action<ActionResult>));
+    public static MediatorMessage DisplayError
+    { get; } = new (nameof(DisplayError), typeof(Action<ActionResult>));
 
     /// <summary>
     /// Gets a message requesting that all keyboard monitoring be paused.

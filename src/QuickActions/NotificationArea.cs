@@ -51,7 +51,7 @@ internal sealed class NotificationArea : IDisposable
         
         _window = window;
         
-        mediator.Register(Messages.DisplayErrorRequested, MediateDisplayErrorRequested);
+        mediator.Register(Messages.DisplayError, MediateDisplayError);
 
         nint handle = window.GetHandle();
         var windowWrapper = new PresentationWindowWrapper(handle);
@@ -102,7 +102,7 @@ internal sealed class NotificationArea : IDisposable
         _disposed = true;
     }
 
-    private void MediateDisplayErrorRequested(ActionResult result)
+    private void MediateDisplayError(ActionResult result)
     {
         _icon.SendBalloonNotification(result.Error,
                                       Strings.ActionErrorTitle.InvariantFormat(result.ActionName),
