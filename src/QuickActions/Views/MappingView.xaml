@@ -70,6 +70,12 @@
                  Grid.Column="0"
                  >
             <badEcho:FrameworkBehaviors.EventTriggers>
+                <badEcho:EventTrigger EventName="GotFocus">
+                    <badEcho:CommandAction Command="{Binding PauseListenerCommand}" />
+                </badEcho:EventTrigger>
+                <badEcho:EventTrigger EventName="LostFocus">
+                    <badEcho:CommandAction Command="{Binding ResumeListenerCommand}" />
+                </badEcho:EventTrigger>
                 <badEcho:EventTrigger EventName="PreviewKeyDown">
                     <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
                 </badEcho:EventTrigger>

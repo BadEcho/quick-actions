@@ -26,4 +26,16 @@ internal static class Messages
     /// </summary>
     public static MediatorMessage DisplayErrorRequested
     { get; } = new (nameof(DisplayErrorRequested), typeof(Action<ActionResult>));
+
+    /// <summary>
+    /// Gets a message requesting that all keyboard monitoring be paused.
+    /// </summary>
+    public static MediatorMessage PauseListener
+    { get; } = new(nameof(PauseListener), typeof(Action));
+
+    /// <summary>
+    /// Gets a message requesting that all keyboard monitoring be resumed.
+    /// </summary>
+    public static MediatorMessage ResumeListener
+    { get; } = new(nameof(ResumeListener), typeof(Action));
 }

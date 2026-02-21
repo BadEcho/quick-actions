@@ -16,6 +16,7 @@ using BadEcho.Presentation.ViewModels;
 using BadEcho.QuickActions.Services;
 using System.ComponentModel;
 using System.Windows.Input;
+using BadEcho.Presentation.Messaging;
 
 namespace BadEcho.QuickActions.ViewModels;
 
@@ -26,14 +27,16 @@ namespace BadEcho.QuickActions.ViewModels;
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
     private readonly UserSettingsService? _userSettingsService;
+    private readonly Mediator _mediator = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
-    public MappingsViewModel(UserSettingsService userSettingsService)
+    public MappingsViewModel(UserSettingsService userSettingsService, Mediator mediator)
         : this()
     {
         _userSettingsService = userSettingsService;
+        _mediator = mediator;
 
         Bind(userSettingsService.Mappings);
     }
@@ -72,7 +75,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     /// <inheritdoc/>
     public override MappingViewModel CreateItem(Mapping model)
     {
-        var viewModel = new MappingViewModel
+        var viewModel = new MappingViewModel(_mediator)
                         {
                             Actions = [.. _userSettingsService?.Actions ?? []]
                         };

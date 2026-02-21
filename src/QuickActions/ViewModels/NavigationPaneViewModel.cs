@@ -80,9 +80,6 @@ internal sealed class NavigationPaneViewModel : CollectionViewModel<NavigationTa
     /// <param name="viewModel">The navigation target view model to set as the current selection.</param>
     public void ChangeSelection(NavigationTargetViewModel? viewModel)
     {
-        this.BypassHandlers(() =>
-        {
-            SelectedViewModel = viewModel;
-        });
+        this.BypassHandlers(() => SelectedViewModel = viewModel);
     }
 }

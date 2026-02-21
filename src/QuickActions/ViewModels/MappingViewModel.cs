@@ -15,6 +15,7 @@ using System.IO;
 using System.Windows.Input;
 using BadEcho.Interop;
 using BadEcho.Presentation;
+using BadEcho.Presentation.Messaging;
 using BadEcho.Presentation.ViewModels;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Properties;
@@ -31,13 +32,16 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     private static readonly string _MediaFolder =
         Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Media");
 
+    private readonly Mediator? _mediator;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingViewModel"/> class.
     /// </summary>
-    public MappingViewModel(IEnumerable<IAction> actions)
+    /// <param name="mediator">A mediator for passing messages to other components.</param>
+    public MappingViewModel(Mediator mediator)
         : this()
     {
-        Actions = actions.ToList();
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -47,6 +51,8 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeyInputCommand = new DelegateCommand(ProcessKeyInput);
         DeleteCommand = new DelegateCommand(DeleteMapping);
+        PauseListenerCommand = new DelegateCommand(PauseListener);
+        ResumeListenerCommand = new DelegateCommand(ResumeListener);
         Actions = [];
 
         CompletionSounds = [NO_COMPLETION_SOUND, ..Directory.GetFiles(_MediaFolder, "*.wav").Select(GetFileName)];
@@ -62,12 +68,24 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     /// <summary>
     /// Occurs when the user clicks on the Delete button.
     /// </summary>
-    public event EventHandler? DeleteRequested; 
+    public event EventHandler? DeleteRequested;
 
     /// <summary>
     /// Gets a command that, when executed, adds or removes a key press to the bound mapping based on the incoming input.
     /// </summary>
     public ICommand KeyInputCommand
+    { get; }
+
+    /// <summary>
+    /// Gets a command that, when executed, pauses the keyboard listener service, preventing the execution of any mapped actions.
+    /// </summary>
+    public ICommand PauseListenerCommand
+    { get; }
+
+    /// <summary>
+    /// Gets a command that, when executed, resumes the keyboard listener service, allowing the execution of any mapped actions.
+    /// </summary>
+    public ICommand? ResumeListenerCommand
     { get; }
 
     /// <summary>
@@ -229,4 +247,10 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
 
     private void DeleteMapping(object? parameter)
         => DeleteRequested?.Invoke(this, EventArgs.Empty);
+
+    private void PauseListener(object? _) 
+        => _mediator?.Broadcast(Messages.PauseListener);
+
+    private void ResumeListener(object? _)
+        => _mediator?.Broadcast(Messages.ResumeListener);
 }
