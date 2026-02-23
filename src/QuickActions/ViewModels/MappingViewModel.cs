@@ -218,11 +218,11 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         if (ActiveModel == null || parameter is not KeyEventArgs keyArgs)
             return;
 
-        VirtualKey key = (VirtualKey) KeyInterop.VirtualKeyFromKey(keyArgs.Key);
+        VirtualKey key = (VirtualKey) KeyInterop.VirtualKeyFromKey(keyArgs.Key == Key.System ? keyArgs.SystemKey : keyArgs.Key);
 
         if (key == VirtualKey.Tab)
             return;
-
+        
         keyArgs.Handled = true;
 
         if (key == VirtualKey.Backspace)
