@@ -11,9 +11,9 @@
     <Font Id="1" Height="-24" Weight="500" Foreground="ffffff">Segoe UI</Font>
     <Font Id="2" Height="-22" Weight="500" Foreground="ffffff">Segoe UI</Font>
     <Font Id="3" Height="-12" Weight="500" Foreground="ffffff" Background="191919">Segoe UI</Font>
-	<!--Setting the Window's SourceX and SourceY attributes is required to apply our installer background to all pages. -->
+	  <!--Setting the Window's SourceX and SourceY attributes is required to apply our installer background to all pages. -->
     <Window Width="485" Height="300" SourceX="0" SourceY="0" HexStyle="100a0000" FontId="0" Caption="#(loc.Caption)" IconFile="InstallerIcon.ico">
-			<!--A bit confusing: the "logo.png" file does not exist, rather it's the name of the Payload added when setting the [bal:WixStandardBootstrapperApplication/@LogoFile] attribute.-->
+			  <!--A bit confusing: the "logo.png" file does not exist, rather it's the name of the Payload added when setting the [bal:WixStandardBootstrapperApplication/@LogoFile] attribute.-->
         <ImageControl X="11" Y="6" Width="64" Height="64" ImageFile="logo.png" Visible="yes" />
         <Label X="205" Y="25" Width="-11" Height="64" FontId="1" Visible="yes" DisablePrefix="yes">#(loc.Title) Installer</Label>
 
