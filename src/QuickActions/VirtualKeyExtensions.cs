@@ -40,5 +40,5 @@ internal static class VirtualKeyExtensions
     /// <param name="source">An enumeration value that specifies a virtual-key code.</param>
     /// <returns>True if <c>source</c> is a modifier key; otherwise, false.</returns>
     public static bool IsModifier(this VirtualKey source)
-        => source is VirtualKey.Alt or VirtualKey.Shift or VirtualKey.Control;
+        => source is VirtualKey.Alt or VirtualKey.Shift or VirtualKey.Control or VirtualKey.LeftWindows or VirtualKey.RightWindows;
 }

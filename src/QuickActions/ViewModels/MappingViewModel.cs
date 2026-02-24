@@ -205,13 +205,21 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     private static string DescribeMapping(Mapping mapping)
     {
         var keySequence = mapping.ModifierKeys
-                                 .Select(Enum.GetName)
+                                 .Select(GetKeyName)
                                  .Concat(mapping.Keys.Select(Enum.GetName));
         
         string description = string.Join(" + ", keySequence);
 
         return description;
     }
+
+    private static string GetKeyName(VirtualKey key)
+        => key switch
+        {
+            VirtualKey.Control => "Ctrl",
+            VirtualKey.LeftWindows or VirtualKey.RightWindows => "Windows",
+            _ => Enum.GetName(key) ?? string.Empty
+        };
 
     private void ProcessKeyInput(object? parameter)
     {
