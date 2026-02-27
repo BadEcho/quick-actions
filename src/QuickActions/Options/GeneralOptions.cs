@@ -11,21 +11,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-
 namespace BadEcho.QuickActions.Options;
 
 /// <summary>
-/// Provides the user's configuration settings pertaining to action mappings.
+/// Provides the user's configuration for general application settings.
 /// </summary>
-internal sealed class MappingOptions : Collection<Mapping>
+internal sealed class GeneralOptions
 {
     /// <summary>
-    /// The name of the configuration section the mappings are sourced from.
+    /// Gets or sets a value indicating if the application should minimize to the system tray when the
+    /// main window is closed.
     /// </summary>
-    public static string SectionName
-        => "Mappings";
-
-    public bool Disabled
-    { get; set; }
+    public bool MinimizeToTrayOnClose
+    { get; set; } 
 }

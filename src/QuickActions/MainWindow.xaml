@@ -88,7 +88,8 @@
             <v:NavigationPaneView DataContext="{Binding NavigationViewModel}"
                                   DockPanel.Dock="Top"
                                   />
-            <Button Width="100"
+            <Button Click="HandleSettingsClick"
+                    Width="100"
                     Margin="5"
                     HorizontalContentAlignment="Left"
                     DockPanel.Dock="Bottom"

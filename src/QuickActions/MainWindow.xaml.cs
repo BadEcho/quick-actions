@@ -11,12 +11,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Drawing;
-using System.Windows;
 using BadEcho.Presentation.Extensions;
 using BadEcho.QuickActions.Options;
 using BadEcho.QuickActions.Services;
 using BadEcho.QuickActions.ViewModels;
+using System.Drawing;
+using System.Windows;
+using BadEcho.Presentation.Windows;
 
 namespace BadEcho.QuickActions;
 
@@ -25,6 +26,7 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class MainWindow
 {
+    private readonly UserSettingsService _userSettingsService;
     private readonly AppearanceOptions _appearance;
 
     /// <summary>
@@ -34,6 +36,7 @@ internal sealed partial class MainWindow
     {
         DataContext = viewModel;
 
+        _userSettingsService = userSettingsService;
         _appearance = userSettingsService.Appearance;
     }
 
@@ -70,4 +73,16 @@ internal sealed partial class MainWindow
 
     private void HandleLocationChanged(object? sender, EventArgs e) 
         => _appearance.WindowArea = new Rect(Left, Top, ActualWidth, ActualHeight);
+
+    private void HandleSettingsClick(object sender, RoutedEventArgs e)
+    {
+        var dialogHost = new DialogHost(this)
+                         {
+                             Padding = new Thickness(24)
+                         };
+
+        var settingsVm = new SettingsViewModel(_userSettingsService);
+
+        dialogHost.Show(settingsVm);
+    }
 }

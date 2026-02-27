@@ -1,0 +1,56 @@
+﻿<!--Created by Matt Weber <matt@badecho.com>
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
+
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
+
+    See accompanying file LICENSE.md or a copy at:
+    https://www.gnu.org/licenses/agpl-3.0.html-->
+<badEcho:View x:Class="BadEcho.QuickActions.Views.SettingsView"
+              x:ClassModifier="internal"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
+              mc:Ignorable="d"
+              d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              >
+    <d:DesignProperties.DataContext>
+        <vm:SettingsViewModel MinimizeToTrayOnClose="True"
+                              OpenOnStartup="True"
+                              />
+    </d:DesignProperties.DataContext>
+    <DockPanel>
+        <StackPanel Orientation="Vertical"
+                    DockPanel.Dock="Top"
+                    >
+            <TextBlock Style="{DynamicResource SmallSubtitleTextBlockStyle}"
+                       Text="Settings"
+                       Margin="0,0,0,8"
+                       />
+            <CheckBox IsChecked="{Binding OpenOnStartup}"
+                      Margin="{StaticResource HalfVerticalSpacing}"
+                      >
+                Open Quick Actions on Startup
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding MinimizeToTrayOnClose}"
+                      Margin="{StaticResource HalfVerticalSpacing}"
+                      >
+                Close Button Minimizes to Tray
+            </CheckBox>
+
+        </StackPanel>
+
+        <Button Style="{StaticResource AccentButtonStyle}"
+                Command="{Binding SaveCommand}"
+                Content="Save"
+                IsEnabled="{Binding IsDirty}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                DockPanel.Dock="Bottom"
+                />
+    </DockPanel>
+</badEcho:View>

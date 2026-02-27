@@ -11,12 +11,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection;
 using BadEcho.Extensibility.Hosting;
 using BadEcho.Extensions;
 using BadEcho.Interop;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Win32;
 
 namespace BadEcho.QuickActions.Services;
 
@@ -25,6 +27,9 @@ namespace BadEcho.QuickActions.Services;
 /// </summary>
 internal sealed class UserSettingsService
 {
+    private const string RUN_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+    private const string RUN_VALUE = "QuickActions";
+
     private readonly Dictionary<HashSet<VirtualKey>, Mapping> _mappingsMap =
         new(HashSet<VirtualKey>.CreateSetComparer());
 
@@ -33,18 +38,21 @@ internal sealed class UserSettingsService
     private readonly IWritableOptions<ScriptActionsOptions> _scriptOptions;
     private readonly IWritableOptions<MappingOptions> _mappingOptions;
     private readonly IWritableOptions<AppearanceOptions> _appearanceOptions;
-
+    private readonly IWritableOptions<GeneralOptions> _generalOptions;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UserSettingsService"/> class.
     /// </summary>
     public UserSettingsService(IHostApplicationLifetime hostLifetime,
                                IWritableOptions<ScriptActionsOptions> scriptOptions,
                                IWritableOptions<MappingOptions> mappingOptions,
-                               IWritableOptions<AppearanceOptions> appearanceOptions)
+                               IWritableOptions<AppearanceOptions> appearanceOptions,
+                               IWritableOptions<GeneralOptions> generalOptions)
     {
         _scriptOptions = scriptOptions;
         _mappingOptions = mappingOptions;
         _appearanceOptions = appearanceOptions;
+        _generalOptions = generalOptions;
 
         hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
@@ -52,8 +60,16 @@ internal sealed class UserSettingsService
         _actionsMap = Scripts.Concat(codeActions).ToDictionary(kv => kv.Id);
 
         BuildMappingsMap();
+
+        using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY))
+        {
+            OpenOnStartup = run != null && run.GetValueNames().Contains(RUN_VALUE);
+        }
     }
 
+    /// <summary>
+    /// Gets the actions available to the user.
+    /// </summary>
     public IEnumerable<IAction> Actions
         => _actionsMap.Values;
 
@@ -63,6 +79,9 @@ internal sealed class UserSettingsService
     public IEnumerable<ScriptAction> Scripts
         => _scriptOptions.CurrentValue;
 
+    /// <summary>
+    /// Gets the action mappings configured by the user.
+    /// </summary>
     public IEnumerable<Mapping> Mappings
         => _mappingOptions.CurrentValue;
 
@@ -71,6 +90,35 @@ internal sealed class UserSettingsService
     /// </summary>
     public AppearanceOptions Appearance
         => _appearanceOptions.CurrentValue;
+
+    /// <summary>
+    /// Gets or sets a value indicating if the application runs on Window startup.
+    /// </summary>
+    public bool OpenOnStartup
+    {
+        get;
+        set
+        {
+            using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY))
+            {
+                object? runValue = run?.GetValue(RUN_VALUE);
+
+                if (value)
+                    run?.SetValue(RUN_VALUE, Assembly.GetExecutingAssembly().Location);
+                else if (runValue != null)
+                    run?.DeleteValue(RUN_VALUE);
+
+                field = value;
+            }
+        }
+    }
+
+    /// <inheritdoc cref="GeneralOptions.MinimizeToTrayOnClose"/>
+    public bool MinimizeToTrayOnClose
+    {
+        get => _generalOptions.CurrentValue.MinimizeToTrayOnClose;
+        set => _generalOptions.CurrentValue.MinimizeToTrayOnClose = value;
+    }
 
     /// <summary>
     /// Gets an action by its unique identifier.
@@ -152,6 +200,14 @@ internal sealed class UserSettingsService
     /// </summary>
     public void SaveAppearance()
         => _appearanceOptions.Save(null);
+
+    /// <summary>
+    /// Persists the current configuration for general application settings.
+    /// </summary>
+    public void SaveGeneral()
+    {
+        _generalOptions.Save(null);
+    }
 
     private void BuildMappingsMap()
     {

@@ -11,21 +11,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
-
-namespace BadEcho.QuickActions.Options;
+namespace BadEcho.QuickActions.Views;
 
 /// <summary>
-/// Provides the user's configuration settings pertaining to action mappings.
+/// Provides a view for displaying the user's settings.
 /// </summary>
-internal sealed class MappingOptions : Collection<Mapping>
+internal sealed partial class SettingsView
 {
     /// <summary>
-    /// The name of the configuration section the mappings are sourced from.
+    /// Initializes a new instance of the <see cref="SettingsView"/> class.
     /// </summary>
-    public static string SectionName
-        => "Mappings";
-
-    public bool Disabled
-    { get; set; }
+    public SettingsView() 
+        => InitializeComponent();
 }

@@ -17,7 +17,6 @@ using System.Drawing;
 using System.IO;
 using BadEcho.Extensions;
 using BadEcho.Presentation.Messaging;
-using BadEcho.Presentation.Windows;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Properties;
 using Window = System.Windows.Window;
@@ -53,8 +52,7 @@ internal sealed class NotificationArea : IDisposable
         
         mediator.Register(Messages.DisplayError, MediateDisplayError);
 
-        nint handle = window.GetHandle();
-        var windowWrapper = new PresentationWindowWrapper(handle);
+        var windowWrapper = window.GetWrapper();
 
         _icon = new NotifyIcon(windowWrapper, "Quick Actions", Images.Icon);
         _menu = new PopupMenu(windowWrapper);

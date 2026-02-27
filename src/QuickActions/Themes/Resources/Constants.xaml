@@ -10,6 +10,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
 
+    <Thickness x:Key="HalfVerticalSpacing"
+               Bottom="12"
+               />
+
     <Thickness x:Key="VerticalSpacing"
                Bottom="24"
                />
