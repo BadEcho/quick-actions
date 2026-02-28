@@ -1,0 +1,37 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/setup/">
+    <Project Path="setup/bootstrapper/Bootstrapper.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
+      <Platform Solution="*|Any CPU" Project="x64" />
+    </Project>
+    <Project Path="setup/installer/Installer.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
+      <Platform Solution="*|Any CPU" Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="src/Core/src/Common/BadEcho.Common.csproj" />
+    <Project Path="src/Core/src/DarkWix/BadEcho.DarkWix.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
+      <Platform Solution="*|Any CPU" Project="x64" />
+    </Project>
+    <Project Path="src/Core/src/Extensions/BadEcho.Extensions.csproj" />
+    <Project Path="src/Core/src/Hooks.Native/BadEcho.Hooks.Native.vcxproj" Id="af92b5d1-9e02-413b-800d-90b87e59ed89" />
+    <Project Path="src/Core/src/Hooks/BadEcho.Hooks.csproj">
+      <BuildDependency Project="src/Core/src/Hooks.Native/BadEcho.Hooks.Native.vcxproj" />
+    </Project>
+    <Project Path="src/Extensibility/src/Extensibility.Extensions/BadEcho.Extensibility.Extensions.csproj" />
+    <Project Path="src/Extensibility/src/Extensibility/BadEcho.Extensibility.csproj" />
+    <Project Path="src/Presentation/src/Presentation.Extensions/BadEcho.Presentation.Extensions.csproj" />
+    <Project Path="src/Presentation/src/Presentation/BadEcho.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/QuickActions.Extensibility/BadEcho.QuickActions.Extensibility.csproj" />
+    <Project Path="src/QuickActions.SystemSettings/BadEcho.QuickActions.SystemSettings.csproj" />
+    <Project Path="src/QuickActions/BadEcho.QuickActions.csproj">
+      <BuildDependency Project="src/QuickActions.SystemSettings/BadEcho.QuickActions.SystemSettings.csproj" />
+    </Project>
+  </Folder>
+</Solution>
