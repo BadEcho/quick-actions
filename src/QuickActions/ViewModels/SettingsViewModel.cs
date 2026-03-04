@@ -23,18 +23,18 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class SettingsViewModel : ViewModel
 {
-    private readonly UserSettingsService? _userSettingsService;
+    private readonly SettingsService? _settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
     /// </summary>
-    public SettingsViewModel(UserSettingsService userSettingsService)
+    public SettingsViewModel(SettingsService settingsService)
         : this()
     {
-        _userSettingsService = userSettingsService;
+        _settingsService = settingsService;
 
-        OpenOnStartup = userSettingsService.OpenOnStartup;
-        MinimizeToTrayOnClose = userSettingsService.MinimizeToTrayOnClose;
+        OpenOnStartup = settingsService.OpenOnStartup;
+        MinimizeToTrayOnClose = settingsService.MinimizeToTrayOnClose;
 
         IsDirty = false;
     }
@@ -47,7 +47,7 @@ internal sealed class SettingsViewModel : ViewModel
         SaveCommand = new DelegateCommand(SaveSettings);
     }
 
-    /// <inheritdoc cref="UserSettingsService.OpenOnStartup"/>
+    /// <inheritdoc cref="SettingsService.OpenOnStartup"/>
     public bool OpenOnStartup
     {
         get;
@@ -55,11 +55,11 @@ internal sealed class SettingsViewModel : ViewModel
         {
             NotifyIfChanged(ref field, value);
 
-            _userSettingsService?.OpenOnStartup = value;
+            _settingsService?.OpenOnStartup = value;
         }
     }
 
-    /// <inheritdoc cref="UserSettingsService.MinimizeToTrayOnClose"/>
+    /// <inheritdoc cref="SettingsService.MinimizeToTrayOnClose"/>
     public bool MinimizeToTrayOnClose
     {
         get;
@@ -67,7 +67,7 @@ internal sealed class SettingsViewModel : ViewModel
         {
             NotifyIfChanged(ref field, value);
 
-            _userSettingsService?.MinimizeToTrayOnClose = value;
+            _settingsService?.MinimizeToTrayOnClose = value;
         }
     }
 
@@ -101,7 +101,7 @@ internal sealed class SettingsViewModel : ViewModel
 
     private void SaveSettings(object? obj)
     {
-        _userSettingsService?.SaveGeneral();
+        _settingsService?.SaveGeneral();
         IsDirty = false;
     }
 }

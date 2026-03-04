@@ -26,18 +26,18 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class MainWindow
 {
-    private readonly UserSettingsService _userSettingsService;
+    private readonly SettingsService _settingsService;
     private readonly AppearanceOptions _appearance;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
-    public MainWindow(MainViewModel viewModel, UserSettingsService userSettingsService)
+    public MainWindow(MainViewModel viewModel, SettingsService settingsService)
     {
         DataContext = viewModel;
 
-        _userSettingsService = userSettingsService;
-        _appearance = userSettingsService.Appearance;
+        _settingsService = settingsService;
+        _appearance = settingsService.Appearance;
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ internal sealed partial class MainWindow
                              Padding = new Thickness(24)
                          };
 
-        var settingsVm = new SettingsViewModel(_userSettingsService);
+        var settingsVm = new SettingsViewModel(_settingsService);
 
         dialogHost.Show(settingsVm);
     }

@@ -32,18 +32,18 @@ namespace BadEcho.QuickActions.ViewModels;
 internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction, IActionViewModel>
 {
     private readonly string _pluginDirectory = string.Empty;
-    private readonly UserSettingsService? _userSettingsService;
+    private readonly SettingsService? _settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionsViewModel"/> class.
     /// </summary>
-    public ActionsViewModel(UserSettingsService userSettingsService, IConfiguration configuration)
+    public ActionsViewModel(SettingsService settingsService, IConfiguration configuration)
         : this()
     {
-        _userSettingsService = userSettingsService;
+        _settingsService = settingsService;
 
-        Bind(userSettingsService.Scripts);
-        Bind(userSettingsService.Actions.OfType<CodeAction>());
+        Bind(settingsService.Scripts);
+        Bind(settingsService.Actions.OfType<CodeAction>());
 
         SelectedScriptViewModel = Items.OfType<ScriptActionViewModel>()
                                        .FirstOrDefault();
@@ -175,7 +175,7 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
     {
         var scriptAction = new ScriptAction();
 
-        _userSettingsService?.Add(scriptAction);
+        _settingsService?.Add(scriptAction);
 
         Bind(scriptAction);
     }
@@ -186,7 +186,7 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
 
         if (viewModel is { ActiveModel: not null })
         {
-            _userSettingsService?.Delete(viewModel.ActiveModel);
+            _settingsService?.Delete(viewModel.ActiveModel);
 
             viewModel.SaveRequested -= HandleScriptSaveRequested;
 
@@ -198,5 +198,5 @@ internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction,
         => Explorer.OpenFolder(_pluginDirectory);
 
     private void HandleScriptSaveRequested(object? sender, ScriptAction e) 
-        => _userSettingsService?.SaveScripts();
+        => _settingsService?.SaveScripts();
 }

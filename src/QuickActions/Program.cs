@@ -50,7 +50,7 @@ builder.Services
        .AddApplication<App>();
     
 builder.Services
-       .AddSingleton<UserSettingsService>()
+       .AddSingleton<SettingsService>()
        .AddHostedService<KeyboardListenerService>()
        .AddSingleton<Mediator>();
 

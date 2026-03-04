@@ -26,19 +26,19 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
-    private readonly UserSettingsService? _userSettingsService;
+    private readonly SettingsService? _settingsService;
     private readonly Mediator _mediator = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
-    public MappingsViewModel(UserSettingsService userSettingsService, Mediator mediator)
+    public MappingsViewModel(SettingsService settingsService, Mediator mediator)
         : this()
     {
-        _userSettingsService = userSettingsService;
+        _settingsService = settingsService;
         _mediator = mediator;
 
-        Bind(userSettingsService.Mappings);
+        Bind(settingsService.Mappings);
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     {
         var viewModel = new MappingViewModel(_mediator)
                         {
-                            Actions = [.. _userSettingsService?.Actions ?? []]
+                            Actions = [.. _settingsService?.Actions ?? []]
                         };
 
         viewModel.Bind(model);
@@ -107,14 +107,14 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     {
         var mapping = new Mapping();
 
-        _userSettingsService?.Add(mapping);
+        _settingsService?.Add(mapping);
 
         Bind(mapping);
     }
 
     private void SaveMappings(object? obj)
     {
-        _userSettingsService?.SaveMappings();
+        _settingsService?.SaveMappings();
 
         foreach (var mapping in Items)
         {
@@ -131,7 +131,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         if (viewModel is not { ActiveModel: not null })
             return;
 
-        _userSettingsService?.Delete(viewModel.ActiveModel);
+        _settingsService?.Delete(viewModel.ActiveModel);
         viewModel.DeleteRequested -= HandleDeleteRequested;
         Unbind(viewModel.ActiveModel);
     }

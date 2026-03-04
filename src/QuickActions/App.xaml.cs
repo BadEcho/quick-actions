@@ -22,7 +22,7 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class App : IDisposable
 {
-    private readonly UserSettingsService? _userSettingsService;
+    private readonly SettingsService? _settingsService;
     private readonly NotificationArea? _notificationArea;
 
     private bool _exiting;
@@ -30,9 +30,9 @@ internal sealed partial class App : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(MainWindow window, UserSettingsService userSettingsService, Mediator mediator)
+    public App(MainWindow window, SettingsService settingsService, Mediator mediator)
     {
-        _userSettingsService = userSettingsService;
+        _settingsService = settingsService;
         InitializeComponent();
         
         MainWindow = window;
@@ -62,7 +62,7 @@ internal sealed partial class App : IDisposable
 
     private void HandleMainWindowClosing(object? sender, CancelEventArgs e)
     {
-        bool minimizeToTray = _userSettingsService is { MinimizeToTrayOnClose: true };
+        bool minimizeToTray = _settingsService is { MinimizeToTrayOnClose: true };
 
         if (_exiting || !minimizeToTray)
             return;

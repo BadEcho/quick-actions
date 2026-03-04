@@ -31,15 +31,15 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
     private readonly KeyboardSource _keyboard;
     private readonly HashSet<VirtualKey> _pressedModifierKeys = [];
     private readonly HashSet<VirtualKey> _pressedKeys = [];
-    private readonly UserSettingsService _userSettingsService;
+    private readonly SettingsService _settingsService;
     private readonly Mediator _mediator;
 
     private bool _paused;
     private bool _disposed;
 
-    public KeyboardListenerService(UserSettingsService userSettingsService, Mediator mediator)
+    public KeyboardListenerService(SettingsService settingsService, Mediator mediator)
     {
-        _userSettingsService = userSettingsService;
+        _settingsService = settingsService;
         _mediator = mediator;
         _keyboard = new KeyboardSource(KeyboardProcedure);
 
@@ -87,11 +87,11 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
 
         if (state == KeyState.Down && !key.IsModifier())
         {
-            Mapping? pressedMapping = _userSettingsService.GetMapping(_pressedModifierKeys, _pressedKeys);
+            Mapping? pressedMapping = _settingsService.GetMapping(_pressedModifierKeys, _pressedKeys);
 
             if (pressedMapping != null)
             {
-                IAction action = _userSettingsService.GetAction(pressedMapping.ActionId);
+                IAction action = _settingsService.GetAction(pressedMapping.ActionId);
                 ActionResult result = action.Execute();
 
                 if (!result.Success)
