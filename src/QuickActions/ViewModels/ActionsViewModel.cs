@@ -32,12 +32,12 @@ namespace BadEcho.QuickActions.ViewModels;
 internal sealed class ActionsViewModel : PolymorphicCollectionViewModel<IAction, IActionViewModel>
 {
     private readonly string _pluginDirectory = string.Empty;
-    private readonly SettingsService? _settingsService;
+    private readonly UserSettingsService? _settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionsViewModel"/> class.
     /// </summary>
-    public ActionsViewModel(SettingsService settingsService, IConfiguration configuration)
+    public ActionsViewModel(UserSettingsService settingsService, IConfiguration configuration)
         : this()
     {
         _settingsService = settingsService;

@@ -25,7 +25,7 @@ namespace BadEcho.QuickActions.Services;
 /// <summary>
 /// Provide a service for retrieving and updating the user's configuration settings.
 /// </summary>
-internal sealed class SettingsService
+internal sealed class UserSettingsService
 {
     private const string RUN_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
     private const string RUN_VALUE = "QuickActions";
@@ -41,9 +41,9 @@ internal sealed class SettingsService
     private readonly IWritableOptions<GeneralOptions> _generalOptions;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="SettingsService"/> class.
+    /// Initializes a new instance of the <see cref="UserSettingsService"/> class.
     /// </summary>
-    public SettingsService(IHostApplicationLifetime hostLifetime,
+    public UserSettingsService(IHostApplicationLifetime hostLifetime,
                                IWritableOptions<ScriptActionsOptions> scriptOptions,
                                IWritableOptions<MappingOptions> mappingOptions,
                                IWritableOptions<AppearanceOptions> appearanceOptions,

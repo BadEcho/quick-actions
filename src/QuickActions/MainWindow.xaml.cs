@@ -26,13 +26,13 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class MainWindow
 {
-    private readonly SettingsService _settingsService;
+    private readonly UserSettingsService _settingsService;
     private readonly AppearanceOptions _appearance;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
-    public MainWindow(MainViewModel viewModel, SettingsService settingsService)
+    public MainWindow(MainViewModel viewModel, UserSettingsService settingsService)
     {
         DataContext = viewModel;
 

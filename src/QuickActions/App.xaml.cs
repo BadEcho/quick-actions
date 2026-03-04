@@ -22,7 +22,7 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class App : IDisposable
 {
-    private readonly SettingsService? _settingsService;
+    private readonly UserSettingsService? _settingsService;
     private readonly NotificationArea? _notificationArea;
 
     private bool _exiting;
@@ -30,7 +30,7 @@ internal sealed partial class App : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(MainWindow window, SettingsService settingsService, Mediator mediator)
+    public App(MainWindow window, UserSettingsService settingsService, Mediator mediator)
     {
         _settingsService = settingsService;
         InitializeComponent();

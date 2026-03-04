@@ -23,12 +23,12 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class SettingsViewModel : ViewModel
 {
-    private readonly SettingsService? _settingsService;
+    private readonly UserSettingsService? _settingsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
     /// </summary>
-    public SettingsViewModel(SettingsService settingsService)
+    public SettingsViewModel(UserSettingsService settingsService)
         : this()
     {
         _settingsService = settingsService;
@@ -47,7 +47,7 @@ internal sealed class SettingsViewModel : ViewModel
         SaveCommand = new DelegateCommand(SaveSettings);
     }
 
-    /// <inheritdoc cref="SettingsService.OpenOnStartup"/>
+    /// <inheritdoc cref="UserSettingsService.OpenOnStartup"/>
     public bool OpenOnStartup
     {
         get;
@@ -59,7 +59,7 @@ internal sealed class SettingsViewModel : ViewModel
         }
     }
 
-    /// <inheritdoc cref="SettingsService.MinimizeToTrayOnClose"/>
+    /// <inheritdoc cref="UserSettingsService.MinimizeToTrayOnClose"/>
     public bool MinimizeToTrayOnClose
     {
         get;

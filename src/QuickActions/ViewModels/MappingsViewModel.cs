@@ -26,13 +26,13 @@ namespace BadEcho.QuickActions.ViewModels;
 /// </summary>
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
 {
-    private readonly SettingsService? _settingsService;
+    private readonly UserSettingsService? _settingsService;
     private readonly Mediator _mediator = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MappingsViewModel"/> class.
     /// </summary>
-    public MappingsViewModel(SettingsService settingsService, Mediator mediator)
+    public MappingsViewModel(UserSettingsService settingsService, Mediator mediator)
         : this()
     {
         _settingsService = settingsService;

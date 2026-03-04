@@ -31,13 +31,13 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
     private readonly KeyboardSource _keyboard;
     private readonly HashSet<VirtualKey> _pressedModifierKeys = [];
     private readonly HashSet<VirtualKey> _pressedKeys = [];
-    private readonly SettingsService _settingsService;
+    private readonly UserSettingsService _settingsService;
     private readonly Mediator _mediator;
 
     private bool _paused;
     private bool _disposed;
 
-    public KeyboardListenerService(SettingsService settingsService, Mediator mediator)
+    public KeyboardListenerService(UserSettingsService settingsService, Mediator mediator)
     {
         _settingsService = settingsService;
         _mediator = mediator;
