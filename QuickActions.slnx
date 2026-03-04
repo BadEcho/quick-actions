@@ -7,9 +7,11 @@
   <Folder Name="/setup/">
     <Project Path="setup/bootstrapper/Bootstrapper.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
       <Platform Solution="*|Any CPU" Project="x64" />
+      <Build Solution="Debug|Any CPU" Project="false" />
     </Project>
     <Project Path="setup/installer/Installer.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
       <Platform Solution="*|Any CPU" Project="x64" />
+      <Build Solution="Debug|Any CPU" Project="false" />
     </Project>
   </Folder>
   <Folder Name="/shared/">
