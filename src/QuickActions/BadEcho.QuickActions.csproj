@@ -13,6 +13,7 @@
 		<Architecture>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</Architecture>
 		<RuntimeIdentifier>win-$(Architecture.ToLower())</RuntimeIdentifier>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AssemblyName>QuickActions</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -10,7 +10,7 @@
     <Fragment>
         <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
             <Component Id="ApplicationComponent">
-                <File Id="ApplicationFile" Source="BadEcho.QuickActions.exe" />
+                <File Id="ApplicationFile" Source="QuickActions.exe" />
             </Component>
             <Component Id="NativeHooksComponent">
                 <File Source="BadEcho.Hooks.Native.dll" />
