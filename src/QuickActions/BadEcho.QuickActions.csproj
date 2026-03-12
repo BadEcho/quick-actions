@@ -12,6 +12,7 @@
 		<NoWarn>$(NoWarn);CS7022;CA1812;CA2007</NoWarn>
 		<Architecture>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</Architecture>
 		<RuntimeIdentifier>win-$(Architecture.ToLower())</RuntimeIdentifier>
+		<RuntimeIdentifiers>win-$(Architecture.ToLower())</RuntimeIdentifiers>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AssemblyName>QuickActions</AssemblyName>
 	</PropertyGroup>
