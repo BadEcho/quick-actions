@@ -33,7 +33,7 @@ on:
         required: true
 
 env:
-  PACKAGE_CONFIGURATION: 'Release'
+  PACKAGE_CONFIGURATION: 'Package'
   BUILD_ARTIFACT_NAME: 'binaries'
   
 jobs:
