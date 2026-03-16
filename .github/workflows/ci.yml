@@ -34,7 +34,7 @@ on:
 
 env:
   PACKAGE_CONFIGURATION: 'Package'
-  ADDITIONAL_RESTORE_PROPERTIES: "\"PublishReadyToRun=true\""
+  ADDITIONAL_RESTORE_PROPERTIES: "PublishReadyToRun=true"
   BUILD_ARTIFACT_NAME: 'binaries'  
   
 jobs:
