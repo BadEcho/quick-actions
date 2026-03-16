@@ -16,7 +16,7 @@ on:
 
 env:
   PRODUCT_NAME: Quick Actions
-  ASSET: bin\rel\QuickActions.exe \#Quick Actions Installer (exe)
+  ASSET: 'bin\rel\QuickActions.exe #Quick Actions Installer (exe)'
   LAST_RUN_CONCLUSION:
 
 jobs:
