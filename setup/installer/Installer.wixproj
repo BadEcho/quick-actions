@@ -17,7 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Core\src\DarkWix\BadEcho.DarkWix.wixproj" />
         <ProjectReference Include="..\..\src\QuickActions\BadEcho.QuickActions.csproj" Publish="true">
-            <AdditionalProperties>SelfContained=false;PublishSingleFile=true;PublishReadyToRun=true</AdditionalProperties>
+            <AdditionalProperties>SelfContained=false;PublishSingleFile=true;PublishReadyToRun=true</AdditionalProperties>            
         </ProjectReference>
     </ItemGroup>
 </Project>
