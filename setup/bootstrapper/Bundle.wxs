@@ -8,7 +8,7 @@
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <?include Defines.wxi?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
-    <Bundle Id="BadEcho.QuickActions.Bundle" Name="Quick Actions" Manufacturer="Bad Echo" Version="$(FileVersion)" IconSourceFile="$(Media)\InstallerIcon.ico" Copyright="Copyright (c) Bad Echo LLC. All rights reserved.">
+    <Bundle Id="BadEcho.QuickActions.Bundle" Name="Quick Actions" Manufacturer="Bad Echo" Version="!(bind.PackageVersion.MainInstaller)" IconSourceFile="$(Media)\InstallerIcon.ico" Copyright="Copyright (c) Bad Echo LLC. All rights reserved.">
         <BootstrapperApplication Id="QuickActionsBootstrapper">
 					<!--Even though we're not attaching a license to the installer, the HyperlinkLicenseTheme is the most basic theme, and setting LicenseUrl to empty removes the hyperlink.-->
             <bal:WixStandardBootstrapperApplication LicenseUrl="" ThemeFile="Theme.xml" Theme="hyperlinkLicense" LogoFile="$(Media)\InstallerLogo.png" />

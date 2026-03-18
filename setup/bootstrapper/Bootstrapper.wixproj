@@ -1,6 +1,5 @@
 ﻿<Project Sdk="WixToolset.Sdk/6.0.2">
     <PropertyGroup>
-        <DefineConstants>$(DefineConstants);FileVersion=$(FileVersion)</DefineConstants>
         <OutputType>Bundle</OutputType>
         <DebugType>full</DebugType>
         <OutputName>QuickActions</OutputName>

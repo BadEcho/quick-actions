@@ -24,7 +24,6 @@
   <Folder Name="/shared/">
     <Project Path="src/Core/src/Common/BadEcho.Common.csproj">
       <BuildType Solution="Package|*" Project="Release" />
-      <Build Solution="Package|*" Project="false" />
     </Project>
     <Project Path="src/Core/src/DarkWix/BadEcho.DarkWix.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
       <BuildType Solution="Package|*" Project="Release" />
