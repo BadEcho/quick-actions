@@ -14,6 +14,9 @@ on:
         - Minor
         - Patch
 
+permissions:
+  id-token: write
+
 env:
   PRODUCT_NAME: Quick Actions
   ASSET: 'bin\rel\QuickActions.exe #Quick Actions Installer (exe)'
