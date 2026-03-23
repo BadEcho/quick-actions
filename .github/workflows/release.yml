@@ -87,7 +87,7 @@ jobs:
         endpoint: https://cus.codesigning.azure.net/
         signing-account-name: BadEchoSigning
         certificate-profile-name: BadEchoSigning-cert
-        files: bin\rel\QuickActions.exe
+        files: ${{ github.workspace }}\bin\rel\QuickActions.exe
         file-digest: SHA256
         timestamp-rfc3161: http://timestamp.acs.microsoft.com
         timestamp-digest: SHA256
