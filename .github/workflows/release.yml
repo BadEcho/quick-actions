@@ -15,6 +15,21 @@ on:
         - Patch
 
 permissions:
+  actions: write  
+  artifact-metadata: write
+  attestations: write
+  checks: write
+  contents: write
+  deployments: write
+  discussions: write
+  issues: write    
+  models: read
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
   id-token: write
 
 env:
