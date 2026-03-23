@@ -34,7 +34,7 @@ permissions:
 
 env:
   PRODUCT_NAME: Quick Actions
-  ASSET: 'bin\rel\QuickActions.exe #Quick Actions Installer (exe)'
+  ASSET: 'bin\publish\QuickActions.exe #Quick Actions Installer (exe)'
   LAST_RUN_CONCLUSION:
 
 jobs:
@@ -102,7 +102,7 @@ jobs:
         endpoint: https://cus.codesigning.azure.net/
         signing-account-name: BadEchoSigning
         certificate-profile-name: BadEchoSigning-cert
-        files: ${{ github.workspace }}\bin\rel\QuickActions.exe
+        files: ${{ github.workspace }}\bin\publish\QuickActions.exe
         file-digest: SHA256
         timestamp-rfc3161: http://timestamp.acs.microsoft.com
         timestamp-digest: SHA256
