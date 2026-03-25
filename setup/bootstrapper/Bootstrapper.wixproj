@@ -3,7 +3,8 @@
         <OutputType>Bundle</OutputType>
         <DebugType>full</DebugType>
         <OutputName>QuickActions</OutputName>
-			  <OutputPath>$(OutputPath)\setup</OutputPath>
+        <OutputPath>$(OutputPath)\setup</OutputPath>
+        <SignOutput>true</SignOutput>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="WixToolset.BootstrapperApplications.wixext" Version="6.0.2" />
@@ -13,4 +14,12 @@
     <ItemGroup>
         <ProjectReference Include="..\installer\Installer.wixproj" />
     </ItemGroup>
+	<Target Name="SignBundleEngine">
+		<Message Importance="high" Text="SignBundleEngine: $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
+		<Exec Command="sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)"/>
+	</Target>
+	<Target Name="SignBundle">
+		<Message Importance="high" Text="SignBundle: @(SignBundle)" />
+		<Exec Command="sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)"/>
+	</Target>
 </Project>
