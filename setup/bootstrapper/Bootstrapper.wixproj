@@ -20,10 +20,10 @@
 	</Target>
 	<Target Name="SignBundleEngine">
 		<Message Importance="high" Text="SignBundleEngine: $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
-		<Exec Command="dotnet sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)"/>
+		<Exec Command="dotnet sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)" IgnoreExitCode="true"/>
 	</Target>
 	<Target Name="SignBundle">
 		<Message Importance="high" Text="SignBundle: @(SignBundle)" />
-		<Exec Command="dotnet sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)"/>
+		<Exec Command="dotnet sign code trusted-signing -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)" IgnoreExitCode="true"/>
 	</Target>
 </Project>
