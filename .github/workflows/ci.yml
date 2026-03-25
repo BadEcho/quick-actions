@@ -31,6 +31,12 @@ on:
         required: true
       NUGET_API_KEY:
         required: true
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
 
 permissions:
   actions: write  

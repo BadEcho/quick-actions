@@ -13,7 +13,7 @@ on:
         - Major
         - Minor
         - Patch
-        
+
 env:
   PRODUCT_NAME: Quick Actions
   ASSET: 'bin\rel\setup\QuickActions.exe #Quick Actions Installer (exe)'
@@ -57,6 +57,9 @@ jobs:
     secrets:
       REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   create-release:
     name: Create Release
     needs: [validate-release, build]
