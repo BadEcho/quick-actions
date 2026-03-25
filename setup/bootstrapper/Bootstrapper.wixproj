@@ -18,11 +18,11 @@
 		<Message Text="Restoring dotnet tools" Importance="High" />
 		<Exec Command="dotnet tool restore" />
 	</Target>
-	<Target Name="SignBundleEngine">
+	<Target Condition="$(ReleaseBuild)" Name="SignBundleEngine">
 		<Message Importance="high" Text="SignBundleEngine: $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
 		<Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)"/>
 	</Target>
-	<Target Name="SignBundle">
+	<Target Condition="$(ReleaseBuild)" Name="SignBundle">
 		<Message Importance="high" Text="SignBundle: @(SignBundle)" />
 		<Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)"/>
 	</Target>
