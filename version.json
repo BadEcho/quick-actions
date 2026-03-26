@@ -1,11 +1,11 @@
 {
   "majorVersion": 0,
   "minorVersion": 0,
-  "patchVersion": 12,
+  "patchVersion": 13,
   "prereleaseId": "alpha",
   "latestRelease": {
     "majorVersion": 0,
     "minorVersion": 0,
-    "patchVersion": 11
+    "patchVersion": 12
   }
 }
