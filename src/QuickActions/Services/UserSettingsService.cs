@@ -99,7 +99,7 @@ internal sealed class UserSettingsService
         get;
         set
         {
-            using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY))
+            using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY, true))
             {
                 object? runValue = run?.GetValue(RUN_VALUE);
 
