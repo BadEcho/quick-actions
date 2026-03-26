@@ -7,25 +7,25 @@
     See accompanying file LICENSE.md or a copy at:
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-    <Fragment>
-        <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
-            <Component Id="ApplicationComponent">
-                <File Id="ApplicationFile" Source="QuickActions.exe" KeyPath="yes">
-                    <Shortcut Name="Quick Actions" Directory="ProgramMenuApplicationFolder" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Icon="QuickActions.exe" />
-                </File>                
-                <RemoveFolder Directory="ProgramMenuApplicationFolder" On="uninstall"/>
-            </Component>
-            <Component Id="NativeHooksComponent">
-                <File Source="BadEcho.Hooks.Native.dll" />
-            </Component>
-            <Component Id="ApplicationSettingsComponent">
-                <File Source="appsettings.json" />
-            </Component>
-        </ComponentGroup>
-        <ComponentGroup Id="PluginComponents" Directory="PluginsFolder">
-            <Component Id="SystemSettingsComponent">
-                <File Source="BadEcho.QuickActions.SystemSettings.dll" />
-            </Component>
-        </ComponentGroup>
-    </Fragment>
+	<Fragment>
+		<ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
+			<Component Id="ApplicationComponent">
+				<File Id="ApplicationFile" Source="QuickActions.exe" KeyPath="yes">
+					<Shortcut Name="Quick Actions" Directory="ProgramMenuApplicationFolder" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Icon="QuickActions.exe" />
+				</File>
+				<RemoveFolder Directory="ProgramMenuApplicationFolder" On="uninstall"/>
+			</Component>
+			<Component Id="NativeHooksComponent">
+				<File Source="BadEcho.Hooks.Native.dll" />
+			</Component>
+			<Component Id="ApplicationSettingsComponent">
+				<File Source="appsettings.json" />
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="PluginComponents" Directory="PluginsFolder">
+			<Component Id="SystemSettingsComponent">
+				<File Source="BadEcho.QuickActions.SystemSettings.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
 </Wix>

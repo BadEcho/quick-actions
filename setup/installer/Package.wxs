@@ -8,33 +8,33 @@
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <?include Defines.wxi?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Id="BadEcho.QuickActions" Name="Quick Actions" Manufacturer="Bad Echo" Scope="perMachine" Version="!(bind.FileVersion.ApplicationFile)">
-        <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
-        <MediaTemplate CabinetTemplate="QActions{0}.cab" EmbedCab="yes" CompressionLevel="high" />
-        <WixVariable Id="override WixUIDialogBmp" Value="$(Media)\InstallerLogoBackground.png" />
-        <Icon Id="QuickActions.exe" SourceFile="$(Media)\InstallerIcon.ico" />
-        <Property Id="ARPPRODUCTICON" Value="QuickActions.exe" />
-        <Property Id="ARPNOMODIFY" Value="0" />
-        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-        <UIRef Id="DarkUI" />
-        <Feature Id="Main">
-            <ComponentGroupRef Id="ApplicationComponents" />
-            <ComponentGroupRef Id="PluginComponents" />
-            <Component Id="RegistryStartupComponent">
-                <RegistryValue Id="RegistryStartup" Root="HKCU" Action="write" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="QuickActions" Value="[!ApplicationFile]" Type="string" />
-            </Component>
-        </Feature>
-    </Package>
-    <Fragment>
-        <StandardDirectory Id="ProgramFiles6432Folder">
-            <Directory Name="!(bind.Property.Manufacturer)">
-                <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
-                    <Directory Id="PluginsFolder" Name="plugins" />
-                </Directory>
-            </Directory>            
-        </StandardDirectory>
-        <StandardDirectory Id="ProgramMenuFolder">
-            <Directory Id="ProgramMenuApplicationFolder" Name="!(bind.Property.ProductName)"/>
-        </StandardDirectory>
-    </Fragment>
+	<Package Id="BadEcho.QuickActions" Name="Quick Actions" Manufacturer="Bad Echo" Scope="perMachine" Version="!(bind.FileVersion.ApplicationFile)">
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+		<MediaTemplate CabinetTemplate="QActions{0}.cab" EmbedCab="yes" CompressionLevel="high" />
+		<WixVariable Id="override WixUIDialogBmp" Value="$(Media)\InstallerLogoBackground.png" />
+		<Icon Id="QuickActions.exe" SourceFile="$(Media)\InstallerIcon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="QuickActions.exe" />
+		<Property Id="ARPNOMODIFY" Value="0" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+		<UIRef Id="DarkUI" />
+		<Feature Id="Main">
+			<ComponentGroupRef Id="ApplicationComponents" />
+			<ComponentGroupRef Id="PluginComponents" />
+			<Component Id="RegistryStartupComponent">
+				<RegistryValue Id="RegistryStartup" Root="HKCU" Action="write" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="QuickActions" Value="[!ApplicationFile]" Type="string" />
+			</Component>
+		</Feature>
+	</Package>
+	<Fragment>
+		<StandardDirectory Id="ProgramFiles6432Folder">
+			<Directory Name="!(bind.Property.Manufacturer)">
+				<Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
+					<Directory Id="PluginsFolder" Name="plugins" />
+				</Directory>
+			</Directory>
+		</StandardDirectory>
+		<StandardDirectory Id="ProgramMenuFolder">
+			<Directory Id="ProgramMenuApplicationFolder" Name="!(bind.Property.ProductName)"/>
+		</StandardDirectory>
+	</Fragment>
 </Wix>
