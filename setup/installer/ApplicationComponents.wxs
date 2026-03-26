@@ -10,7 +10,10 @@
     <Fragment>
         <ComponentGroup Id="ApplicationComponents" Directory="INSTALLFOLDER">
             <Component Id="ApplicationComponent">
-                <File Id="ApplicationFile" Source="QuickActions.exe" />
+                <File Id="ApplicationFile" Source="QuickActions.exe" KeyPath="yes">
+                    <Shortcut Name="Quick Actions" Directory="ProgramMenuApplicationFolder" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Icon="QuickActions.exe" />
+                </File>                
+                <RemoveFolder Directory="ProgramMenuApplicationFolder" On="uninstall"/>
             </Component>
             <Component Id="NativeHooksComponent">
                 <File Source="BadEcho.Hooks.Native.dll" />
