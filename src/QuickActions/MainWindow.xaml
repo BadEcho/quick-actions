@@ -57,10 +57,12 @@
                           Grid.Row="0"
                           >
             <StackPanel Orientation="Horizontal">
-                <Border BorderBrush="{StaticResource ControlElevationBorderBrush}"
-                        BorderThickness="1"
+                <Border BorderThickness="1"
                         Margin="4"
                         >
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{StaticResource ControlStrokeColorDefault}" />
+                    </Border.BorderBrush>
                     <Image RenderOptions.BitmapScalingMode="HighQuality"
                            Source="pack://application:,,,/Assets/Logo.png"
                            />
