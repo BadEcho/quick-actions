@@ -8,45 +8,68 @@
     https://www.gnu.org/licenses/agpl-3.0.html-->
 <?include Defines.wxi?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
-    <Bundle Id="BadEcho.QuickActions.Bundle" Name="Quick Actions" Manufacturer="Bad Echo" Version="!(bind.PackageVersion.MainInstaller)" IconSourceFile="$(Media)\InstallerIcon.ico" Copyright="Copyright (c) Bad Echo LLC. All rights reserved.">
-        <BootstrapperApplication Id="QuickActionsBootstrapper">
-					<!--Even though we're not attaching a license to the installer, the HyperlinkLicenseTheme is the most basic theme, and setting LicenseUrl to empty removes the hyperlink.-->
-            <bal:WixStandardBootstrapperApplication LicenseUrl="" ThemeFile="Theme.xml" Theme="hyperlinkLicense" LogoFile="$(Media)\InstallerLogo.png" />
-            <Payload Name="1033\Theme.wxl" SourceFile="1033\Theme.wxl" />
-            <Payload Name="Theme.xml" SourceFile="Theme.xml" />
-            <Payload Name="InstallerBackground.png" SourceFile="$(Media)\InstallerBackground.png" />
-            <Payload Name="InstallerIcon.ico" SourceFile="$(Media)\InstallerIcon.ico" />
-        </BootstrapperApplication>
-        <Chain>
-            <PackageGroupRef Id="Dotnet10Runtime" />
-            <MsiPackage Id="MainInstaller" SourceFile="$(Installer.TargetPath)" bal:DisplayInternalUICondition="WixBundleAction = 6" Compressed="yes" Vital="yes" />
-        </Chain>
-    </Bundle>
-    <Fragment>
-			<!--From my testing, the netfx:DotNetCoreSearch action fails to work adequately with the most recent .NET versions; it seems to be looking at the wrong keys in the registry. 
-					A manual registry search is more reliable.-->
-        <util:RegistrySearch Id="SearchForDotNet10" Root="HKLM" Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedhost" Value="Version" Variable="DotNet10Installed" Result="exists" />
-        <PackageGroup Id="Dotnet10Runtime">
-            <ExePackage Id="DotNet10Runtime" 
-												DisplayName="Installing .NET 10 Runtime (x64)..." 
-												Cache="keep" 
-												PerMachine="yes" 
-												Permanent="yes" 
-												Vital="yes" 
-												InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.2&quot;" 
-												DetectCondition="DotNet10Installed &gt;= &quot;10.0.2&quot;" 
-												InstallArguments="/install /quiet /norestart" 
-												RepairArguments="/repair /quiet /norestart" 
-												UninstallArguments="/uninstall /quiet /norestart">
-                <ExePackagePayload Name="dotnet-runtime-10.0.2-win-x64.exe" 
-																	 Hash="379E16EC1F12CAD924800E55ADC979197A6F9A770185E7DD46D5C07627415CB8E10483E22C93A89352A48F92BB012B0E2195B6E1BC081FBD6304EB780FE48DDB" 
-																	 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.2/dotnet-runtime-10.0.2-win-x64.exe" 
-																	 Size="30839416" 
-																	 Description="Microsoft .NET Runtime - 10.0.2 (x64)" 
-																	 ProductName="Microsoft .NET Runtime - 10.0.2 (x64)" 
-																	 Version="10.0.2.35612" 
-																	 />
-            </ExePackage>
-        </PackageGroup>
-    </Fragment>
+	<Bundle Id="BadEcho.QuickActions.Bundle" Name="Quick Actions" Manufacturer="Bad Echo" Version="!(bind.PackageVersion.MainInstaller)" IconSourceFile="$(Media)\InstallerIcon.ico" Copyright="Copyright (c) Bad Echo LLC. All rights reserved.">
+		<BootstrapperApplication Id="QuickActionsBootstrapper">
+			<!--Even though we're not attaching a license to the installer, the HyperlinkLicenseTheme is the most basic theme, and setting LicenseUrl to empty removes the hyperlink.-->
+			<bal:WixStandardBootstrapperApplication LicenseUrl="" ThemeFile="Theme.xml" Theme="hyperlinkLicense" LogoFile="$(Media)\InstallerLogo.png" />
+			<Payload Name="1033\Theme.wxl" SourceFile="1033\Theme.wxl" />
+			<Payload Name="Theme.xml" SourceFile="Theme.xml" />
+			<Payload Name="InstallerBackground.png" SourceFile="$(Media)\InstallerBackground.png" />
+			<Payload Name="InstallerIcon.ico" SourceFile="$(Media)\InstallerIcon.ico" />
+		</BootstrapperApplication>
+		<Chain>
+			<PackageGroupRef Id="VCRuntime" />
+			<PackageGroupRef Id="Dotnet10Runtime" />
+			<MsiPackage Id="MainInstaller" SourceFile="$(Installer.TargetPath)" bal:DisplayInternalUICondition="WixBundleAction = 6" Compressed="yes" Vital="yes" />
+		</Chain>
+	</Bundle>
+	<Fragment>		
+		<util:RegistrySearch Id="SearchForVCRuntime" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\14.0\vc\Runtimes\x64" Value="Minor" Variable="VCRuntimeVersion" Result="value" />
+		<PackageGroup Id="VCRuntime">
+			<ExePackage DisplayName="Installing Microsoft VC++ Runtime..."
+									Cache="keep"
+									PerMachine="yes"
+									Permanent="yes"
+									Vital="yes"
+									InstallCondition="NOT VCRuntimeVersion OR VCRuntimeVersion &lt; &quot;50&quot;"
+									DetectCondition="VCRuntimeVersion &gt;= &quot;50&quot;"
+									InstallArguments="/install /quiet /norestart"
+									RepairArguments="/repair /quiet /norestart"
+									UninstallArguments="/uninstall /quiet /norestart">
+					<ExePackagePayload Name="VC_redist.x64.exe" 
+														 Hash="B618F601A1989A696C8EFA0208EFD977A3BFE9A8DF8ACE8FAE9EEF20262240E7EEFCB67CE466FE166BDC606D80D594D2DE80B3B4E530749AAB8E99F5CECD86D4"
+														 DownloadUrl="https://aka.ms/vc14/vc_redist.x64.exe"
+														 Size="18558944"
+														 Description="Microsoft Visual C++ 14 Redistributable (x64)"
+														 ProductName="Microsoft Visual C++ 14 Redistributable (x64)"
+														 Version="14.50.35719.0"
+														 />
+			</ExePackage>
+		</PackageGroup>
+		<!--From my testing, the netfx:DotNetCoreSearch action fails to work adequately with the most recent .NET versions; it seems to be looking at the wrong keys in the registry. 
+		    A manual registry search is more reliable.-->
+		<util:RegistrySearch Id="SearchForDotNet10" Root="HKLM" Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedhost" Value="Version" Variable="DotNet10Installed" Result="value" />
+		<PackageGroup Id="Dotnet10Runtime">
+			<ExePackage Id="DotNet10Runtime"
+									DisplayName="Installing .NET 10 Runtime (x64)..."
+									Cache="keep"
+									PerMachine="yes"
+									Permanent="yes"
+									Vital="yes"
+									InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.5&quot;"
+									DetectCondition="DotNet10Installed &gt;= &quot;10.0.5&quot;"
+									InstallArguments="/install /quiet /norestart"
+									RepairArguments="/repair /quiet /norestart"
+									UninstallArguments="/uninstall /quiet /norestart">
+				<ExePackagePayload Name="windowsdesktop-runtime-10.0.5-win-x64.exe"
+													 Hash="CBB1AD53AECC54264488CC5C0BE938991770750209CF4ACD383BBE8AF57DB679F4D5988E6281A6D6A46B4E141DB3D3D539EA764250B4AB48871972A610944B40"
+													 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.5/windowsdesktop-runtime-10.0.5-win-x64.exe"
+													 Size="60082160"
+													 Description="Microsoft .NET Windows Desktop Runtime - 10.0.5 (x64)"
+													 ProductName="Microsoft .NET Windows Desktop Runtime - 10.0.5 (x64)"
+													 Version="10.0.5.50000"
+													 />
+			</ExePackage>
+		</PackageGroup>
+	</Fragment>
 </Wix>

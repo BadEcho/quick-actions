@@ -15,15 +15,15 @@
         <ProjectReference Include="..\installer\Installer.wixproj" />
     </ItemGroup>
     <Target Name="RestoreDotnetTools" BeforeTargets="_GenerateRestoreProjectSpec">
-		<Message Text="Restoring dotnet tools" Importance="High" />
-		<Exec Command="dotnet tool restore" />
-	</Target>
-	<Target Condition="$(ReleaseBuild)" Name="SignBundleEngine">
-		<Message Importance="high" Text="SignBundleEngine: $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
-		<Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)"/>
-	</Target>
-	<Target Condition="$(ReleaseBuild)" Name="SignBundle">
-		<Message Importance="high" Text="SignBundle: @(SignBundle)" />
-		<Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)"/>
-	</Target>
+        <Message Text="Restoring dotnet tools" Importance="High" />
+        <Exec Command="dotnet tool restore" />
+    </Target>
+    <Target Condition="$(ReleaseBuild) != '' and $(ReleaseBuild)" Name="SignBundleEngine">
+        <Message Importance="high" Text="SignBundleEngine: $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
+        <Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundleEngine)" />
+    </Target>
+    <Target Condition="$(ReleaseBuild) != '' and $(ReleaseBuild)" Name="SignBundle">
+        <Message Importance="high" Text="SignBundle: @(SignBundle)" />
+        <Exec Command="dotnet sign code trusted-signing -act azure-cli -tse https://cus.codesigning.azure.net/ -tscp BadEchoSigning-Cert -tsa BadEchoSigning -t http://timestamp.acs.microsoft.com $(MSBuildThisFileDirectory)\@(SignBundle)" />
+    </Target>
 </Project>
