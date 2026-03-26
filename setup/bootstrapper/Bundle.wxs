@@ -18,14 +18,37 @@
 			<Payload Name="InstallerIcon.ico" SourceFile="$(Media)\InstallerIcon.ico" />
 		</BootstrapperApplication>
 		<Chain>
+			<PackageGroupRef Id="VCRuntime" />
 			<PackageGroupRef Id="Dotnet10Runtime" />
 			<MsiPackage Id="MainInstaller" SourceFile="$(Installer.TargetPath)" bal:DisplayInternalUICondition="WixBundleAction = 6" Compressed="yes" Vital="yes" />
 		</Chain>
 	</Bundle>
 	<Fragment>
+		<util:RegistrySearch Id="SearchForVCRuntime" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\14.0\vc\Runtimes\x64" Value="Minor" Variable="VCRuntimeVersion" Result="value" />
+		<PackageGroup Id="VCRuntime">
+			<ExePackage DisplayName="Installing Microsoft VC++ Runtime..."
+			            Cache="keep"
+			            PerMachine="yes"
+			            Permanent="yes"
+			            Vital="yes"
+			            InstallCondition="NOT VCRuntimeVersion OR VCRuntimeVersion &lt; &quot;50&quot;"
+			            DetectCondition="VCRuntimeVersion &gt;= &quot;50&quot;"
+			            InstallArguments="/install /quiet /norestart"
+			            RepairArguments="/repair /quiet /norestart"
+			            UninstallArguments="/uninstall /quiet /norestart">
+				<ExePackagePayload Name="VC_redist.x64.exe"
+				                   Hash="B618F601A1989A696C8EFA0208EFD977A3BFE9A8DF8ACE8FAE9EEF20262240E7EEFCB67CE466FE166BDC606D80D594D2DE80B3B4E530749AAB8E99F5CECD86D4"
+				                   DownloadUrl="https://aka.ms/vc14/vc_redist.x64.exe"
+				                   Size="18558944"
+				                   Description="Microsoft Visual C++ 14 Redistributable (x64)"
+				                   ProductName="Microsoft Visual C++ 14 Redistributable (x64)"
+				                   Version="14.50.35719.0"
+				/>
+			</ExePackage>
+		</PackageGroup>
 		<!--From my testing, the netfx:DotNetCoreSearch action fails to work adequately with the most recent .NET versions; it seems to be looking at the wrong keys in the registry. 
 		    A manual registry search is more reliable.-->
-		<util:RegistrySearch Id="SearchForDotNet10" Root="HKLM" Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedhost" Value="Version" Variable="DotNet10Installed" Result="exists" />
+		<util:RegistrySearch Id="SearchForDotNet10" Root="HKLM" Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedhost" Value="Version" Variable="DotNet10Installed" Result="value" />
 		<PackageGroup Id="Dotnet10Runtime">
 			<ExePackage Id="DotNet10Runtime"
 									DisplayName="Installing .NET 10 Runtime (x64)..."
