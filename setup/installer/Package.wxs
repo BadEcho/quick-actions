@@ -27,10 +27,8 @@
 	</Package>
 	<Fragment>
 		<StandardDirectory Id="ProgramFiles6432Folder">
-			<Directory Name="!(bind.Property.Manufacturer)">
-				<Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
-					<Directory Id="PluginsFolder" Name="plugins" />
-				</Directory>
+			<Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
+				<Directory Id="PluginsFolder" Name="plugins" />
 			</Directory>
 		</StandardDirectory>
 		<StandardDirectory Id="ProgramMenuFolder">
