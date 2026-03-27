@@ -39,10 +39,20 @@ internal sealed partial class App : IDisposable
         MainWindow.Closing += HandleMainWindowClosing;
         
         window.InitializeComponent();
-        window.Show();
+
+        IEnumerable<string> args = Environment.GetCommandLineArgs()
+                                              .Skip(1);
+
+        bool silentStartup = args.Contains("--silent", StringComparer.OrdinalIgnoreCase);
+        
+        if (!silentStartup)
+            window.Show();
 
         _notificationArea = new NotificationArea(MainWindow, mediator);
         _notificationArea.QuitClicked += HandleQuitClicked;
+
+        if (silentStartup)
+            _notificationArea.EnableOpen();
     }
 
     /// <summary>

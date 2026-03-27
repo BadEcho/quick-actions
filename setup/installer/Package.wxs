@@ -21,7 +21,7 @@
 			<ComponentGroupRef Id="ApplicationComponents" />
 			<ComponentGroupRef Id="PluginComponents" />
 			<Component Id="RegistryStartupComponent">
-				<RegistryValue Id="RegistryStartup" Root="HKCU" Action="write" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="QuickActions" Value="[!ApplicationFile]" Type="string" />
+				<RegistryValue Id="RegistryStartup" Root="HKCU" Action="write" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="QuickActions" Value="&quot;[!ApplicationFile]&quot; --silent" Type="string" />
 			</Component>
 		</Feature>
 	</Package>
