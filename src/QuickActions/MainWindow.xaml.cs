@@ -51,13 +51,10 @@ internal sealed partial class MainWindow
         {
             Rectangle displayArea = this.FindDisplayArea();
 
-            displayArea.Width /= 3;
-            displayArea.Height /= 3;
-
             _appearance.WindowArea = new Rect(displayArea.X,
                                               displayArea.Y,
-                                              displayArea.Width,
-                                              displayArea.Height);
+                                              displayArea.Width / 2.5,
+                                              displayArea.Height / 2.9);
         }
 
         Width = _appearance.WindowArea.Width;
