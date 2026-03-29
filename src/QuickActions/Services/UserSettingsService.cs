@@ -15,6 +15,7 @@ using System.Reflection;
 using BadEcho.Extensibility.Hosting;
 using BadEcho.Extensions;
 using BadEcho.Interop;
+using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
 using Microsoft.Extensions.Hosting;
@@ -39,7 +40,8 @@ internal sealed class UserSettingsService
     private readonly IWritableOptions<MappingOptions> _mappingOptions;
     private readonly IWritableOptions<AppearanceOptions> _appearanceOptions;
     private readonly IWritableOptions<GeneralOptions> _generalOptions;
-    
+    private readonly Mediator _mediator;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UserSettingsService"/> class.
     /// </summary>
@@ -47,12 +49,14 @@ internal sealed class UserSettingsService
                                IWritableOptions<ScriptActionsOptions> scriptOptions,
                                IWritableOptions<MappingOptions> mappingOptions,
                                IWritableOptions<AppearanceOptions> appearanceOptions,
-                               IWritableOptions<GeneralOptions> generalOptions)
+                               IWritableOptions<GeneralOptions> generalOptions,
+                               Mediator mediator)
     {
         _scriptOptions = scriptOptions;
         _mappingOptions = mappingOptions;
         _appearanceOptions = appearanceOptions;
         _generalOptions = generalOptions;
+        _mediator = mediator;
 
         hostLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
@@ -118,6 +122,21 @@ internal sealed class UserSettingsService
     {
         get => _generalOptions.CurrentValue.MinimizeToTrayOnClose;
         set => _generalOptions.CurrentValue.MinimizeToTrayOnClose = value;
+    }
+
+    /// <inheritdoc cref="GeneralOptions.MappingsDisabled"/>
+    public bool MappingsDisabled
+    {
+        get => _generalOptions.CurrentValue.MappingsDisabled;
+        set
+        {
+            _generalOptions.CurrentValue.MappingsDisabled = value;
+
+            if (value)
+                _mediator.Broadcast(Messages.DisableListener);
+            else
+                _mediator.Broadcast(Messages.EnableListener);
+        }
     }
 
     /// <summary>
@@ -220,5 +239,8 @@ internal sealed class UserSettingsService
     }
 
     private void OnApplicationStopping()
-        => SaveAppearance();
+    {
+        SaveAppearance();
+        SaveGeneral();
+    }
 }

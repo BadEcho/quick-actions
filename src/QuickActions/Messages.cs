@@ -28,7 +28,7 @@ internal static class Messages
     { get; } = new (nameof(DisplayError), typeof(Action<ActionResult>));
 
     /// <summary>
-    /// Gets a message requesting that all keyboard monitoring be paused.
+    /// Gets a message requesting that all keyboard monitoring be temporarily paused.
     /// </summary>
     public static MediatorMessage PauseListener
     { get; } = new(nameof(PauseListener), typeof(Action));
@@ -38,4 +38,16 @@ internal static class Messages
     /// </summary>
     public static MediatorMessage ResumeListener
     { get; } = new(nameof(ResumeListener), typeof(Action));
+
+    /// <summary>
+    /// Gets a message requesting that all keyboard monitoring be disabled until explicitly re-enabled.
+    /// </summary>
+    public static MediatorMessage DisableListener
+    { get; } = new(nameof(DisableListener), typeof(Action));
+
+    /// <summary>
+    /// Gets a message requesting that all keyboard monitoring be re-enabled.
+    /// </summary>
+    public static MediatorMessage EnableListener
+    { get; } = new(nameof(EnableListener), typeof(Action));
 }

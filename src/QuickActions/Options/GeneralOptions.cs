@@ -24,4 +24,10 @@ internal sealed class GeneralOptions
     /// </summary>
     public bool MinimizeToTrayOnClose
     { get; set; } 
+
+    /// <summary>
+    /// Gets or sets a value indicating if mappings are disabled globally.
+    /// </summary>
+    public bool MappingsDisabled
+    { get; set; }
 }

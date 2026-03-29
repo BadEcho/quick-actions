@@ -35,6 +35,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
     private readonly Mediator _mediator;
 
     private bool _paused;
+    private bool _disabled;
     private bool _disposed;
 
     public KeyboardListenerService(UserSettingsService settingsService, Mediator mediator)
@@ -45,6 +46,9 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
 
         _mediator.Register(Messages.PauseListener, MediatePauseListener);
         _mediator.Register(Messages.ResumeListener, MediateResumeListener);
+
+        _mediator.Register(Messages.DisableListener, MediateDisableListener);
+        _mediator.Register(Messages.EnableListener, MediateEnableListener);
     }
 
     /// <inheritdoc/>
@@ -78,7 +82,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
 
     private ProcedureResult KeyboardProcedure(KeyState state, VirtualKey key)
     {
-        if (_paused)
+        if (_paused || _disabled)
             return new ProcedureResult(nint.Zero, true);
 
         key = key.NormalizeModifiers();
@@ -127,4 +131,10 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
 
     private void MediateResumeListener()
         => _paused = false;
+
+    private void MediateDisableListener()
+        => _disabled = true;
+
+    private void MediateEnableListener()
+        => _disabled = false;
 }

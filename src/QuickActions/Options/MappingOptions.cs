@@ -25,7 +25,4 @@ internal sealed class MappingOptions : Collection<Mapping>
     /// </summary>
     public static string SectionName
         => "Mappings";
-
-    public bool Disabled
-    { get; set; }
 }
