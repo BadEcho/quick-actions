@@ -18,7 +18,8 @@
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
               >
     <d:DesignProperties.DataContext>
-        <vm:SettingsViewModel MinimizeToTrayOnClose="True"
+        <vm:SettingsViewModel ActionsDisabled="False"
+                              MinimizeToTrayOnClose="True"
                               OpenOnStartup="True"
                               />
     </d:DesignProperties.DataContext>
@@ -42,6 +43,11 @@
                 Close Button Minimizes to Tray
             </CheckBox>
 
+            <CheckBox IsChecked="{Binding ActionsDisabled}"
+                      Margin="{StaticResource HalfVerticalSpacing}"
+                      >
+                Disable All Actions
+            </CheckBox>
         </StackPanel>
 
         <Button Style="{StaticResource AccentButtonStyle}"

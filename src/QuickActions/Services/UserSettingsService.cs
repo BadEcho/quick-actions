@@ -124,13 +124,13 @@ internal sealed class UserSettingsService
         set => _generalOptions.CurrentValue.MinimizeToTrayOnClose = value;
     }
 
-    /// <inheritdoc cref="GeneralOptions.MappingsDisabled"/>
-    public bool MappingsDisabled
+    /// <inheritdoc cref="GeneralOptions.ActionsDisabled"/>
+    public bool ActionsDisabled
     {
-        get => _generalOptions.CurrentValue.MappingsDisabled;
+        get => _generalOptions.CurrentValue.ActionsDisabled;
         set
         {
-            _generalOptions.CurrentValue.MappingsDisabled = value;
+            _generalOptions.CurrentValue.ActionsDisabled = value;
 
             if (value)
                 _mediator.Broadcast(Messages.DisableListener);

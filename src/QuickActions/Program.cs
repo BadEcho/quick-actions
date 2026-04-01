@@ -58,7 +58,7 @@ builder.Services
        .AddSingleton<MainWindow>()
        .AddSingleton<MainViewModel>()
        .AddSingleton<NavigationPaneViewModel>()
-       .AddTransient<HomeViewModel>()
+       .AddSingleton<HomeViewModel>()
        .AddTransient<ActionsViewModel>()
        .AddTransient<MappingsViewModel>();
 

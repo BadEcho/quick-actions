@@ -26,8 +26,8 @@ internal sealed class GeneralOptions
     { get; set; } 
 
     /// <summary>
-    /// Gets or sets a value indicating if mappings are disabled globally.
+    /// Gets or sets a value indicating if mapped actions are disabled globally.
     /// </summary>
-    public bool MappingsDisabled
+    public bool ActionsDisabled
     { get; set; }
 }

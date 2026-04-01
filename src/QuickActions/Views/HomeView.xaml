@@ -16,28 +16,88 @@
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+              d:DesignWidth="800"
+              d:Padding="8,8,8,0"
               >
     <d:DesignProperties.DataContext>
-        <vm:HomeViewModel ActionsCount="3"
-                          MappingsCount="2"
-                          />
+        <vm:HomeViewModel ActionsDisabled="True" />
     </d:DesignProperties.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}There are currently {0} actions associated with {1} mappings.">
-                    <Binding Path="ActionsCount" />
-                    <Binding Path="MappingsCount" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
-        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
-                   Text="Hello"
-                   Grid.Row="1"
-                   />
-    </Grid>
+    <DockPanel Margin="-8,-8,-8,0">
+        <Border CornerRadius="8,0,0,0"
+                Padding="0,0,0,43"
+                DockPanel.Dock="Top"
+                >
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0,2">
+                    <GradientStop Offset="0" Color="#FFC8BCFF" />
+                    <GradientStop Offset="0.28" Color="#FF9C91D1" />
+                    <GradientStop Offset="0.5" Color="{StaticResource SolidBackgroundFillColorBase}" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <TextBlock Style="{DynamicResource TitleLargeTextBlockStyle}"
+                       Foreground="Black"
+                       Text="Quick Actions"
+                       Margin="20,14,0,0"
+                       />
+        </Border>
+        <StackPanel Orientation="Vertical"
+                    Margin="20,0,0,0"
+                    >
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                       xml:space="preserve"
+                       TextWrapping="Wrap"
+                       DockPanel.Dock="Bottom"
+                       >A utility that allows you to assign tasks of varying complexity to keyboard shortcuts.
+
+Head over to the <Hyperlink Command="{Binding NavigateToActionsCommand}">Actions</Hyperlink> page to see what actions are available for use, or to create new script actions that will execute a script when triggered.
+
+See the <Hyperlink Command="{Binding NavigateToMappingsCommand}">Mappings</Hyperlink> page to associate keyboard shortcuts to the actions you want executed.
+            </TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        Margin="{StaticResource HalfVerticalSpacing}"
+                        >
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                           Text="Actions are currently:"
+                           />
+                <TextBlock FontWeight="Bold"
+                           Margin="8,0,0,0"
+                           >
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
+                            <Setter Property="Text" Value="Enabled" />
+                            <Setter Property="Foreground" Value="ForestGreen" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ActionsDisabled}"
+                                             Value="True"
+                                             >
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Foreground" Value="Red" />
+                                        <Setter Property="Text" Value="Disabled" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <Button Command="{Binding ToggleMappingsCommand}"
+                    VerticalAlignment="Center"
+                    >
+                <Button.Style>
+                    <Style BasedOn="{StaticResource AccentButtonStyle}" TargetType="Button">
+                        <Setter Property="Content" Value="Disable Actions" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ActionsDisabled}"
+                                         Value="True"
+                                         >
+                                <DataTrigger.Setters>
+                                    <Setter Property="Content" Value="Enable Actions" />
+                                </DataTrigger.Setters>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </DockPanel>
 </badEcho:View>

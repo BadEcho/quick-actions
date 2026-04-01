@@ -71,6 +71,18 @@ internal sealed class SettingsViewModel : ViewModel
         }
     }
 
+    /// <inheritdoc cref="UserSettingsService.ActionsDisabled"/>
+    public bool ActionsDisabled
+    {
+        get;
+        set
+        {
+            NotifyIfChanged(ref field, value);
+
+            _settingsService?.ActionsDisabled = value;
+        }
+    }
+
     /// <summary>
     /// Gets or sets a value indicating if any of the bound settings contain unsaved changes.
     /// </summary>
