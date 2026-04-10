@@ -96,7 +96,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
             if (pressedMapping != null)
             {
                 IAction action = _settingsService.GetAction(pressedMapping.ActionId);
-                ActionResult result = action.Execute();
+                ActionResult result = action.Execute(pressedMapping);
 
                 if (!result.Success)
                 {

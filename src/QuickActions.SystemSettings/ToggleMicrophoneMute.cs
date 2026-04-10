@@ -38,7 +38,7 @@ internal sealed class ToggleMicrophoneMute : CodeAction
         => Strings.ToggleMicrophoneMuteDescription;
 
     /// <inheritdoc/>
-    public override ActionResult Execute()
+    public override ActionResult Execute(IActionExecutionContext _)
     {
         var soundManager = new SoundManager();
 

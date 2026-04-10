@@ -51,7 +51,7 @@ internal sealed class ScriptAction : IAction
     { get; set; } = string.Empty;
 
     /// <inheritdoc/>
-    public ActionResult Execute()
+    public ActionResult Execute(IActionExecutionContext _)
     {
         var startInfo = ShellType switch
         {

@@ -14,24 +14,12 @@
 namespace BadEcho.QuickActions.Extensibility;
 
 /// <summary>
-/// Defines an action executed by...well, Quick Actions!
+/// Defines the context that drives an action's execution.
 /// </summary>
-public interface IAction
+public interface IActionExecutionContext
 {
     /// <summary>
-    /// Get the unique identifier of the action.
+    /// Gets or sets a serialized set of additional configuration for the action.
     /// </summary>
-    Guid Id { get; }
-
-    /// <summary>
-    /// Gets the name of the action.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// Executes the action.
-    /// </summary>
-    /// <param name="executionContext">Execution context for the action.</param>
-    /// <returns>The result of executing the action.</returns>
-    ActionResult Execute(IActionExecutionContext executionContext);
+    string? ActionConfiguration { get; set; }
 }

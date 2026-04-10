@@ -40,10 +40,11 @@ public abstract class CodeAction : IAction
     /// <summary>
     /// Gets a description from the plugin as to what the action does.
     /// </summary>
-    public abstract string Description { get; }
+    public abstract string Description 
+    { get; }
 
     /// <inheritdoc/>
-    public abstract ActionResult Execute();
+    public abstract ActionResult Execute(IActionExecutionContext executionContext);
 
     /// <inheritdoc/>
     public override string ToString()

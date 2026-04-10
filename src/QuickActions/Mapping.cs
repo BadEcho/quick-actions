@@ -13,13 +13,14 @@
 
 using BadEcho.Interop;
 using BadEcho.Extensions;
+using BadEcho.QuickActions.Extensibility;
 
 namespace BadEcho.QuickActions;
 
 /// <summary>
 /// Provides a mapping between a key combination and an action.
 /// </summary>
-internal sealed class Mapping
+internal sealed class Mapping : IActionExecutionContext
 {
     /// <summary>
     /// Gets the unique identifier of the mapping.
@@ -50,6 +51,10 @@ internal sealed class Mapping
     /// Gets or sets a path to a .wav file to play following the successful execution of the action.
     /// </summary>
     public string? CompletionSoundPath 
+    { get; set; }
+
+    /// <inheritdoc/>
+    public string? ActionConfiguration
     { get; set; }
 
     /// <inheritdoc/>

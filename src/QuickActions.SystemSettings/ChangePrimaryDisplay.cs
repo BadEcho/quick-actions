@@ -39,7 +39,7 @@ internal sealed class ChangePrimaryDisplay : CodeAction
         => Strings.ChangePrimaryDisplayDescription;
 
     /// <inheritdoc/>
-    public override ActionResult Execute()
+    public override ActionResult Execute(IActionExecutionContext _)
     {
         List<Display> displays = Display.Devices.ToList();
 
