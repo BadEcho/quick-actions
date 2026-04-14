@@ -51,7 +51,8 @@
     </Project>
     <Project Path="src/Extensibility/src/Extensibility/BadEcho.Extensibility.csproj">
       <BuildType Solution="Package|*" Project="Release" />
-      <Build Solution="Package|*" Project="false" />
+      <Build Solution="Package|x64" Project="false" />
+      <Build Solution="Package|x86" Project="false" />
     </Project>
     <Project Path="src/Presentation/src/Presentation.Extensions/BadEcho.Presentation.Extensions.csproj">
       <BuildType Solution="Package|*" Project="Release" />
@@ -59,7 +60,8 @@
     </Project>
     <Project Path="src/Presentation/src/Presentation/BadEcho.Presentation.csproj">
       <BuildType Solution="Package|*" Project="Release" />
-      <Build Solution="Package|*" Project="false" />
+      <Build Solution="Package|x64" Project="false" />
+      <Build Solution="Package|x86" Project="false" />
     </Project>
   </Folder>
   <Folder Name="/src/">

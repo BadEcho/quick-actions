@@ -13,6 +13,7 @@
 
 using System.IO;
 using System.Windows.Input;
+using BadEcho.Extensibility.Hosting;
 using BadEcho.Interop;
 using BadEcho.Presentation;
 using BadEcho.Presentation.Messaging;
@@ -95,6 +96,12 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     { get; }
 
     /// <summary>
+    /// Gets a collection of all actions available for selection.
+    /// </summary>
+    public ICollection<IAction> Actions
+    { get; init; }
+
+    /// <summary>
     /// Gets or sets the text describing the bound mapping's key combination.
     /// </summary>
     public string KeysText
@@ -119,6 +126,8 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
         get;
         set
         {
+            bool actionPreviouslySelected = field != null;
+
             NotifyIfChanged(ref field, value);
 
             if (field == null)
@@ -126,15 +135,25 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
             else
                 MarkValid();
 
-            ActiveModel?.ActionId = value?.Id ?? Guid.Empty;
+            ActiveModel?.ActionId = field?.Id ?? Guid.Empty;
+
+            if (actionPreviouslySelected)
+                ActiveModel?.ActionConfiguration = null;
+            
+            ActionConfigurationViewModel = LoadConfigurationViewModel(ActiveModel);
         }
     }
 
-    /// <summary>
-    /// Gets a collection of all actions available for selection.
-    /// </summary>
-    public ICollection<IAction> Actions
-    { get; init; }
+    public IActionConfigurationViewModel? ActionConfigurationViewModel
+    {
+        get;
+        set
+        {
+            field?.ConfigurationChanged -= HandleActionConfigurationChanged;
+            NotifyIfChanged(ref field, value);
+            field?.ConfigurationChanged += HandleActionConfigurationChanged;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the selected completion sound.
@@ -172,6 +191,7 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = DescribeMapping(model);
         SelectedAction = Actions.FirstOrDefault(a => a.Id == model.ActionId);
+        ActionConfigurationViewModel = LoadConfigurationViewModel(model);
 
         string completionSound = NO_COMPLETION_SOUND;
 
@@ -188,6 +208,7 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
     {
         KeysText = string.Empty;
         SelectedAction = null;
+        ActionConfigurationViewModel = null;
         SelectedCompletionSound = NO_COMPLETION_SOUND;
 
         IsDirty = false;
@@ -200,6 +221,14 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
 
         if (propertyName != nameof(IsDirty))
             IsDirty = true;
+    }
+
+    private static IActionConfigurationViewModel? LoadConfigurationViewModel(Mapping? mapping)
+    {
+        if (mapping == null || !PluginHost.IsFilterable(mapping.ActionId))
+            return null;
+
+        return PluginHost.ArmedLoad<IActionConfigurationViewModel, IActionExecutionContext>(mapping, mapping.ActionId);
     }
 
     private static string DescribeMapping(Mapping mapping)
@@ -261,4 +290,7 @@ internal sealed class MappingViewModel : ViewModel<Mapping>
 
     private void ResumeListener(object? _)
         => _mediator?.Broadcast(Messages.ResumeListener);
+
+    private void HandleActionConfigurationChanged(object? sender, EventArgs e)
+        => IsDirty = true;
 }

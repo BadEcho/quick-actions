@@ -21,7 +21,7 @@
               d:DesignWidth="550"
               >
     <d:DesignProperties.DataContext>
-        <vm:MappingViewModel KeysText="Control + S">
+        <vm:MappingViewModel KeysText="Ctrl + S">
             <vm:MappingViewModel.Actions>
                 <local:ScriptAction Name="An Action" />
             </vm:MappingViewModel.Actions>
@@ -31,95 +31,123 @@
         <badEcho:MultiBooleanConverter x:Key="BooleanOrConverter"
                                        Operation="Or"
                                        />
+        <badEcho:ViewContextTemplateSelector x:Key="ContextSelector" />
     </badEcho:View.Resources>
     <Grid>
-        <Grid.Style>
-            <Style TargetType="{x:Type Grid}">
-                <Style.Triggers>
-                    <MultiDataTrigger />
-                    <DataTrigger Value="True">
-                        <DataTrigger.Binding>
-                            <MultiBinding Converter="{StaticResource BooleanOrConverter}">
-                                <Binding ElementName="Keys"
-                                         Path="(Validation.HasError)"
-                                         />
-                                <Binding ElementName="Actions"
-                                         Path="(Validation.HasError)"
-                                         />
-                            </MultiBinding>
-                        </DataTrigger.Binding>
-                        <DataTrigger.Setters>
-                            <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
-                        </DataTrigger.Setters>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="ActionsColumn" Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="Keys"
-                 CaretIndex="{x:Static sys:Int32.MaxValue}"
-                 Text="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                 TextChanged="KeysTextChanged"
-                 Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
-                 MinWidth="200"
-                 Margin="0,0,16,0"
-                 Grid.Column="0"
-                 >
-            <badEcho:FrameworkBehaviors.EventTriggers>
-                <badEcho:EventTrigger EventName="GotFocus">
-                    <badEcho:CommandAction Command="{Binding PauseListenerCommand}" />
-                </badEcho:EventTrigger>
-                <badEcho:EventTrigger EventName="LostFocus">
-                    <badEcho:CommandAction Command="{Binding ResumeListenerCommand}" />
-                </badEcho:EventTrigger>
-                <badEcho:EventTrigger EventName="PreviewKeyDown">
-                    <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
-                </badEcho:EventTrigger>
-            </badEcho:FrameworkBehaviors.EventTriggers>
-            <badEcho:FrameworkBehaviors.Triggers>
-                <badEcho:Trigger Property="Validation.HasError" Value="True">
-                    <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
-                                                    Value="{StaticResource ErrorTextControlBorderBrushFocused}"
-                                                    />
-                </badEcho:Trigger>
-                <badEcho:Trigger Property="Validation.HasError" Value="False">
-                    <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
-                </badEcho:Trigger>
-            </badEcho:FrameworkBehaviors.Triggers>
-        </TextBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <MultiDataTrigger />
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource BooleanOrConverter}">
+                                    <Binding ElementName="Keys"
+                                             Path="(Validation.HasError)"
+                                             />
+                                    <Binding ElementName="Actions"
+                                             Path="(Validation.HasError)"
+                                             />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="KeysColumn" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="ActionsColumn" Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="Keys"
+                     CaretIndex="{x:Static sys:Int32.MaxValue}"
+                     Text="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                     TextChanged="KeysTextChanged"
+                     Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
+                     MinWidth="200"
+                     Margin="0,0,16,0"
+                     Grid.Column="0"
+                     >
+                <badEcho:FrameworkBehaviors.EventTriggers>
+                    <badEcho:EventTrigger EventName="GotFocus">
+                        <badEcho:CommandAction Command="{Binding PauseListenerCommand}" />
+                    </badEcho:EventTrigger>
+                    <badEcho:EventTrigger EventName="LostFocus">
+                        <badEcho:CommandAction Command="{Binding ResumeListenerCommand}" />
+                    </badEcho:EventTrigger>
+                    <badEcho:EventTrigger EventName="PreviewKeyDown">
+                        <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
+                    </badEcho:EventTrigger>
+                </badEcho:FrameworkBehaviors.EventTriggers>
+                <badEcho:FrameworkBehaviors.Triggers>
+                    <badEcho:Trigger Property="Validation.HasError" Value="True">
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
+                                                        Value="{StaticResource ErrorTextControlBorderBrushFocused}"
+                                                        />
+                    </badEcho:Trigger>
+                    <badEcho:Trigger Property="Validation.HasError" Value="False">
+                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
+                    </badEcho:Trigger>
+                </badEcho:FrameworkBehaviors.Triggers>
+            </TextBox>
 
-        <ComboBox x:Name="Actions"
-                  d:SelectedIndex="0"
-                  ItemsSource="{Binding Actions}"
-                  SelectedItem="{Binding SelectedAction, ValidatesOnNotifyDataErrors=True}"
-                  Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
-                  Margin="0,0,16,0"
-                  Grid.Column="1"
-                  />
+            <ComboBox x:Name="Actions"
+                      d:SelectedIndex="0"
+                      ItemsSource="{Binding Actions}"
+                      SelectedItem="{Binding SelectedAction, ValidatesOnNotifyDataErrors=True}"
+                      Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
+                      Margin="0,0,16,0"
+                      Grid.Column="1"
+                      />
 
-        <ComboBox d:SelectedIndex="0"
-                  ItemsSource="{Binding CompletionSounds}"
-                  SelectedItem="{Binding SelectedCompletionSound}"
-                  Margin="0,0,16,0"
-                  Grid.Column="2"
-                  >
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"
-                               TextTrimming="CharacterEllipsis"
-                  />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+            <ComboBox d:SelectedIndex="0"
+                      ItemsSource="{Binding CompletionSounds}"
+                      SelectedItem="{Binding SelectedCompletionSound}"
+                      Margin="0,0,16,0"
+                      Grid.Column="2"
+                      >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                                   TextTrimming="CharacterEllipsis"
+                                   />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
-        <Button Style="{StaticResource GarbageButtonStyle}"
-                Command="{Binding DeleteCommand}"
-                Grid.Column="3"
-                />
+            <Button Style="{StaticResource GarbageButtonStyle}"
+                    Command="{Binding DeleteCommand}"
+                    Grid.Column="3"
+                    />
+        </Grid>
+        <UserControl BorderBrush="{StaticResource AccentFillColorSecondaryBrush}"
+                     BorderThickness="2,0,0,0"
+                     Content="{Binding ActionConfigurationViewModel}"
+                     ContentTemplateSelector="{StaticResource ContextSelector}"
+                     Grid.Row="1"
+                     >
+            <UserControl.Style>
+                <Style TargetType="UserControl">
+                    <Setter Property="Padding" Value="12,6,0,3" />
+                    <Setter Property="Margin" Value="4,12,0,0" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ActionConfigurationViewModel}"
+                                     Value="{x:Null}"
+                                     >
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </UserControl.Style>
+        </UserControl>
     </Grid>
 </badEcho:View>
