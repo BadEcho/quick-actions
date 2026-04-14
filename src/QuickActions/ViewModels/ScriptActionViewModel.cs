@@ -29,7 +29,7 @@ internal sealed class ScriptActionViewModel : ActionViewModel<ScriptAction>
     /// </summary>
     public ScriptActionViewModel()
     {
-        SaveCommand = new DelegateCommand(SaveAction);
+        SaveCommand = new DelegateCommand(SaveAction, _ => !HasErrors);
         OpenFileCommand = new DelegateCommand(OpenFile);
     }
 

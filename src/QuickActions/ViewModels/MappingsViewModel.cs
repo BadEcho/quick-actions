@@ -48,7 +48,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
         : base(new CollectionViewModelOptions { OffloadBatchBindings = false })
     {
         AddMappingCommand = new DelegateCommand(AddMapping);
-        SaveMappingsCommand = new DelegateCommand(SaveMappings);
+        SaveMappingsCommand = new DelegateCommand(SaveMappings, _ => !HasErrors && !Items.Any(vm => vm.HasErrors));
     }
 
     /// <summary>
