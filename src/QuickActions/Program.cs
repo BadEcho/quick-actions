@@ -47,7 +47,7 @@ builder.Services
 
 builder.Services
        .AddEventSourceLogForwarder()
-       .AddApplication<App>();
+       .AddApplication<App, MainWindow>();
     
 builder.Services
        .AddSingleton<UserSettingsService>()
@@ -55,7 +55,6 @@ builder.Services
        .AddSingleton<Mediator>();
 
 builder.Services
-       .AddSingleton<MainWindow>()
        .AddSingleton<MainViewModel>()
        .AddSingleton<NavigationPaneViewModel>()
        .AddSingleton<HomeViewModel>()

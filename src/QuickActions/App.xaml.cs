@@ -11,9 +11,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
 using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Services;
+using System.ComponentModel;
+using System.Windows;
 
 namespace BadEcho.QuickActions;
 
@@ -22,37 +23,21 @@ namespace BadEcho.QuickActions;
 /// </summary>
 internal sealed partial class App : IDisposable
 {
+    private readonly Mediator _mediator = new();
     private readonly UserSettingsService? _settingsService;
-    private readonly NotificationArea? _notificationArea;
 
+    private NotificationArea? _notificationArea;
     private bool _exiting;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(MainWindow window, UserSettingsService settingsService, Mediator mediator)
+    public App(UserSettingsService settingsService, Mediator mediator)
     {
         _settingsService = settingsService;
+        _mediator = mediator;
+
         InitializeComponent();
-        
-        MainWindow = window;
-        MainWindow.Closing += HandleMainWindowClosing;
-        
-        window.InitializeComponent();
-
-        IEnumerable<string> args = Environment.GetCommandLineArgs()
-                                              .Skip(1);
-
-        bool silentStartup = args.Contains("--silent", StringComparer.OrdinalIgnoreCase);
-        
-        if (!silentStartup)
-            window.Show();
-
-        _notificationArea = new NotificationArea(MainWindow, mediator);
-        _notificationArea.QuitClicked += HandleQuitClicked;
-
-        if (silentStartup)
-            _notificationArea.EnableOpen();
     }
 
     /// <summary>
@@ -69,6 +54,31 @@ internal sealed partial class App : IDisposable
     /// <inheritdoc/>
     public void Dispose() 
         => _notificationArea?.Dispose();
+
+    /// <inheritdoc/>
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        if (MainWindow == null)
+            throw new InvalidOperationException();
+
+        MainWindow.Closing += HandleMainWindowClosing;
+
+        IEnumerable<string> args = Environment.GetCommandLineArgs()
+                                              .Skip(1);
+
+        bool silentStartup = args.Contains("--silent", StringComparer.OrdinalIgnoreCase);
+        
+        if (!silentStartup)
+            MainWindow.Show();
+
+        _notificationArea = new NotificationArea(MainWindow, _mediator);
+        _notificationArea.QuitClicked += HandleQuitClicked;
+
+        if (silentStartup)
+            _notificationArea.EnableOpen();
+    }
 
     private void HandleMainWindowClosing(object? sender, CancelEventArgs e)
     {

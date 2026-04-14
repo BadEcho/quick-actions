@@ -116,6 +116,24 @@
                 Padding="8,8,8,0"
                 Grid.Column="1"
                 >
+            <!--
+                It is often parroted that static resources are evaluated once
+                (and only once), and therefore will not be reevaluated in response
+                to events such as live changes to the system's theme.
+                
+                Interestingly enough, this is not always the case. The views displayed
+                here exclusively use static resources, yet they all appropriately respond
+                to changes in the system's theme.
+                
+                This behavioral change occurs because of how these views are inserted into
+                the logical tree: by dynamically being resolved as the below UserControl's
+                data template. Declaring the views directly here results in the typically
+                observed static resource behavior.
+                
+                At the time of writing, I'm not sure exactly why hosting the controls in this
+                manner causes the change in behavior, but it's what I've observed so far
+                through testing.
+            -->
             <UserControl Content="{Binding CurrentViewModel}"
                          ContentTemplateSelector="{StaticResource ContextSelector}"
                          />

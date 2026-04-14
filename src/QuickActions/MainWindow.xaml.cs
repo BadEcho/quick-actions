@@ -17,6 +17,7 @@ using BadEcho.QuickActions.Services;
 using BadEcho.QuickActions.ViewModels;
 using System.Drawing;
 using System.Windows;
+using BadEcho.Interop;
 using BadEcho.Presentation.Windows;
 
 namespace BadEcho.QuickActions;
@@ -29,6 +30,8 @@ internal sealed partial class MainWindow
     private readonly UserSettingsService _settingsService;
     private readonly AppearanceOptions _appearance;
 
+    private WindowWrapper? _wrapper;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
@@ -38,6 +41,8 @@ internal sealed partial class MainWindow
 
         _settingsService = settingsService;
         _appearance = settingsService.Appearance;
+
+        InitializeComponent();
     }
 
     /// <inheritdoc/>
@@ -73,7 +78,9 @@ internal sealed partial class MainWindow
 
     private void HandleSettingsClick(object sender, RoutedEventArgs e)
     {
-        var dialogHost = new DialogHost(this)
+        _wrapper ??= this.GetWrapper();
+
+        var dialogHost = new DialogHost(this, _wrapper)
                          {
                              Padding = new Thickness(24)
                          };
