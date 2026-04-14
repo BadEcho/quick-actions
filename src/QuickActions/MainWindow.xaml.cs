@@ -29,7 +29,7 @@ internal sealed partial class MainWindow
 {
     private readonly UserSettingsService _settingsService;
     private readonly AppearanceOptions _appearance;
-
+    
     private WindowWrapper? _wrapper;
 
     /// <summary>
@@ -70,10 +70,11 @@ internal sealed partial class MainWindow
         if (!previouslyOpened)
             this.Recenter();
 
-        LocationChanged += HandleLocationChanged;
+        LocationChanged += HandleAreaChanged;
+        SizeChanged += HandleAreaChanged;
     }
 
-    private void HandleLocationChanged(object? sender, EventArgs e) 
+    private void HandleAreaChanged(object? sender, EventArgs e) 
         => _appearance.WindowArea = new Rect(Left, Top, ActualWidth, ActualHeight);
 
     private void HandleSettingsClick(object sender, RoutedEventArgs e)
