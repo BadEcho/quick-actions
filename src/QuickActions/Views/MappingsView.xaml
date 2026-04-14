@@ -74,6 +74,7 @@
                  BorderThickness="0,1,0,0"
                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                  ItemsSource="{Binding Items}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
                  Margin="{StaticResource VerticalSpacing}"
                  HorizontalContentAlignment="Stretch"
