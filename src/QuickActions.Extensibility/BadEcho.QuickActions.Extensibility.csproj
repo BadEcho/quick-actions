@@ -6,10 +6,12 @@
 		<Product>Quick Actions</Product>
 		<Description>Framework for creating Quick Actions plugins.</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath=""/>
+		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<ItemGroup>
