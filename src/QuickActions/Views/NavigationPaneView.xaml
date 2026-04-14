@@ -33,7 +33,7 @@
         </vm:NavigationPaneViewModel>
     </d:DesignProperties.DataContext>
     <ListBox x:Name="NavigationPane"
-             Background="{StaticResource SolidBackgroundFillColorBaseBrush}"
+             Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
              ItemsSource="{Binding Items}"
              SelectedItem="{Binding SelectedViewModel}"
              />
