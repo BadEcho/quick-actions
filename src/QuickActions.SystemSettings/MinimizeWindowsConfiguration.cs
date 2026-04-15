@@ -11,17 +11,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Presentation.ViewModels;
-
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions.SystemSettings;
 
 /// <summary>
-/// Defines a view model that facilitates the display and manipulation of an action's configuration.
+/// Provides additional configuration for the <see cref="MinimizeWindows"/> action.
 /// </summary>
-public interface IActionConfigurationViewModel : IViewModel
+internal sealed class MinimizeWindowsConfiguration
 {
     /// <summary>
-    /// Occurs when the action's configuration changes.
+    /// Gets or sets the name of the process whose windows should be minimized. If this is not specified,
+    /// all windows on the current desktop will be minimized.
     /// </summary>
-    event EventHandler ConfigurationChanged;
+    public string ProcessName 
+    { get; set; } = string.Empty;
 }

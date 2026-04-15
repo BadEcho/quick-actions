@@ -70,6 +70,15 @@ namespace BadEcho.QuickActions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application lacks a main window, indicating an improperly configured host..
+        /// </summary>
+        internal static string AppInvalidHost {
+            get {
+                return ResourceManager.GetString("AppInvalidHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to create process to run script action..
         /// </summary>
         internal static string FailedToStartScriptProcess {

@@ -113,4 +113,7 @@
 	<data name="ActionErrorTitle" xml:space="preserve">
 		<value>'{0}' Had Errors</value>
 	</data>
+	<data name="AppInvalidHost" xml:space="preserve">
+		<value>Application lacks a main window, indicating an improperly configured host.</value>
+	</data>
 </root>

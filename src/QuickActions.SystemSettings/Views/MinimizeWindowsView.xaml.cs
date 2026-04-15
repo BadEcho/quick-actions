@@ -11,17 +11,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Presentation.ViewModels;
-
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions.SystemSettings.Views;
 
 /// <summary>
-/// Defines a view model that facilitates the display and manipulation of an action's configuration.
+/// Provides a configuration view for the <see cref="MinimizeWindows"/> action.
 /// </summary>
-public interface IActionConfigurationViewModel : IViewModel
+internal sealed partial class MinimizeWindowsView
 {
     /// <summary>
-    /// Occurs when the action's configuration changes.
+    /// Initializes a new instance of the <see cref="MinimizeWindowsView"/> class.
     /// </summary>
-    event EventHandler ConfigurationChanged;
+    public MinimizeWindowsView() 
+        => InitializeComponent();
 }

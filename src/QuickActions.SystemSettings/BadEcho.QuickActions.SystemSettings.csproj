@@ -6,6 +6,9 @@
 		<Product>Quick Actions</Product>
 		<Description>Plugin that provides actions that manipulate Windows system settings.</Description>
 		<IsPackable>false</IsPackable>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<NoWarn>$(NoWarn);CA1812</NoWarn>
 	</PropertyGroup>
 
 	<Target Name="CopyPlugin" AfterTargets="Build">
@@ -13,7 +16,16 @@
 	</Target>
 
 	<ItemGroup>
+	  <None Include="Properties\DesignTimeResources.xaml">
+	    <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="$(ExtensibilityPath)\Extensibility\BadEcho.Extensibility.csproj" />
+		<ProjectReference Include="$(PresentationPath)\Presentation\BadEcho.Presentation.csproj" />
 		<ProjectReference Include="..\QuickActions.Extensibility\BadEcho.QuickActions.Extensibility.csproj" />
 	</ItemGroup>
 

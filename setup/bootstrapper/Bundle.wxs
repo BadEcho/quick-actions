@@ -56,18 +56,18 @@
 									PerMachine="yes"
 									Permanent="yes"
 									Vital="yes"
-									InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.5&quot;"
-									DetectCondition="DotNet10Installed &gt;= &quot;10.0.5&quot;"
+									InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.6&quot;"
+									DetectCondition="DotNet10Installed &gt;= &quot;10.0.6&quot;"
 									InstallArguments="/install /quiet /norestart"
 									RepairArguments="/repair /quiet /norestart"
 									UninstallArguments="/uninstall /quiet /norestart">
-				<ExePackagePayload Name="windowsdesktop-runtime-10.0.5-win-x64.exe"
-													 Hash="CBB1AD53AECC54264488CC5C0BE938991770750209CF4ACD383BBE8AF57DB679F4D5988E6281A6D6A46B4E141DB3D3D539EA764250B4AB48871972A610944B40"
-													 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.5/windowsdesktop-runtime-10.0.5-win-x64.exe"
+				<ExePackagePayload Name="windowsdesktop-runtime-10.0.6-win-x64.exe"
+													 Hash="D4DECABFB31ED54898637F01A0C38D5EF581E99926AA448F2378AC40C4362F93B403305E10D8C5E5E764F8EC9C04CF50FF5F3E70AC98F05DA2651EB5C85A8CD3"
+													 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.6/windowsdesktop-runtime-10.0.6-win-x64.exe"
 													 Size="60082160"
-													 Description="Microsoft .NET Windows Desktop Runtime - 10.0.5 (x64)"
-													 ProductName="Microsoft .NET Windows Desktop Runtime - 10.0.5 (x64)"
-													 Version="10.0.5.50000"
+													 Description="Microsoft .NET Windows Desktop Runtime - 10.0.6 (x64)"
+													 ProductName="Microsoft .NET Windows Desktop Runtime - 10.0.6 (x64)"
+													 Version="10.0.6.50000"
 													 />
 			</ExePackage>
 		</PackageGroup>

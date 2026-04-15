@@ -119,4 +119,10 @@
 	<data name="ToggleMicrophoneMuteFailed" xml:space="preserve">
 		<value>Failed to toggle the mute state of the default input audio device.</value>
 	</data>
+	<data name="MinimizeWindowsName" xml:space="preserve">
+		<value>Minimize Windows</value>
+	</data>
+	<data name="MinimizeWindowsDescription" xml:space="preserve">
+		<value>Minimizes either all windows on the screen, or if a process name is specified, all windows belonging to the named process.</value>
+	</data>
 </root>

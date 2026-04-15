@@ -15,6 +15,7 @@ using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Services;
 using System.ComponentModel;
 using System.Windows;
+using BadEcho.QuickActions.Properties;
 
 namespace BadEcho.QuickActions;
 
@@ -61,7 +62,7 @@ internal sealed partial class App : IDisposable
         base.OnStartup(e);
 
         if (MainWindow == null)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Strings.AppInvalidHost);
 
         MainWindow.Closing += HandleMainWindowClosing;
 

@@ -11,17 +11,24 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Presentation.ViewModels;
+using System.Composition;
+using BadEcho.Presentation;
 
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions.SystemSettings.Themes;
 
 /// <summary>
-/// Defines a view model that facilitates the display and manipulation of an action's configuration.
+/// Provides access to resources belonging to the system settings plugin for Quick Actions.
 /// </summary>
-public interface IActionConfigurationViewModel : IViewModel
+[Export(typeof(IResourceProvider))]
+internal sealed class ResourceProvider : IResourceProvider
 {
     /// <summary>
-    /// Occurs when the action's configuration changes.
+    /// Initializes a new instance of the <see cref="ResourceProvider"/> class.
     /// </summary>
-    event EventHandler ConfigurationChanged;
+    public ResourceProvider()
+        => ResourceUri = PackUri.FromRelativePath<ResourceProvider>("Root.xaml");
+
+    /// <inheritdoc/>
+    public Uri ResourceUri 
+    { get; }
 }

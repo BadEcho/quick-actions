@@ -88,6 +88,24 @@ namespace BadEcho.QuickActions.SystemSettings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimizes either all windows on the screen, or if a process name is specified, all windows belonging to the named process..
+        /// </summary>
+        internal static string MinimizeWindowsDescription {
+            get {
+                return ResourceManager.GetString("MinimizeWindowsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize Windows.
+        /// </summary>
+        internal static string MinimizeWindowsName {
+            get {
+                return ResourceManager.GetString("MinimizeWindowsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to locate a default input audio device..
         /// </summary>
         internal static string NoMicrophoneFoundToToggle {
