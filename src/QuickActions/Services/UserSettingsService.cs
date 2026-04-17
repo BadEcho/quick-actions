@@ -11,7 +11,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Reflection;
 using BadEcho.Extensibility.Hosting;
 using BadEcho.Extensions;
 using BadEcho.Interop;
@@ -108,7 +107,7 @@ internal sealed class UserSettingsService
                 object? runValue = run?.GetValue(RUN_VALUE);
 
                 if (value)
-                    run?.SetValue(RUN_VALUE, $"{Assembly.GetExecutingAssembly().Location} --silent");
+                    run?.SetValue(RUN_VALUE, $"\"{Environment.GetCommandLineArgs()[0]}\" --silent");
                 else if (runValue != null)
                     run?.DeleteValue(RUN_VALUE);
 
