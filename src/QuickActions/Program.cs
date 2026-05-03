@@ -30,14 +30,20 @@ Theming.EnableDarkMenus();
 
 var builder = Host.CreateApplicationBuilder();
 
-string userSettingsPath =
-    Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                              builder.Environment.ApplicationName),
-                 "usersettings.json");
+string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                  builder.Environment.ApplicationName);
+
+string userSettingsPath = Path.Combine(appDataPath, "usersettings.json");
 
 builder.Configuration
        .AddExtensibility()
        .AddJsonFile(userSettingsPath, optional: true, reloadOnChange: true);
+
+builder.Logging.AddFile(o =>
+{
+    if (string.IsNullOrEmpty(o.Path))
+        o.Path = Path.Combine(appDataPath, $"{builder.Environment.ApplicationName}.log");
+});
 
 builder.Services
        .Configure<ScriptActionsOptions>(builder.Configuration.GetSection(ScriptActionsOptions.SectionName), userSettingsPath)
