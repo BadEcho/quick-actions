@@ -66,11 +66,11 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
     /// rather than derive from <see cref="BackgroundService"/>.
     /// </para>
     /// </remarks> 
-    public async Task StartAsync(CancellationToken cancellationToken) 
+    public async Task StartAsync(CancellationToken cancellationToken)
         => await _keyboard.StartAsync();
 
     /// <inheritdoc/>
-    public async Task StopAsync(CancellationToken cancellationToken) 
+    public async Task StopAsync(CancellationToken cancellationToken)
         => await _keyboard.StopAsync();
 
     /// <inheritdoc/>
@@ -108,7 +108,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
                 {
                     _mediator.Broadcast(Messages.DisplayError, result);
                 }
-                else if(!string.IsNullOrEmpty(pressedMapping.CompletionSoundPath))
+                else if (!string.IsNullOrEmpty(pressedMapping.CompletionSoundPath))
                 {
                     using (var soundPlayer = new SoundPlayer(pressedMapping.CompletionSoundPath))
                     {
@@ -118,7 +118,7 @@ internal sealed class KeyboardListenerService : IHostedService, IAsyncDisposable
                 }
             }
         }
-        
+
         return new ProcedureResult(nint.Zero, true);
     }
 
