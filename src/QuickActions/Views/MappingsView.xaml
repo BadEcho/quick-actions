@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -76,7 +76,7 @@
                  ItemsSource="{Binding Items}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  Visibility="{Binding HasItems, Converter={StaticResource BooleanVisibilityConverter}}"
-                 Margin="{StaticResource VerticalSpacing}"
+                 Margin="{StaticResource VerticalSectionSpacing}"
                  HorizontalContentAlignment="Stretch"
                  VerticalContentAlignment="Center"
                  DockPanel.Dock="Top"
@@ -84,7 +84,7 @@
         <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                    Text="No mappings have been defined. Hit &quot;Add&quot; to create one."
                    Visibility="{Binding HasItems, Converter={StaticResource InverseVisibilityConverter}}"
-                   Margin="{StaticResource VerticalSpacing}"
+                   Margin="{StaticResource VerticalSectionSpacing}"
                    HorizontalAlignment="Center"
                    DockPanel.Dock="Top"
                    />

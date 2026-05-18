@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -20,7 +20,9 @@
               d:Padding="8,8,8,0"
               >
     <d:DesignProperties.DataContext>
-        <vm:HomeViewModel ActionsDisabled="True" />
+        <vm:HomeViewModel ActionsEnabled="False"
+                          PromptKeysText="Ctrl + Q"
+                          />
     </d:DesignProperties.DataContext>
     <DockPanel Margin="-8,-8,-8,0">
         <Border CornerRadius="8,0,0,0"
@@ -37,24 +39,25 @@
             <TextBlock Style="{DynamicResource TitleLargeTextBlockStyle}"
                        Foreground="Black"
                        Text="Quick Actions"
-                       Margin="20,14,0,0"
+                       Margin="24,14,0,0"
                        />
         </Border>
         <StackPanel Orientation="Vertical"
-                    Margin="20,0,0,0"
+                    Margin="24,0,0,0"
                     >
             <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                        xml:space="preserve"
                        TextWrapping="Wrap"
-                       DockPanel.Dock="Bottom"
                        >A utility that allows you to assign tasks of varying complexity to keyboard shortcuts.
 
 Head over to the <Hyperlink Command="{Binding NavigateToActionsCommand}">Actions</Hyperlink> page to see what actions are available for use, or to create new script actions that will execute a script when triggered.
 
 See the <Hyperlink Command="{Binding NavigateToMappingsCommand}">Mappings</Hyperlink> page to associate keyboard shortcuts to the actions you want executed.
+
+Press <Run FontWeight="Bold" Text="{Binding PromptKeysText}" /> to open the Command Prompt (this can be changed in the settings).
             </TextBlock>
             <StackPanel Orientation="Horizontal"
-                        Margin="{StaticResource HalfVerticalSpacing}"
+                        Margin="{StaticResource HeaderVerticalSpacing}"
                         >
                 <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                            Text="Actions are currently:"
@@ -67,8 +70,8 @@ See the <Hyperlink Command="{Binding NavigateToMappingsCommand}">Mappings</Hyper
                             <Setter Property="Text" Value="Enabled" />
                             <Setter Property="Foreground" Value="ForestGreen" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ActionsDisabled}"
-                                             Value="True"
+                                <DataTrigger Binding="{Binding ActionsEnabled}"
+                                             Value="False"
                                              >
                                     <DataTrigger.Setters>
                                         <Setter Property="Foreground" Value="Red" />
@@ -87,8 +90,8 @@ See the <Hyperlink Command="{Binding NavigateToMappingsCommand}">Mappings</Hyper
                     <Style BasedOn="{StaticResource AccentButtonStyle}" TargetType="Button">
                         <Setter Property="Content" Value="Disable Actions" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ActionsDisabled}"
-                                         Value="True"
+                            <DataTrigger Binding="{Binding ActionsEnabled}"
+                                         Value="False"
                                          >
                                 <DataTrigger.Setters>
                                     <Setter Property="Content" Value="Enable Actions" />

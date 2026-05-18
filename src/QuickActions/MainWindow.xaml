@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -17,9 +17,9 @@
         xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
         mc:Ignorable="d"
         Title="QuickActionsWindow"
+        Icon="pack://application:,,,/Assets/Icon.ico"
         d:DesignStyle="{StaticResource DesignTimeControlStyle}"
         d:DesignWidth="850"
-        Icon="pack://application:,,,/Assets/Icon.ico"
         >
     <d:DesignProperties.DataContext>
         <vm:MainViewModel>

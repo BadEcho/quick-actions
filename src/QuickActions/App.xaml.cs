@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -16,6 +16,7 @@ using BadEcho.QuickActions.Services;
 using System.ComponentModel;
 using System.Windows;
 using BadEcho.QuickActions.Properties;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BadEcho.QuickActions;
 
@@ -25,6 +26,7 @@ namespace BadEcho.QuickActions;
 internal sealed partial class App : IDisposable
 {
     private readonly Mediator _mediator = new();
+    private readonly IServiceProvider? _serviceProvider;
     private readonly UserSettingsService? _settingsService;
 
     private NotificationArea? _notificationArea;
@@ -33,10 +35,13 @@ internal sealed partial class App : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(UserSettingsService settingsService, Mediator mediator)
+    public App(UserSettingsService settingsService, Mediator mediator, IServiceProvider serviceProvider)
     {
         _settingsService = settingsService;
         _mediator = mediator;
+        _serviceProvider = serviceProvider;
+
+        _mediator.Register(Messages.ShowPrompt, MediateShowPrompt);
 
         InitializeComponent();
     }
@@ -98,5 +103,21 @@ internal sealed partial class App : IDisposable
     {
         _exiting = true;
         MainWindow?.Close();
+    }
+
+    private void MediateShowPrompt()
+    {
+        if (_serviceProvider == null)
+            throw new InvalidOperationException(Strings.AppInvalidHost);
+
+        Dispatcher.Invoke(() =>
+        {
+            var prompt = _serviceProvider.GetRequiredService<PromptWindow>();
+
+            prompt.Show();
+            
+            // Manual activation is required for preexisting, hidden windows.
+            prompt.Activate();
+        });
     }
 }

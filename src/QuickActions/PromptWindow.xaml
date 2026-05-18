@@ -1,0 +1,177 @@
+﻿<!--Created by Matt Weber <matt@badecho.com>
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
+
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
+
+    See accompanying file LICENSE.md or a copy at:
+    https://www.gnu.org/licenses/agpl-3.0.html-->
+<Window x:Class="BadEcho.QuickActions.PromptWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
+        mc:Ignorable="d"
+        Title="PromptWindow"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        SizeToContent="Height"
+        Topmost="True"
+        Width="600"
+        d:DesignStyle="{StaticResource DesignTimeControlStyle}"
+        >
+    <d:DesignProperties.DataContext>
+        <vm:PromptViewModel CommandText="c:\apps\run.exe" />
+    </d:DesignProperties.DataContext>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      CornerRadius="12"
+                      GlassFrameThickness="-1"
+                      NonClientFrameEdges="Left, Right"
+                      ResizeBorderThickness="0"
+                      UseAeroCaptionButtons="False"
+                      />
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Storyboard x:Key="ShowSuccess"
+                    Completed="HandleSuccessAnimationCompleted"
+                    >
+            <ColorAnimation Storyboard.TargetName="Root"
+                            Storyboard.TargetProperty="Background.GradientStops[0].Color"
+                            AutoReverse="True"
+                            FillBehavior="Stop"
+                            From="#0013B95B"
+                            To="#AE13B95B"
+                            Duration="00:00:00.25"
+                            >
+                <ColorAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut" />
+                </ColorAnimation.EasingFunction>
+            </ColorAnimation>
+            <ColorAnimation Storyboard.TargetName="Root"
+                            Storyboard.TargetProperty="Background.GradientStops[1].Color"
+                            AutoReverse="True"
+                            FillBehavior="Stop"
+                            From="#0080F2B1"
+                            To="#AE80F2B1"
+                            Duration="00:00:00.25"
+                            >
+                <ColorAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut" />
+                </ColorAnimation.EasingFunction>
+            </ColorAnimation>
+        </Storyboard>
+        <Storyboard x:Key="ShowFailure">
+            <ColorAnimation Storyboard.TargetName="Root"
+                            Storyboard.TargetProperty="Background.GradientStops[0].Color"
+                            AutoReverse="True"
+                            FillBehavior="Stop"
+                            RepeatBehavior="2x"
+                            From="#00FF0000"
+                            To="#AEFF0000"
+                            Duration="00:00:00.25"
+                            >
+                <ColorAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut" />
+                </ColorAnimation.EasingFunction>
+            </ColorAnimation>
+            <ColorAnimation Storyboard.TargetName="Root"
+                            Storyboard.TargetProperty="Background.GradientStops[1].Color"
+                            AutoReverse="True"
+                            FillBehavior="Stop"
+                            RepeatBehavior="2x"
+                            From="#00FF7373"
+                            To="#AEFF7373"
+                            Duration="00:00:00.25"
+                            >
+                <ColorAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut" />
+                </ColorAnimation.EasingFunction>
+            </ColorAnimation>
+        </Storyboard>
+    </Window.Resources>
+    <badEcho:FrameworkBehaviors.DataTriggers>
+        <badEcho:DataTrigger Binding="{Binding CommandResult}"
+                             Value="Succeeded"
+                             >
+            <badEcho:BeginStoryboardAction Storyboard="{StaticResource ShowSuccess}" />
+            <badEcho:CommandAction Command="{Binding ResetResultCommand}" />
+        </badEcho:DataTrigger>
+        <badEcho:DataTrigger Binding="{Binding CommandResult}"
+                             Value="Failed"
+                             >
+            <badEcho:BeginStoryboardAction Storyboard="{StaticResource ShowFailure}" />
+            <badEcho:CommandAction Command="{Binding ResetResultCommand}" />
+        </badEcho:DataTrigger>
+    </badEcho:FrameworkBehaviors.DataTriggers>
+    <Grid x:Name="Root">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="Transparent" />
+                <GradientStop Offset="1" Color="Transparent" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!--
+            Changing the background of a text box has no effect, as we would need to override the control's template, which is impractical in this situation.
+            Instead, the color of the window itself is animated to indicate the result of a command's execution.
+            To support this, we use a style that overrides resources used by the control's template that would otherwise block some of the window's color.
+        -->
+        <TextBox x:Name="Command"
+                 Style="{StaticResource TransparentFocusedTextBoxStyle}"
+                 BorderBrush="White"
+                 MouseDown="HandleMouseDown"
+                 TargetUpdated="HandleCommandTargetUpdated"
+                 Text="{Binding CommandText, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                 VerticalContentAlignment="Center"
+                 >
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter"
+                            Command="{Binding ExecuteCommand}"
+                            />
+                <KeyBinding Key="Up"
+                            Command="{Binding NavigateHistoryCommand}"
+                            >
+                    <KeyBinding.CommandParameter>
+                        <sys:Boolean>False</sys:Boolean>
+                    </KeyBinding.CommandParameter>
+                </KeyBinding>
+                <KeyBinding Key="Down"
+                            Command="{Binding NavigateHistoryCommand}"
+                            >
+                    <KeyBinding.CommandParameter>
+                        <sys:Boolean>True</sys:Boolean>
+                    </KeyBinding.CommandParameter>
+                </KeyBinding>
+            </TextBox.InputBindings>
+            <badEcho:TextBoxBehaviors.AutoCompletion>
+                <badEcho:FileAutocompletionSource />
+            </badEcho:TextBoxBehaviors.AutoCompletion>
+        </TextBox>
+        <!--  This acts as a watermark for the text box.  -->
+        <TextBlock FontStyle="Italic"
+                   Foreground="{StaticResource TextFillColorTertiaryBrush}"
+                   IsHitTestVisible="False"
+                   Text="Enter the path to a file or folder to open."
+                   Margin="14,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   >
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CommandText}"
+                                     Value=""
+                                     >
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</Window>

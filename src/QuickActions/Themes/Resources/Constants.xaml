@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -10,11 +10,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
 
-    <Thickness x:Key="HalfVerticalSpacing"
+    <!--  Spacing between similar controls.  -->
+    <Thickness x:Key="ControlVerticalSpacing"
+               Bottom="8"
+               />
+
+    <!--  Spacing between headers/labels and related controls.  -->
+    <Thickness x:Key="HeaderVerticalSpacing"
                Bottom="12"
                />
 
-    <Thickness x:Key="VerticalSpacing"
+    <!--  Spacing between controls grouped together in a list or similar type of layout.  -->
+    <Thickness x:Key="ListVerticalSpacing"
+               Bottom="16"
+               />
+
+    <!--  Spacing between content sections.  -->
+    <Thickness x:Key="VerticalSectionSpacing"
                Bottom="24"
                />
 

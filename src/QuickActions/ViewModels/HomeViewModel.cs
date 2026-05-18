@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -37,12 +37,16 @@ internal sealed class HomeViewModel : ViewModel
         _navigationService = navigationService;
         _settingsService = settingsService;
 
-        ActionsDisabled = _settingsService.ActionsDisabled;
+        ActionsEnabled = _settingsService.ActionsEnabled;
+        PromptKeysText = _settingsService.PromptKeys.ToString();
 
-        // We use mediator messages as the source of truth for whether actions are enabled or disabled because the settings view, which also offers
-        // an option to toggle actions on and off, can be opened while this view is active.
-        mediator.Register(Messages.DisableListener, MediateDisableListener);
-        mediator.Register(Messages.EnableListener, MediateEnableListener);
+        // We use mediator messages as the source of truth for whether actions are enabled or disabled because the settings view,
+        // which also offers an option to toggle actions on and off, can be opened while the home view is active.
+        mediator.Register(Messages.ChangeListenerStatus, MediateChangeListenerStatus);
+
+        // The same applies with the Command Prompt shortcut -- the key combination is displayed on the home view, and can be changed
+        // within the settings view while the home view is still open.
+        mediator.Register(Messages.PromptKeysChanged, MediatePromptKeysChanged);
     }
 
     /// <summary>
@@ -53,13 +57,6 @@ internal sealed class HomeViewModel : ViewModel
         NavigateToActionsCommand = new DelegateCommand(NavigateToActions);
         NavigateToMappingsCommand = new DelegateCommand(NavigateToMappings);
         ToggleMappingsCommand = new DelegateCommand(ToggleMappings);
-    }
-
-    /// <inheritdoc cref="UserSettingsService.ActionsDisabled"/>
-    public bool ActionsDisabled
-    {
-        get;
-        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -80,6 +77,22 @@ internal sealed class HomeViewModel : ViewModel
     public ICommand ToggleMappingsCommand
     { get; }
 
+    /// <inheritdoc cref="UserSettingsService.ActionsEnabled"/>
+    public bool ActionsEnabled
+    {
+        get;
+        set => NotifyIfChanged(ref field, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the text describing the key combination that opens the Command Prompt.
+    /// </summary>
+    public string? PromptKeysText
+    {
+        get;
+        set => NotifyIfChanged(ref field, value);
+    }
+
     /// <inheritdoc/>
     public override void Disconnect()
     { }
@@ -91,11 +104,11 @@ internal sealed class HomeViewModel : ViewModel
         => _navigationService?.Navigate<MappingsViewModel>();
 
     private void ToggleMappings(object? _)
-        => _settingsService?.ActionsDisabled = !_settingsService.ActionsDisabled;
+        => _settingsService?.ActionsEnabled = !_settingsService.ActionsEnabled;
 
-    private void MediateDisableListener()
-        => ActionsDisabled = true;
+    private void MediateChangeListenerStatus(bool enabled)
+        => ActionsEnabled = enabled;
 
-    private void MediateEnableListener()
-        => ActionsDisabled = false;
+    private void MediatePromptKeysChanged()
+        => PromptKeysText = _settingsService?.PromptKeys.ToString();
 }

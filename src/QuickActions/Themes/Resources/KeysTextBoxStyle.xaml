@@ -1,0 +1,95 @@
+﻿<!--Created by Matt Weber <matt@badecho.com>
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
+
+    Bad Echo Technologies are licensed under the
+    GNU Affero General Public License v3.0.
+
+    See accompanying file LICENSE.md or a copy at:
+    https://www.gnu.org/licenses/agpl-3.0.html-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:badEcho="http://schemas.badecho.com/presentation/2022/02/xaml"
+                    >
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml" />
+        <ResourceDictionary Source="ErrorTextBlockTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  Style for a text box hosted on views that allow the user to configure key combinations.  -->
+    <Style x:Key="KeysTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
+        <Setter Property="Text" Value="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTextBlockTemplate}" />
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <!--  We provide a custom template so we can make use of our attached behaviors, which aren't designed to be used with styles.  -->
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Grid>
+                        <badEcho:FrameworkBehaviors.EventTriggers>
+                            <badEcho:EventTrigger EventName="GotFocus">
+                                <badEcho:CommandAction Command="{Binding PauseListenerCommand}" />
+                            </badEcho:EventTrigger>
+                            <badEcho:EventTrigger EventName="LostFocus">
+                                <badEcho:CommandAction Command="{Binding ResumeListenerCommand}" />
+                            </badEcho:EventTrigger>
+                            <badEcho:EventTrigger EventName="PreviewKeyDown">
+                                <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
+                            </badEcho:EventTrigger>
+                        </badEcho:FrameworkBehaviors.EventTriggers>
+                        <badEcho:FrameworkBehaviors.Triggers>
+                            <badEcho:Trigger Property="Validation.HasError" Value="True">
+                                <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
+                                                                Value="{StaticResource ErrorTextControlBorderBrushFocused}"
+                                                                />
+                            </badEcho:Trigger>
+                            <badEcho:Trigger Property="Validation.HasError" Value="False">
+                                <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
+                            </badEcho:Trigger>
+                        </badEcho:FrameworkBehaviors.Triggers>
+                        <!--
+                            The meat of this control template is based on what's defined by the framework for its Fluent theme.
+                            The likelihood of this changing should be pretty low...
+                        -->
+                        <Border x:Name="ContentBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding Border.CornerRadius}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                />
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                      IsTabStop="{TemplateBinding ScrollViewer.IsTabStop}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                      Margin="{TemplateBinding BorderThickness}"
+                                      Padding="{TemplateBinding Padding}"
+                                      />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource TextControlBackgroundPointerOver}" />
+                            <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushPointerOver}" />
+                            <Setter TargetName="PART_ContentHost" Property="Foreground" Value="{DynamicResource TextControlForegroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="ContentBorder" Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThicknessFocused}" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource TextControlBackgroundFocused}" />
+                            <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushFocused}" />
+                            <Setter TargetName="PART_ContentHost" Property="Foreground" Value="{DynamicResource TextControlForegroundFocused}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource TextControlBackgroundDisabled}" />
+                            <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource TextControlBorderBrushDisabled}" />
+                            <Setter TargetName="PART_ContentHost" Property="Foreground" Value="{DynamicResource TextControlForegroundDisabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

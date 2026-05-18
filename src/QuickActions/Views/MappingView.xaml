@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -14,7 +14,6 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:local="clr-namespace:BadEcho.QuickActions"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:sys="clr-namespace:System;assembly=mscorlib"
               xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
               mc:Ignorable="d"
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
@@ -42,7 +41,6 @@
             <Grid.Style>
                 <Style TargetType="{x:Type Grid}">
                     <Style.Triggers>
-                        <MultiDataTrigger />
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource BooleanOrConverter}">
@@ -55,7 +53,7 @@
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
+                                <Setter Property="Margin" Value="{StaticResource VerticalSectionSpacing}" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                     </Style.Triggers>
@@ -68,51 +66,27 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="Keys"
-                     CaretIndex="{x:Static sys:Int32.MaxValue}"
-                     Text="{Binding KeysText, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                     TextChanged="KeysTextChanged"
-                     Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
-                     MinWidth="200"
+                     Style="{StaticResource KeysTextBoxStyle}"
+                     GotFocus="HandleKeysGotFocus"
+                     TextChanged="HandleKeysTextChanged"
                      Margin="0,0,16,0"
                      Grid.Column="0"
-                     >
-                <badEcho:FrameworkBehaviors.EventTriggers>
-                    <badEcho:EventTrigger EventName="GotFocus">
-                        <badEcho:CommandAction Command="{Binding PauseListenerCommand}" />
-                    </badEcho:EventTrigger>
-                    <badEcho:EventTrigger EventName="LostFocus">
-                        <badEcho:CommandAction Command="{Binding ResumeListenerCommand}" />
-                    </badEcho:EventTrigger>
-                    <badEcho:EventTrigger EventName="PreviewKeyDown">
-                        <badEcho:CommandAction Command="{Binding KeyInputCommand}" />
-                    </badEcho:EventTrigger>
-                </badEcho:FrameworkBehaviors.EventTriggers>
-                <badEcho:FrameworkBehaviors.Triggers>
-                    <badEcho:Trigger Property="Validation.HasError" Value="True">
-                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused"
-                                                        Value="{StaticResource ErrorTextControlBorderBrushFocused}"
-                                                        />
-                    </badEcho:Trigger>
-                    <badEcho:Trigger Property="Validation.HasError" Value="False">
-                        <badEcho:OverrideResourceAction Name="TextControlBorderBrushFocused" />
-                    </badEcho:Trigger>
-                </badEcho:FrameworkBehaviors.Triggers>
-            </TextBox>
+                     />
 
             <ComboBox x:Name="Actions"
-                      d:SelectedIndex="0"
                       ItemsSource="{Binding Actions}"
                       SelectedItem="{Binding SelectedAction, ValidatesOnNotifyDataErrors=True}"
                       Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
                       Margin="0,0,16,0"
                       Grid.Column="1"
+                      d:SelectedIndex="0"
                       />
 
-            <ComboBox d:SelectedIndex="0"
-                      ItemsSource="{Binding CompletionSounds}"
+            <ComboBox ItemsSource="{Binding CompletionSounds}"
                       SelectedItem="{Binding SelectedCompletionSound}"
                       Margin="0,0,16,0"
                       Grid.Column="2"
+                      d:SelectedIndex="0"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -133,7 +107,21 @@
                      Content="{Binding ActionConfigurationViewModel}"
                      ContentTemplateSelector="{StaticResource ContextSelector}"
                      Grid.Row="1"
+                     d:ContentTemplate="{StaticResource DesignTimeConfigurationTemplate}"
+                     d:Margin="4,12,0,0"
+                     d:Padding="12,6,0,3"
                      >
+            <UserControl.Resources>
+                <!--  A design-time data template used to help us visualize what hosting an action configuration view might look like.  -->
+                <d:DataTemplate x:Key="DesignTimeConfigurationTemplate">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                                   Text="Additional Option"
+                                   />
+                        <TextBox Text="Yadda Yadda Yadda..." />
+                    </StackPanel>
+                </d:DataTemplate>
+            </UserControl.Resources>
             <UserControl.Style>
                 <Style TargetType="UserControl">
                     <Setter Property="Padding" Value="12,6,0,3" />

@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -26,6 +26,8 @@ namespace BadEcho.QuickActions.SystemSettings;
 [Export(typeof(IAction))]
 internal sealed class ToggleMicrophoneMute : CodeAction
 {
+    private float? _nextVolume;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleMicrophoneMute"/> class.
     /// </summary>
@@ -50,6 +52,13 @@ internal sealed class ToggleMicrophoneMute : CodeAction
                 return ActionResult.Fail(this, Strings.NoMicrophoneFoundToToggle);
 
             defaultInput.Mute = !defaultInput.Mute;
+            // Unsure if it's a Windows or driver-specific issue, but some devices seem to still transmit audio even when muted
+            // via Windows settings. So, on top of muting the device, we'll also set it to its minimum volume (effectively muting it).
+            float currentVolume = defaultInput.Volume;
+            defaultInput.Volume = _nextVolume ?? defaultInput.MinimumVolume;
+
+            // The original volume will be restored when this action is run again to toggle the mute off.
+            _nextVolume = currentVolume;
         }
         catch (Win32Exception winEx)
         {

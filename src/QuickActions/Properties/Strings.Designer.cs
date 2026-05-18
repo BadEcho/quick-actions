@@ -70,7 +70,7 @@ namespace BadEcho.QuickActions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application lacks a main window, indicating an improperly configured host..
+        ///   Looks up a localized string similar to Application lacks a main window or required service, indicating an improperly configured host..
         /// </summary>
         internal static string AppInvalidHost {
             get {

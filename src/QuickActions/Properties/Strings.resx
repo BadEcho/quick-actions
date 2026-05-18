@@ -114,6 +114,6 @@
 		<value>'{0}' Had Errors</value>
 	</data>
 	<data name="AppInvalidHost" xml:space="preserve">
-		<value>Application lacks a main window, indicating an improperly configured host.</value>
+		<value>Application lacks a main window or required service, indicating an improperly configured host.</value>
 	</data>
 </root>

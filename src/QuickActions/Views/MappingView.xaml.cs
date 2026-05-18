@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -11,6 +11,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BadEcho.QuickActions.Views;
@@ -24,6 +25,9 @@ internal sealed partial class MappingView
     public MappingView() 
         => InitializeComponent();
 
-    private void KeysTextChanged(object sender, TextChangedEventArgs e) 
+    private void HandleKeysTextChanged(object sender, TextChangedEventArgs e) 
+        => Keys.CaretIndex = Keys.Text.Length;
+
+    private void HandleKeysGotFocus(object sender, RoutedEventArgs e) 
         => Keys.CaretIndex = Keys.Text.Length;
 }

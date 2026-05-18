@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -22,13 +22,13 @@
     <d:DesignProperties.DataContext>
         <vm:ScriptActionViewModel Name="SampleScript.ps1"
                                   Arguments="-d 10"
-                                  Path="D:\scripts\echoDuma.cmd"
+                                  Path="D:\scripts\echoDump.cmd"
                                   ShellType="PowerShell"
                                   />
     </d:DesignProperties.DataContext>
     <badEcho:View.Resources>
         <Style x:Key="InputTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
-            <Setter Property="Margin" Value="{StaticResource VerticalSpacing}" />
+            <Setter Property="Margin" Value="{StaticResource ListVerticalSpacing}" />
         </Style>
         <ObjectDataProvider x:Key="ShellTypeFromEnum"
                             MethodName="GetValues"
@@ -48,17 +48,28 @@
                    />
         <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
                    Text="Path"
-                   Margin="0,-4,0,4"
+                   Margin="0,-4,0,12"
                    />
         <Grid>
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Margin" Value="{StaticResource ListVerticalSpacing}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=PathTextBox, Path=(Validation.HasError)}"
+                                     Value="True"
+                                     >
+                            <Setter Property="Margin" Value="{StaticResource VerticalSectionSpacing}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBox x:Name="PathTextBox"
-                     Style="{StaticResource InputTextBoxStyle}"
-                     Text="{Binding Path, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"
+                     Text="{Binding Path, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Validation.ErrorTemplate="{StaticResource ErrorTextBlockTemplate}"
                      Grid.Column="0"
                      >
@@ -74,7 +85,7 @@
                 </badEcho:FrameworkBehaviors.Triggers>
             </TextBox>
             <Button Command="{Binding OpenFileCommand}"
-                    Margin="8,0,0,24"
+                    Margin="8,0,0,0"
                     Grid.Column="1"
                     >
                 <StackPanel Orientation="Horizontal">
@@ -102,7 +113,7 @@
                    />
         <ComboBox ItemsSource="{Binding Source={StaticResource ShellTypeFromEnum}}"
                   SelectedValue="{Binding ShellType}"
-                  Margin="{StaticResource VerticalSpacing}"
+                  Margin="{StaticResource VerticalSectionSpacing}"
                   />
 
         <Button Style="{StaticResource AccentButtonStyle}"

@@ -10,10 +10,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     >
 
-    <Style x:Key="HeaderTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
-        <Setter Property="Margin" Value="0,0,0,12" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+    <Style x:Key="TransparentFocusedTextBoxStyle" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
+        <Style.Resources>
+            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+        </Style.Resources>
     </Style>
 
 </ResourceDictionary>

@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -23,8 +23,6 @@ namespace BadEcho.QuickActions.Extensibility;
 public abstract class ActionConfigurationViewModel<TConfiguration> : ViewModel<TConfiguration>, IActionConfigurationViewModel
     where TConfiguration : new()
 {
-    private readonly IActionExecutionContext _executionContext;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionConfigurationViewModel{TConfiguration}"/> class.
     /// </summary>
@@ -32,8 +30,6 @@ public abstract class ActionConfigurationViewModel<TConfiguration> : ViewModel<T
     protected ActionConfigurationViewModel(IActionExecutionContext executionContext)
     {
         Require.NotNull(executionContext, nameof(executionContext));
-
-        _executionContext = executionContext;
 
         TConfiguration? actionConfiguration = default;
 
@@ -49,6 +45,10 @@ public abstract class ActionConfigurationViewModel<TConfiguration> : ViewModel<T
     public event EventHandler? ConfigurationChanged;
 
     /// <inheritdoc/>
+    public string? ActionConfiguration
+    { get; private set; }
+
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
@@ -56,7 +56,7 @@ public abstract class ActionConfigurationViewModel<TConfiguration> : ViewModel<T
         if (ActiveModel == null)
             return;
 
-        _executionContext.ActionConfiguration = JsonSerializer.Serialize(ActiveModel);
+        ActionConfiguration = JsonSerializer.Serialize(ActiveModel);
 
         ConfigurationChanged?.Invoke(this, EventArgs.Empty);
     }

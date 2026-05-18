@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -11,7 +11,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Interop;
 using BadEcho.Extensions;
 using BadEcho.QuickActions.Extensibility;
 
@@ -29,20 +28,13 @@ internal sealed class Mapping : IActionExecutionContext
     { get; init; } = Guid.NewGuid();
 
     /// <summary>
-    /// Gets the set of modifier keys that must be pressed in order to execute the action.
+    /// Gets or sets the combination of keys that must be pressed in order to execute the action.
     /// </summary>
-    public HashSet<VirtualKey> ModifierKeys
-    { get; } = [];
+    public KeyCombination KeyCombination
+    { get; set; } = new();
 
     /// <summary>
-    /// Gets the set of non-modifier keys that must be pressed in order to execute the action.
-    /// </summary>
-    public HashSet<VirtualKey> Keys
-    { get; } = [];
-
-    /// <summary>
-    /// Gets or sets the identifier for the action executed if the keys defined in <see cref="ModifierKeys"/> and
-    /// <see cref="Keys"/> are pressed.
+    /// Gets or sets the identifier for the action executed if the keys defined in <see cref="KeyCombination"/> are pressed.
     /// </summary>
     public Guid ActionId
     { get; set; }

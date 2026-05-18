@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -13,7 +13,6 @@
 
 using System.Windows.Input;
 using BadEcho.Presentation;
-using BadEcho.Presentation.ViewModels;
 using BadEcho.QuickActions.Services;
 
 namespace BadEcho.QuickActions.ViewModels;
@@ -21,24 +20,8 @@ namespace BadEcho.QuickActions.ViewModels;
 /// <summary>
 /// Provides a view model that facilitates the display and manipulation of the user's settings.
 /// </summary>
-internal sealed class SettingsViewModel : ViewModel
+internal sealed class SettingsViewModel : KeysViewModel<UserSettingsService>
 {
-    private readonly UserSettingsService? _settingsService;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
-    /// </summary>
-    public SettingsViewModel(UserSettingsService settingsService)
-        : this()
-    {
-        _settingsService = settingsService;
-
-        OpenOnStartup = settingsService.OpenOnStartup;
-        MinimizeToTrayOnClose = settingsService.MinimizeToTrayOnClose;
-
-        IsDirty = false;
-    }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/> class.
     /// </summary>
@@ -51,36 +34,21 @@ internal sealed class SettingsViewModel : ViewModel
     public bool OpenOnStartup
     {
         get;
-        set
-        {
-            NotifyIfChanged(ref field, value);
-
-            _settingsService?.OpenOnStartup = value;
-        }
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <inheritdoc cref="UserSettingsService.MinimizeToTrayOnClose"/>
     public bool MinimizeToTrayOnClose
     {
         get;
-        set
-        {
-            NotifyIfChanged(ref field, value);
-
-            _settingsService?.MinimizeToTrayOnClose = value;
-        }
+        set => NotifyIfChanged(ref field, value);
     }
 
-    /// <inheritdoc cref="UserSettingsService.ActionsDisabled"/>
-    public bool ActionsDisabled
+    /// <inheritdoc cref="UserSettingsService.ActionsEnabled"/>
+    public bool ActionsEnabled
     {
         get;
-        set
-        {
-            NotifyIfChanged(ref field, value);
-
-            _settingsService?.ActionsDisabled = value;
-        }
+        set => NotifyIfChanged(ref field, value);
     }
 
     /// <summary>
@@ -99,21 +67,53 @@ internal sealed class SettingsViewModel : ViewModel
     { get; }
 
     /// <inheritdoc/>
-    public override void Disconnect()
-    { }
+    protected override KeyCombination ReadKeyCombination(UserSettingsService model) 
+        => model.PromptKeys;
+
+    /// <inheritdoc/>
+    protected override void OnBinding(UserSettingsService model)
+    {
+        base.OnBinding(model);
+
+        OpenOnStartup = model.OpenOnStartup;
+        MinimizeToTrayOnClose = model.MinimizeToTrayOnClose;
+        ActionsEnabled = model.ActionsEnabled;
+
+        IsDirty = false;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnUnbound(UserSettingsService model)
+    {
+        base.OnUnbound(model);
+
+        OpenOnStartup = false;
+        MinimizeToTrayOnClose = false;
+        ActionsEnabled = false;
+
+        IsDirty = false;
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
-        if (propertyName != nameof(IsDirty) && propertyName != nameof(OpenOnStartup))
+        if (propertyName != nameof(IsDirty))
             IsDirty = true;
     }
 
     private void SaveSettings(object? obj)
     {
-        _settingsService?.SaveGeneral();
+        if (ActiveModel == null)
+            return;
+
+        ActiveModel.OpenOnStartup = OpenOnStartup;
+        ActiveModel.MinimizeToTrayOnClose = MinimizeToTrayOnClose;
+        ActiveModel.ActionsEnabled = ActionsEnabled;
+        ActiveModel.PromptKeys = KeyCombination;
+        ActiveModel.SaveGeneral();
+
         IsDirty = false;
     }
 }

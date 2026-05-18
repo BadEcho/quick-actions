@@ -11,22 +11,23 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using BadEcho.Presentation.ViewModels;
-
-namespace BadEcho.QuickActions.Extensibility;
+namespace BadEcho.QuickActions;
 
 /// <summary>
-/// Defines a view model that facilitates the display and manipulation of an action's configuration.
+/// Specifies the result of executing a command via the Command Prompt.
 /// </summary>
-public interface IActionConfigurationViewModel : IViewModel
+internal enum PromptCommandResult
 {
     /// <summary>
-    /// Occurs when the action's configuration changes.
+    /// No command was executed.
     /// </summary>
-    event EventHandler ConfigurationChanged;
-
+    None,
     /// <summary>
-    /// Gets or sets a serialized set of additional configuration for the action.
+    /// The command succeeded.
     /// </summary>
-    string? ActionConfiguration { get; }
+    Succeeded,
+    /// <summary>
+    /// The command failed.
+    /// </summary>
+    Failed
 }

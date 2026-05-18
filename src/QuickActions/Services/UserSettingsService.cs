@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -30,9 +30,7 @@ internal sealed class UserSettingsService
     private const string RUN_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
     private const string RUN_VALUE = "QuickActions";
 
-    private readonly Dictionary<HashSet<VirtualKey>, Mapping> _mappingsMap =
-        new(HashSet<VirtualKey>.CreateSetComparer());
-
+    private readonly Dictionary<KeyCombination, Mapping> _mappingsMap = new();
     private readonly Dictionary<Guid, IAction> _actionsMap;
 
     private readonly IWritableOptions<ScriptActionsOptions> _scriptOptions;
@@ -61,13 +59,22 @@ internal sealed class UserSettingsService
 
         IEnumerable<IAction> codeActions = PluginHost.Load<IAction>();
         _actionsMap = Scripts.Concat(codeActions).ToDictionary(kv => kv.Id);
-
+        
         BuildMappingsMap();
 
         using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY))
         {
             OpenOnStartup = run != null && run.GetValueNames().Contains(RUN_VALUE);
         }
+
+        if (!PromptKeys.IsEmpty)
+            return;
+
+        PromptKeys = new KeyCombination
+                     {
+                         ModifierKeys = { VirtualKey.Control },
+                         Keys = { VirtualKey.Q }
+                     };
     }
 
     /// <summary>
@@ -93,6 +100,9 @@ internal sealed class UserSettingsService
     /// </summary>
     public AppearanceOptions Appearance
         => _appearanceOptions.CurrentValue;
+
+    public GeneralOptions General
+        => _generalOptions.CurrentValue;
 
     /// <summary>
     /// Gets or sets a value indicating if the application runs on Window startup.
@@ -123,18 +133,25 @@ internal sealed class UserSettingsService
         set => _generalOptions.CurrentValue.MinimizeToTrayOnClose = value;
     }
 
-    /// <inheritdoc cref="GeneralOptions.ActionsDisabled"/>
-    public bool ActionsDisabled
+    /// <inheritdoc cref="GeneralOptions.ActionsEnabled"/>
+    public bool ActionsEnabled
     {
-        get => _generalOptions.CurrentValue.ActionsDisabled;
+        get => _generalOptions.CurrentValue.ActionsEnabled;
         set
         {
-            _generalOptions.CurrentValue.ActionsDisabled = value;
+            _generalOptions.CurrentValue.ActionsEnabled = value;
+            _mediator.Broadcast(Messages.ChangeListenerStatus, value);
+        }
+    }
 
-            if (value)
-                _mediator.Broadcast(Messages.DisableListener);
-            else
-                _mediator.Broadcast(Messages.EnableListener);
+    /// <inheritdoc cref="GeneralOptions.PromptKeys"/>
+    public KeyCombination PromptKeys
+    {
+        get => _generalOptions.CurrentValue.PromptKeys;
+        set
+        {
+            _generalOptions.CurrentValue.PromptKeys = value;
+            _mediator.Broadcast(Messages.PromptKeysChanged);
         }
     }
 
@@ -176,16 +193,15 @@ internal sealed class UserSettingsService
         => _scriptOptions.Save(null);
 
     /// <summary>
-    /// Retrieves the mapping associated with the specified keys, if one exists.
+    /// Retrieves the mapping associated with the specified key combination, if one exists.
     /// </summary>
-    /// <param name="modifierKeys">The set of modifier keys associated with the mapping.</param>
-    /// <param name="keys">The set of non-modifier keys associated with the mapping.</param>
+    /// <param name="keyCombination">The key combination associated with the mapping.</param>
     /// <returns>
-    /// The <see cref="Mapping"/> instance associated with <c>modifierKeys</c> and <c>keys</c> if one exists;
+    /// The <see cref="Mapping"/> instance associated with <c>keyCombination</c> if one exists;
     /// otherwise, null.
     /// </returns>
-    public Mapping? GetMapping(HashSet<VirtualKey> modifierKeys, HashSet<VirtualKey> keys)
-        => _mappingsMap.GetValueOrDefault([.. modifierKeys, .. keys]);
+    public Mapping? GetMapping(KeyCombination keyCombination) 
+        => _mappingsMap.GetValueOrDefault(keyCombination);
 
     /// <summary>
     /// Adds a new mapping to the user's configuration settings.
@@ -222,10 +238,8 @@ internal sealed class UserSettingsService
     /// <summary>
     /// Persists the current configuration for general application settings.
     /// </summary>
-    public void SaveGeneral()
-    {
-        _generalOptions.Save(null);
-    }
+    public void SaveGeneral() 
+        => _generalOptions.Save(null);
 
     private void BuildMappingsMap()
     {
@@ -233,7 +247,7 @@ internal sealed class UserSettingsService
 
         foreach (var mapping in _mappingOptions.CurrentValue)
         {
-            _mappingsMap.Add([.. mapping.ModifierKeys, .. mapping.Keys], mapping);
+            _mappingsMap.Add(mapping.KeyCombination, mapping);
         }
     }
 

@@ -18,7 +18,8 @@
               d:DesignStyle="{StaticResource DesignTimeControlStyle}"
               >
     <d:DesignProperties.DataContext>
-        <vm:SettingsViewModel ActionsDisabled="False"
+        <vm:SettingsViewModel ActionsEnabled="True"
+                              KeysText="Ctrl + Q"
                               MinimizeToTrayOnClose="True"
                               OpenOnStartup="True"
                               />
@@ -27,27 +28,54 @@
         <StackPanel Orientation="Vertical"
                     DockPanel.Dock="Top"
                     >
-            <TextBlock Style="{DynamicResource SmallSubtitleTextBlockStyle}"
+            <TextBlock Style="{DynamicResource SubtitleTextBlockStyle}"
                        Text="Settings"
-                       Margin="0,0,0,8"
+                       Margin="{StaticResource HeaderVerticalSpacing}"
                        />
             <CheckBox IsChecked="{Binding OpenOnStartup}"
-                      Margin="{StaticResource HalfVerticalSpacing}"
+                      Margin="{StaticResource ControlVerticalSpacing}"
                       >
-                Open Quick Actions on Startup
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                           Text="Open Quick Actions on Startup"
+                           Margin="0"
+                           />
             </CheckBox>
 
             <CheckBox IsChecked="{Binding MinimizeToTrayOnClose}"
-                      Margin="{StaticResource HalfVerticalSpacing}"
+                      Margin="{StaticResource ControlVerticalSpacing}"
                       >
-                Close Button Minimizes to Tray
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                           Text="Close Button Minimizes to Tray"
+                           Margin="0"
+                           />
             </CheckBox>
 
-            <CheckBox IsChecked="{Binding ActionsDisabled}"
-                      Margin="{StaticResource HalfVerticalSpacing}"
+            <CheckBox IsChecked="{Binding ActionsEnabled}"
+                      Margin="{StaticResource ControlVerticalSpacing}"
                       >
-                Disable All Actions
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                           Text="Actions Enabled"
+                           Margin="0"
+                           />
             </CheckBox>
+
+            <Border BorderBrush="{StaticResource AccentFillColorSecondaryBrush}"
+                    BorderThickness="2,0,0,0"
+                    Margin="{StaticResource VerticalSectionSpacing}"
+                    Padding="12,6,0,3"
+                    >
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
+                               Text="Command Prompt Shortcut"
+                               />
+
+                    <TextBox x:Name="Keys"
+                             Style="{StaticResource KeysTextBoxStyle}"
+                             GotFocus="HandleKeysGotFocus"
+                             TextChanged="HandleKeysTextChanged"
+                             />
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <Button Style="{StaticResource AccentButtonStyle}"

@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -10,6 +10,8 @@
 //      https://www.gnu.org/licenses/agpl-3.0.html
 // </copyright>
 // -----------------------------------------------------------------------
+
+using BadEcho.Interop;
 
 namespace BadEcho.QuickActions.Options;
 
@@ -23,11 +25,17 @@ internal sealed class GeneralOptions
     /// main window is closed.
     /// </summary>
     public bool MinimizeToTrayOnClose
-    { get; set; } 
+    { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating if mapped actions are disabled globally.
+    /// Gets or sets a value indicating if mapped actions are enabled globally.
     /// </summary>
-    public bool ActionsDisabled
-    { get; set; }
+    public bool ActionsEnabled
+    { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the key combination that, when pressed, will open the Command Prompt.
+    /// </summary>
+    public KeyCombination PromptKeys
+    { get; set; } = new();
 }

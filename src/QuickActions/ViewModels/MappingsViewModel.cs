@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright>
 //      Created by Matt Weber <matt@badecho.com>
-//      Copyright @ 2025 Bad Echo LLC. All rights reserved.
+//      Copyright @ 2026 Bad Echo LLC. All rights reserved.
 //
 //      Bad Echo Technologies are licensed under the
 //      GNU Affero General Public License v3.0.
@@ -21,7 +21,7 @@ using BadEcho.Presentation.Messaging;
 namespace BadEcho.QuickActions.ViewModels;
 
 /// <summary>
-/// Provides a view model that display individual mappings, allowing for their manipulation as
+/// Provides a view model that displays individual mappings, allowing for their manipulation as
 /// well as the creation of new ones.
 /// </summary>
 internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingViewModel>
@@ -75,10 +75,7 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
     /// <inheritdoc/>
     public override MappingViewModel CreateItem(Mapping model)
     {
-        var viewModel = new MappingViewModel(_mediator)
-                        {
-                            Actions = [.. _settingsService?.Actions ?? []]
-                        };
+        var viewModel = new MappingViewModel(_settingsService, _mediator);
 
         viewModel.Bind(model);
         viewModel.DeleteRequested += HandleDeleteRequested;
@@ -114,13 +111,13 @@ internal sealed class MappingsViewModel : CollectionViewModel<Mapping, MappingVi
 
     private void SaveMappings(object? obj)
     {
-        _settingsService?.SaveMappings();
-
         foreach (var mapping in Items)
         {
-            mapping.IsDirty = false;
+            if (mapping.IsDirty)
+                mapping.SaveMapping();
         }
 
+        _settingsService?.SaveMappings();
         IsDirty = false;
     }
 

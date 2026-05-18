@@ -1,5 +1,5 @@
 ﻿<!--Created by Matt Weber <matt@badecho.com>
-    Copyright @ 2025 Bad Echo LLC. All rights reserved.
+    Copyright @ 2026 Bad Echo LLC. All rights reserved.
 
     Bad Echo Technologies are licensed under the
     GNU Affero General Public License v3.0.
@@ -99,7 +99,7 @@
                                  ItemsSource="{Binding ScriptView}"
                                  SelectedItem="{Binding SelectedScriptViewModel}"
                                  Visibility="{Binding HasScriptItems, Converter={StaticResource BooleanVisibilityConverter}}"
-                                 Margin="{StaticResource VerticalSpacing}"
+                                 Margin="{StaticResource VerticalSectionSpacing}"
                                  HorizontalContentAlignment="Stretch"
                                  DockPanel.Dock="Top"
                                  >
@@ -193,7 +193,6 @@
                                  ItemsSource="{Binding CodeView}"
                                  SelectedItem="{Binding SelectedCodeViewModel}"
                                  Visibility="{Binding HasCodeItems, Converter={StaticResource BooleanVisibilityConverter}}"
-                                 Margin="{StaticResource VerticalSpacing}"
                                  HorizontalContentAlignment="Stretch"
                                  DockPanel.Dock="Top"
                                  >
@@ -209,7 +208,7 @@
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}"
                                    xml:space="preserve"
                                    Visibility="{Binding HasCodeItems, Converter={StaticResource InverseVisibilityConverter}}"
-                                   Margin="8,8,8,24"
+                                   Margin="8,8,8,0"
                                    HorizontalAlignment="Center"
                                    DockPanel.Dock="Top"
                                    >No code actions were found.
