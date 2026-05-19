@@ -31,6 +31,8 @@ namespace BadEcho.QuickActions.Services;
 /// </remarks>
 internal sealed class InputListenerService : IHostedService, IAsyncDisposable
 {
+    private const int CLEAR_KEYS_INTERVAL = 5000;
+
     private static readonly KeyCombination _AltTabKeys
         = new([VirtualKey.Alt], [VirtualKey.Tab]);
 
@@ -42,6 +44,7 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
     private readonly ILogger<InputListenerService> _logger;
     private readonly KeyboardSource _keyboard;
     private readonly MouseSource _mouse;
+    private readonly Timer _clearKeysTimer;
 
     private bool _enabled;
     private bool _disposed;
@@ -56,9 +59,10 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
         _settingsService = settingsService;
         _mediator = mediator;
         _logger = logger;
-
+        
         _keyboard = new KeyboardSource(KeyboardProcedure);
         _mouse = new MouseSource(MouseProcedure);
+        _clearKeysTimer = new Timer(ClearKeysCallback);
 
         _enabled = _settingsService.ActionsEnabled;
         _mediator.Register(Messages.ChangeListenerStatus, MediateChangeListenerStatus);
@@ -96,6 +100,7 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
 
         await _keyboard.DisposeAsync();
         await _mouse.DisposeAsync();
+        await _clearKeysTimer.DisposeAsync();
 
         _disposed = true;
     }
@@ -139,7 +144,10 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
         var keyHash = key.IsModifier() ? _pressedModifierKeys : _pressedKeys;
 
         if (state == KeyState.Down)
+        {
+            _clearKeysTimer.Change(CLEAR_KEYS_INTERVAL, Timeout.Infinite);
             keyHash.Add(key);
+        }
         else
             keyHash.Remove(key);
     }
@@ -164,6 +172,26 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
             {
                 soundPlayer.Load();
                 soundPlayer.Play();
+            }
+        }
+    }
+
+    private void ClearKeysCallback(object? state)
+    {   // There's always a chance another installed hook may eat a key release event.
+        // So, to prevent an instance where a key press never gets released, we periodically
+        // check if keys being tracked as pressed are still being pressed.
+        ClearReleasedKeys(_pressedKeys);
+        ClearReleasedKeys(_pressedModifierKeys);
+
+        if (_pressedKeys.Count != 0 || _pressedModifierKeys.Count != 0)
+            _clearKeysTimer.Change(CLEAR_KEYS_INTERVAL, Timeout.Infinite);
+        
+        static void ClearReleasedKeys(HashSet<VirtualKey> keys)
+        {
+            foreach (VirtualKey key in keys)
+            {
+                if (!Keyboard.IsPressed(key))
+                    keys.Remove(key);
             }
         }
     }
