@@ -67,7 +67,8 @@ internal sealed partial class PromptWindow
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);
-
+        
+        _native.SetForegroundWindow();
         Command.Focus();
         this.Recenter();
     }
