@@ -11,16 +11,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
 using BadEcho.Interop;
-using System.Drawing;
 using BadEcho.Presentation.Extensions;
 using BadEcho.Presentation.Messaging;
+using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
 using BadEcho.QuickActions.Services;
 using BadEcho.QuickActions.ViewModels;
+using Microsoft.Extensions.Logging;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 using Point = System.Windows.Point;
 
 namespace BadEcho.QuickActions;
@@ -42,14 +44,16 @@ namespace BadEcho.QuickActions;
 /// </remarks>
 internal sealed partial class PromptWindow 
 {
+    private readonly ILogger<PromptWindow> _logger;
     private readonly NativeWindow _native;
     private readonly AppearanceOptions _appearance;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="PromptWindow"/> class.
     /// </summary>
-    public PromptWindow(PromptViewModel viewModel, UserSettingsService settingsService, Mediator mediator)
+    public PromptWindow(PromptViewModel viewModel, UserSettingsService settingsService, Mediator mediator, ILogger<PromptWindow> logger)
     {
+        _logger = logger;
         DataContext = viewModel;
 
         _appearance = settingsService.Appearance;
@@ -62,13 +66,26 @@ internal sealed partial class PromptWindow
         mediator.Register(Messages.MouseClicked, MediateMouseClicked);
         mediator.Register(Messages.AltTabbed, MediateAltTabbed);
     }
-
+    
     /// <inheritdoc/>
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);
-        
-        _native.SetForegroundWindow();
+
+        int attempts = 5;
+        bool foreground = false;
+
+        // We are essentially stealing focus here. This is the desired action and is akin to hitting the Windows key to open the Start Menu.
+        // I've observed that, despite our best efforts, failure may still occur when setting the foreground window. Trying again, however,
+        // seems to do the trick, and consistently at that.
+        while (!foreground && attempts > 0)
+        {
+            foreground = _native.SetForegroundWindow();
+            attempts--;
+        }
+
+        _logger.PromptActivationAttempts(5 - attempts);
+
         Command.Focus();
         this.Recenter();
     }
