@@ -72,19 +72,10 @@ internal sealed partial class PromptWindow
     {
         base.OnActivated(e);
 
-        int attempts = 5;
-        bool foreground = false;
+        bool foreground = _native.SetForegroundWindow();
 
-        // We are essentially stealing focus here. This is the desired action and is akin to hitting the Windows key to open the Start Menu.
-        // I've observed that, despite our best efforts, failure may still occur when setting the foreground window. Trying again, however,
-        // seems to do the trick, and consistently at that.
-        while (!foreground && attempts > 0)
-        {
-            foreground = _native.SetForegroundWindow();
-            attempts--;
-        }
-
-        _logger.PromptActivationAttempts(5 - attempts);
+        if (!foreground)
+            _logger.PromptActivationFailed();
 
         Command.Focus();
         this.Recenter();

@@ -21,7 +21,7 @@
         <vm:SettingsViewModel ActionsEnabled="True"
                               KeysText="Ctrl + Q"
                               MinimizeToTrayOnClose="True"
-                              OpenOnStartup="True"
+                              StartMinimized="True"
                               />
     </d:DesignProperties.DataContext>
     <DockPanel>
@@ -32,15 +32,14 @@
                        Text="Settings"
                        Margin="{StaticResource HeaderVerticalSpacing}"
                        />
-            <CheckBox IsChecked="{Binding OpenOnStartup}"
+            <CheckBox IsChecked="{Binding StartMinimized}"
                       Margin="{StaticResource ControlVerticalSpacing}"
                       >
                 <TextBlock Style="{StaticResource HeaderTextBlockStyle}"
-                           Text="Open Quick Actions on Startup"
+                           Text="Start Quick Actions Minimized"
                            Margin="0"
                            />
             </CheckBox>
-
             <CheckBox IsChecked="{Binding MinimizeToTrayOnClose}"
                       Margin="{StaticResource ControlVerticalSpacing}"
                       >

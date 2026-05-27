@@ -18,7 +18,6 @@ using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Options;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Win32;
 
 namespace BadEcho.QuickActions.Services;
 
@@ -27,9 +26,6 @@ namespace BadEcho.QuickActions.Services;
 /// </summary>
 internal sealed class UserSettingsService
 {
-    private const string RUN_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-    private const string RUN_VALUE = "QuickActions";
-
     private readonly Dictionary<KeyCombination, Mapping> _mappingsMap = new();
     private readonly Dictionary<Guid, IAction> _actionsMap;
 
@@ -61,11 +57,6 @@ internal sealed class UserSettingsService
         _actionsMap = Scripts.Concat(codeActions).ToDictionary(kv => kv.Id);
         
         BuildMappingsMap();
-
-        using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY))
-        {
-            OpenOnStartup = run != null && run.GetValueNames().Contains(RUN_VALUE);
-        }
 
         if (!PromptKeys.IsEmpty)
             return;
@@ -101,36 +92,24 @@ internal sealed class UserSettingsService
     public AppearanceOptions Appearance
         => _appearanceOptions.CurrentValue;
 
+    /// <summary>
+    /// Gets the general application configuration settings.
+    /// </summary>
     public GeneralOptions General
         => _generalOptions.CurrentValue;
-
-    /// <summary>
-    /// Gets or sets a value indicating if the application runs on Window startup.
-    /// </summary>
-    public bool OpenOnStartup
-    {
-        get;
-        set
-        {
-            using (var run = Registry.CurrentUser.OpenSubKey(RUN_KEY, true))
-            {
-                object? runValue = run?.GetValue(RUN_VALUE);
-
-                if (value)
-                    run?.SetValue(RUN_VALUE, $"\"{Environment.GetCommandLineArgs()[0]}\" --silent");
-                else if (runValue != null)
-                    run?.DeleteValue(RUN_VALUE);
-
-                field = value;
-            }
-        }
-    }
 
     /// <inheritdoc cref="GeneralOptions.MinimizeToTrayOnClose"/>
     public bool MinimizeToTrayOnClose
     {
         get => _generalOptions.CurrentValue.MinimizeToTrayOnClose;
         set => _generalOptions.CurrentValue.MinimizeToTrayOnClose = value;
+    }
+
+    /// <inheritdoc cref="GeneralOptions.StartMinimized"/>
+    public bool StartMinimized
+    {
+        get => _generalOptions.CurrentValue.StartMinimized;
+        set => _generalOptions.CurrentValue.StartMinimized = value;
     }
 
     /// <inheritdoc cref="GeneralOptions.ActionsEnabled"/>

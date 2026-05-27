@@ -33,9 +33,9 @@ public static partial class LoggerMessages
     public static partial void ExecutingAction(this ILogger logger, string actionName);
 
     /// <summary>
-    /// Logs the number of attempted activations of the command prompt.
+    /// Logs command prompt activation failures.
     /// </summary>
     [LoggerMessage(Level = LogLevel.Debug,
-                   Message = "Command prompt activation attempted {ForegroundAttempts} times.")]
-    public static partial void PromptActivationAttempts(this ILogger logger, int foregroundAttempts);
+                   Message = "Command prompt activation failed.")]
+    public static partial void PromptActivationFailed(this ILogger logger);
 }

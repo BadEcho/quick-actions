@@ -71,18 +71,15 @@ internal sealed partial class App : IDisposable
 
         MainWindow.Closing += HandleMainWindowClosing;
 
-        IEnumerable<string> args = Environment.GetCommandLineArgs()
-                                              .Skip(1);
+        bool startMinimized = _settingsService?.StartMinimized ?? false;
 
-        bool silentStartup = args.Contains("--silent", StringComparer.OrdinalIgnoreCase);
-        
-        if (!silentStartup)
+        if (!startMinimized)
             MainWindow.Show();
 
         _notificationArea = new NotificationArea(MainWindow, _mediator);
         _notificationArea.QuitClicked += HandleQuitClicked;
 
-        if (silentStartup)
+        if (startMinimized)
             _notificationArea.EnableOpen();
     }
 
