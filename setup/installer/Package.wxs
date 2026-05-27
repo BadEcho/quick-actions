@@ -20,9 +20,6 @@
 		<Feature Id="Main">
 			<ComponentGroupRef Id="ApplicationComponents" />
 			<ComponentGroupRef Id="PluginComponents" />
-			<Component Id="RegistryStartupRemovalComponent">
-				<RemoveRegistryValue Id="RegistryStartupRemoval" Root="HKCU" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="QuickActions" />				
-			</Component>
 		</Feature>
 	</Package>
 	<Fragment>
