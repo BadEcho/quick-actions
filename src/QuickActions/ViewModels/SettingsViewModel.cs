@@ -30,8 +30,8 @@ internal sealed class SettingsViewModel : KeysViewModel<UserSettingsService>
         SaveCommand = new DelegateCommand(SaveSettings);
     }
 
-    /// <inheritdoc cref="UserSettingsService.StartMinimized"/>
-    public bool StartMinimized
+    /// <inheritdoc cref="UserSettingsService.OpenOnStartup"/>
+    public bool OpenOnStartup
     {
         get;
         set => NotifyIfChanged(ref field, value);
@@ -75,7 +75,7 @@ internal sealed class SettingsViewModel : KeysViewModel<UserSettingsService>
     {
         base.OnBinding(model);
 
-        StartMinimized = model.StartMinimized;
+        OpenOnStartup = model.OpenOnStartup;
         MinimizeToTrayOnClose = model.MinimizeToTrayOnClose;
         ActionsEnabled = model.ActionsEnabled;
 
@@ -87,7 +87,7 @@ internal sealed class SettingsViewModel : KeysViewModel<UserSettingsService>
     {
         base.OnUnbound(model);
 
-        StartMinimized = false;
+        OpenOnStartup = false;
         MinimizeToTrayOnClose = false;
         ActionsEnabled = false;
 
@@ -108,7 +108,7 @@ internal sealed class SettingsViewModel : KeysViewModel<UserSettingsService>
         if (ActiveModel == null)
             return;
 
-        ActiveModel.StartMinimized = StartMinimized;
+        ActiveModel.OpenOnStartup = OpenOnStartup;
         ActiveModel.MinimizeToTrayOnClose = MinimizeToTrayOnClose;
         ActiveModel.ActionsEnabled = ActionsEnabled;
         ActiveModel.PromptKeys = KeyCombination;

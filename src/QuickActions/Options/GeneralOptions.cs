@@ -11,6 +11,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using BadEcho.Interop;
+
 namespace BadEcho.QuickActions.Options;
 
 /// <summary>
@@ -23,12 +25,6 @@ internal sealed class GeneralOptions
     /// main window is closed.
     /// </summary>
     public bool MinimizeToTrayOnClose
-    { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating if the application should be minimized to the system tray on launch.
-    /// </summary>
-    public bool StartMinimized
     { get; set; }
 
     /// <summary>

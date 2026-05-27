@@ -66,18 +66,24 @@ internal sealed partial class PromptWindow
         mediator.Register(Messages.MouseClicked, MediateMouseClicked);
         mediator.Register(Messages.AltTabbed, MediateAltTabbed);
     }
-    
-    /// <inheritdoc/>
-    protected override void OnActivated(EventArgs e)
-    {
-        base.OnActivated(e);
 
+    /// <summary>
+    /// Set this window as the foreground window, allowing it to receive keyboard input.
+    /// </summary>
+    public void SetToForeground()
+    {
         bool foreground = _native.SetForegroundWindow();
 
         if (!foreground)
             _logger.PromptActivationFailed();
 
         Command.Focus();
+    }
+    
+    /// <inheritdoc/>
+    protected override void OnActivated(EventArgs e)
+    {
+        base.OnActivated(e);
         this.Recenter();
     }
 

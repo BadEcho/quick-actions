@@ -71,15 +71,18 @@ internal sealed partial class App : IDisposable
 
         MainWindow.Closing += HandleMainWindowClosing;
 
-        bool startMinimized = _settingsService?.StartMinimized ?? false;
+        IEnumerable<string> args = Environment.GetCommandLineArgs()
+                                              .Skip(1);
 
-        if (!startMinimized)
+        bool silentStartup = args.Contains("--silent", StringComparer.OrdinalIgnoreCase);
+        
+        if (!silentStartup)
             MainWindow.Show();
 
         _notificationArea = new NotificationArea(MainWindow, _mediator);
         _notificationArea.QuitClicked += HandleQuitClicked;
 
-        if (startMinimized)
+        if (silentStartup)
             _notificationArea.EnableOpen();
     }
 
@@ -115,6 +118,10 @@ internal sealed partial class App : IDisposable
             
             // Manual activation is required for preexisting, hidden windows.
             prompt.Activate();
+
+            // Whether it's something I'm doing, or a bug w/ the framework, OnActivated does not always fire.
+            // This happens consistently if the application was started when the user logged on via the Run registry key.
+            prompt.SetToForeground();
         });
     }
 }
