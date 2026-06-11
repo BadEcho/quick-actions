@@ -127,7 +127,26 @@ internal sealed class PromptViewModel : ViewModel, IDisposable
     
     private void Execute(object? _)
     {
-        ShellResult result = Explorer.Open(CommandText);
+        ShellResult result;
+
+        // If it doesn't look like a path to a file or directory, assume it's a search query.
+        if (!Path.Exists(CommandText) && !Path.IsPathRooted(CommandText))
+        {   // There's no way to force the search results to appear in a new window if we open a URL via the shell,
+            // so we query for the default browser and invoke that directly with the appropriate parameters.
+            string? defaultBrowser = Explorer.GetAssociatedExecutable("http");
+
+            if (string.IsNullOrEmpty(defaultBrowser))
+                result = ShellResult.FileNotFound;
+            else
+            {
+                // These switches are supported by both Chrome and Edge.
+                string parameters = $"--new-window \"? {CommandText}\"";
+
+                result = Explorer.Open(defaultBrowser, parameters);
+            }
+        }
+        else
+            result = Explorer.Open(CommandText);
         
         CommandResult = result == ShellResult.Success ? PromptCommandResult.Succeeded : PromptCommandResult.Failed;
         
