@@ -15,8 +15,12 @@ using BadEcho.Presentation.Messaging;
 using BadEcho.QuickActions.Services;
 using System.ComponentModel;
 using System.Windows;
+using BadEcho.Presentation;
+using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Properties;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using ThreadExceptionEventArgs = BadEcho.Threading.ThreadExceptionEventArgs;
 
 namespace BadEcho.QuickActions;
 
@@ -27,6 +31,7 @@ internal sealed partial class App : IDisposable
 {
     private readonly Mediator _mediator = new();
     private readonly IServiceProvider? _serviceProvider;
+    private readonly ILogger<App>? _logger;
     private readonly UserSettingsService? _settingsService;
 
     private NotificationArea? _notificationArea;
@@ -35,12 +40,13 @@ internal sealed partial class App : IDisposable
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public App(UserSettingsService settingsService, Mediator mediator, IServiceProvider serviceProvider)
+    public App(UserSettingsService settingsService, Mediator mediator, IServiceProvider serviceProvider, ILogger<App> logger)
     {
         _settingsService = settingsService;
         _mediator = mediator;
         _serviceProvider = serviceProvider;
-
+        _logger = logger;
+        
         _mediator.Register(Messages.ShowPrompt, MediateShowPrompt);
 
         InitializeComponent();
@@ -84,6 +90,8 @@ internal sealed partial class App : IDisposable
 
         if (silentStartup)
             _notificationArea.EnableOpen();
+
+        UserInterface.UnhandledException += HandleUnhandledException;
     }
 
     private void HandleMainWindowClosing(object? sender, CancelEventArgs e)
@@ -103,6 +111,13 @@ internal sealed partial class App : IDisposable
     {
         _exiting = true;
         MainWindow?.Close();
+    }
+
+    private void HandleUnhandledException(object? sender, ThreadExceptionEventArgs e)
+    {
+        _logger?.ApplicationUnhandledException(e.Data);
+
+        e.Handled = true;
     }
 
     private void MediateShowPrompt()

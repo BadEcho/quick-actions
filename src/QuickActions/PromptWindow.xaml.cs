@@ -45,7 +45,7 @@ namespace BadEcho.QuickActions;
 internal sealed partial class PromptWindow 
 {
     private readonly ILogger<PromptWindow> _logger;
-    private readonly NativeWindow _native;
+    private readonly WindowHandle _windowHandle;
     private readonly AppearanceOptions _appearance;
     
     /// <summary>
@@ -60,8 +60,8 @@ internal sealed partial class PromptWindow
 
         InitializeComponent();
 
-        _native = new NativeWindow(this.GetSafeHandle());
-        _native.RemoveTitleBar();
+        _windowHandle = this.GetSafeHandle();
+        NativeWindow.RemoveTitleBar(_windowHandle);
 
         mediator.Register(Messages.MouseClicked, MediateMouseClicked);
         mediator.Register(Messages.AltTabbed, MediateAltTabbed);
@@ -72,7 +72,7 @@ internal sealed partial class PromptWindow
     /// </summary>
     public void SetToForeground()
     {
-        bool foreground = _native.SetForegroundWindow();
+        bool foreground = NativeWindow.SetForegroundWindow(_windowHandle);
 
         if (!foreground)
             _logger.PromptActivationFailed();
@@ -159,7 +159,7 @@ internal sealed partial class PromptWindow
         void HideIfOutsideBounds()
         {
             Rect bounds = RestoreBounds;
-            Display display = Display.FromWindow(_native.Handle);
+            Display display = Display.FromWindow(_windowHandle);
 
             bounds.Scale(display.ScaleFactor, display.ScaleFactor);
 

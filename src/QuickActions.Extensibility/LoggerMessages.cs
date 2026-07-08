@@ -38,4 +38,11 @@ public static partial class LoggerMessages
     [LoggerMessage(Level = LogLevel.Debug,
                    Message = "Command prompt activation failed.")]
     public static partial void PromptActivationFailed(this ILogger logger);
+
+    /// <summary>
+    /// Logs a global unhandled exception.
+    /// </summary>
+    [LoggerMessage(Level = LogLevel.Error,
+                   Message = "Context dispatcher encountered an unhandled exception.")]
+    public static partial void ApplicationUnhandledException(this ILogger logger, Exception exception);
 }
