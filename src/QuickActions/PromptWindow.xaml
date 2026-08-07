@@ -17,6 +17,7 @@
         xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
         mc:Ignorable="d"
         Title="PromptWindow"
+        Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         SizeToContent="Height"
@@ -122,6 +123,7 @@
         -->
         <TextBox x:Name="Command"
                  Style="{StaticResource TransparentFocusedTextBoxStyle}"
+                 Background="{StaticResource TextControlButtonBackground}"
                  BorderBrush="White"
                  MouseDown="HandleMouseDown"
                  TargetUpdated="HandleCommandTargetUpdated"
