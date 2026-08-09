@@ -17,7 +17,6 @@
         xmlns:vm="clr-namespace:BadEcho.QuickActions.ViewModels"
         mc:Ignorable="d"
         Title="PromptWindow"
-        Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         SizeToContent="Height"

@@ -45,41 +45,60 @@ namespace BadEcho.QuickActions;
 internal sealed partial class PromptWindow 
 {
     private readonly ILogger<PromptWindow> _logger;
-    private readonly WindowHandle _windowHandle;
     private readonly AppearanceOptions _appearance;
-    
+    private readonly NativeWindow _nativeWindow;
+    private bool _hasBeenShown;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PromptWindow"/> class.
     /// </summary>
     public PromptWindow(PromptViewModel viewModel, UserSettingsService settingsService, Mediator mediator, ILogger<PromptWindow> logger)
     {
         _logger = logger;
+        _appearance = settingsService.Appearance;        
         DataContext = viewModel;
-
-        _appearance = settingsService.Appearance;
 
         InitializeComponent();
 
-        _windowHandle = this.GetSafeHandle();
-        NativeWindow.RemoveTitleBar(_windowHandle);
+        WindowWrapper windowWrapper = this.GetWrapper();
 
+        _nativeWindow = new NativeWindow(windowWrapper);
+        _nativeWindow.RemoveTitleBar();
+        
         mediator.Register(Messages.MouseClicked, MediateMouseClicked);
         mediator.Register(Messages.AltTabbed, MediateAltTabbed);
     }
 
     /// <summary>
-    /// Set this window as the foreground window, allowing it to receive keyboard input.
+    /// Opens the window if it hasn't been previously; otherwise, uncloaks it.
     /// </summary>
-    public void SetToForeground()
+    /// <remarks>
+    /// We cloak this window when hiding it from the screen instead of following the normal hide or close routes.
+    /// This is to avoid the inevitable white flicker that will occur when we need to show it again, which happens due to
+    /// the HWND becoming immediately visible and WPF having to re-enable the render target, re-run layout, render,
+    /// and then finally present it.
+    /// </remarks>
+    public void Reveal()
     {
-        bool foreground = NativeWindow.SetForegroundWindow(_windowHandle);
+        if (!_hasBeenShown)
+        {
+            Show();
+            _hasBeenShown = true;
+        }
+        
+        ChangeVisibility(false);
+
+        // Ensure the window receives keyboard input.
+        // Either due to something I'm doing, or a bug with the framework, calling Activate() is not sufficient,
+        // especially if the application was started when the user logged on via the Run registry key.
+        bool foreground = _nativeWindow.SetForegroundWindow();
 
         if (!foreground)
             _logger.PromptActivationFailed();
 
         Command.Focus();
     }
-    
+
     /// <inheritdoc/>
     protected override void OnActivated(EventArgs e)
     {
@@ -119,19 +138,29 @@ internal sealed partial class PromptWindow
     {
         base.OnKeyDown(e);
         
-        if (e.Key == Key.Escape)
-            Hide();
+        if (e.Key == Key.Escape) 
+            ChangeVisibility(true);
     }
 
     private void HideIfVisible(bool clearText = false)
     {
-        if (!IsVisible)
+        if (!_hasBeenShown || _nativeWindow.IsCloaked)
             return;
 
         if (clearText)
             Command.Text = string.Empty;
 
-        Hide();
+        ChangeVisibility(true);
+    }
+
+    private void ChangeVisibility(bool hide)
+    {   // If we're cloaking the window, we update its extended window styles to reflect that it is a tool window.
+        // This is so the window is hidden from the Alt-Tab switcher. Merely having ShowInTaskbar = false is not sufficient.
+        // Because we aren't forcing a frame recalculation, the visual changes that normally accompany a tool window are not
+        // visible to the user -- were we to force one, WindowChrome would measure the frame as a standard window's and push
+        // the prompt's content off-center.
+        _nativeWindow.ChangeExtendedStyles(ExtendedWindowStyles.ToolWindow, hide);
+        _nativeWindow.IsCloaked = hide;
     }
 
     private void HandleAreaChanged(object? sender, EventArgs e)
@@ -159,7 +188,7 @@ internal sealed partial class PromptWindow
         void HideIfOutsideBounds()
         {
             Rect bounds = RestoreBounds;
-            Display display = Display.FromWindow(_windowHandle);
+            Display display = Display.FromWindow(_nativeWindow.Handle);
 
             bounds.Scale(display.ScaleFactor, display.ScaleFactor);
 

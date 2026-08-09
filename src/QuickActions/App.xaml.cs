@@ -129,14 +129,7 @@ internal sealed partial class App : IDisposable
         {
             var prompt = _serviceProvider.GetRequiredService<PromptWindow>();
 
-            prompt.Show();
-            
-            // Manual activation is required for preexisting, hidden windows.
-            prompt.Activate();
-
-            // Whether it's something I'm doing, or a bug w/ the framework, OnActivated does not always fire.
-            // This happens consistently if the application was started when the user logged on via the Run registry key.
-            prompt.SetToForeground();
+            prompt.Reveal();
         });
     }
 }
