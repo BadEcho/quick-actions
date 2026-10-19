@@ -63,7 +63,7 @@ internal sealed partial class PromptWindow
         WindowWrapper windowWrapper = this.GetWrapper();
 
         _nativeWindow = new NativeWindow(windowWrapper);
-        _nativeWindow.RemoveTitleBar();
+        _nativeWindow.RemoveSystemMenu(false);
         
         mediator.Register(Messages.MouseClicked, MediateMouseClicked);
         mediator.Register(Messages.AltTabbed, MediateAltTabbed);

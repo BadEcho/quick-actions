@@ -18,9 +18,9 @@ using System.Windows;
 using BadEcho.Presentation;
 using BadEcho.QuickActions.Extensibility;
 using BadEcho.QuickActions.Properties;
+using BadEcho.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ThreadExceptionEventArgs = BadEcho.Threading.ThreadExceptionEventArgs;
 
 namespace BadEcho.QuickActions;
 
@@ -113,7 +113,7 @@ internal sealed partial class App : IDisposable
         MainWindow?.Close();
     }
 
-    private void HandleUnhandledException(object? sender, ThreadExceptionEventArgs e)
+    private void HandleUnhandledException(object? sender, ExecutorExceptionEventArgs e)
     {
         _logger?.ApplicationUnhandledException(e.Data);
 
