@@ -105,7 +105,7 @@ internal sealed class InputListenerService : IHostedService, IAsyncDisposable
         _disposed = true;
     }
 
-    private ProcedureResult MouseProcedure(MouseEvent mouseEvent, int x, int y)
+    private ProcedureResult MouseProcedure(MouseEvent mouseEvent, int x, int y, int data)
     {
         if (mouseEvent == MouseEvent.LeftButtonDown)
             _mediator.Broadcast(Messages.MouseClicked, new Point(x, y));
