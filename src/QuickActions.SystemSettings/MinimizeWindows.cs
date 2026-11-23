@@ -29,6 +29,8 @@ internal sealed class MinimizeWindows : CodeAction
 {
     internal const string ActionId = "{FF28EEBB-A8BC-4249-B514-869CDA03787B}";
 
+    private readonly List<NativeWindow> _minimizedWindows = [];
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MinimizeWindows"/> class.
     /// </summary>
@@ -47,8 +49,17 @@ internal sealed class MinimizeWindows : CodeAction
         {
             foreach (NativeWindow window in NativeWindow.FromProcessId(process.Id))
             {
-                if (window.IsVisible)
-                    window.Minimize();
+                if (!window.IsVisible)
+                    continue;
+
+                if (_minimizedWindows.Remove(window) && window.IsMinimized)
+                {
+                    window.Restore();
+                    continue;
+                }
+                
+                window.Minimize();
+                _minimizedWindows.Add(window);
             }
         }
         

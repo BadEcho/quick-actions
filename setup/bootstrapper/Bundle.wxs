@@ -18,34 +18,11 @@
 			<Payload Name="InstallerIcon.ico" SourceFile="$(Media)\InstallerIcon.ico" />
 		</BootstrapperApplication>
 		<Chain>
-			<PackageGroupRef Id="VCRuntime" />
 			<PackageGroupRef Id="Dotnet10Runtime" />
 			<MsiPackage Id="MainInstaller" SourceFile="$(Installer.TargetPath)" bal:DisplayInternalUICondition="WixBundleAction = 6" Compressed="yes" Vital="yes" />
 		</Chain>
 	</Bundle>
-	<Fragment>
-		<util:RegistrySearch Id="SearchForVCRuntime" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\14.0\vc\Runtimes\x64" Value="Minor" Variable="VCRuntimeVersion" Result="value" />
-		<PackageGroup Id="VCRuntime">
-			<ExePackage DisplayName="Installing Microsoft VC++ Runtime..."
-			            Cache="keep"
-			            PerMachine="yes"
-			            Permanent="yes"
-			            Vital="yes"
-			            InstallCondition="NOT VCRuntimeVersion OR VCRuntimeVersion &lt; &quot;50&quot;"
-			            DetectCondition="VCRuntimeVersion &gt;= &quot;50&quot;"
-			            InstallArguments="/install /quiet /norestart"
-			            RepairArguments="/repair /quiet /norestart"
-			            UninstallArguments="/uninstall /quiet /norestart">
-				<ExePackagePayload Name="VC_redist.x64.exe"
-				                   Hash="B618F601A1989A696C8EFA0208EFD977A3BFE9A8DF8ACE8FAE9EEF20262240E7EEFCB67CE466FE166BDC606D80D594D2DE80B3B4E530749AAB8E99F5CECD86D4"
-				                   DownloadUrl="https://aka.ms/vc14/vc_redist.x64.exe"
-				                   Size="18558944"
-				                   Description="Microsoft Visual C++ 14 Redistributable (x64)"
-				                   ProductName="Microsoft Visual C++ 14 Redistributable (x64)"
-				                   Version="14.50.35719.0"
-				/>
-			</ExePackage>
-		</PackageGroup>
+	<Fragment>		
 		<!--From my testing, the netfx:DotNetCoreSearch action fails to work adequately with the most recent .NET versions; it seems to be looking at the wrong keys in the registry. 
 		    A manual registry search is more reliable.-->
 		<util:RegistrySearch Id="SearchForDotNet10" Root="HKLM" Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedhost" Value="Version" Variable="DotNet10Installed" Result="value" />
@@ -56,18 +33,18 @@
 									PerMachine="yes"
 									Permanent="yes"
 									Vital="yes"
-									InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.10&quot;"
-									DetectCondition="DotNet10Installed &gt;= &quot;10.0.10&quot;"
+									InstallCondition="NOT DotNet10Installed OR DotNet10Installed &lt; &quot;10.0.15&quot;"
+									DetectCondition="DotNet10Installed &gt;= &quot;10.0.15&quot;"
 									InstallArguments="/install /quiet /norestart"
 									RepairArguments="/repair /quiet /norestart"
 									UninstallArguments="/uninstall /quiet /norestart">
-				<ExePackagePayload Name="windowsdesktop-runtime-10.0.10-win-x64.exe"
-													 Hash="A5502261C25BA163F35BCA7D50611C195E78B8797B16C5BBF2203FBDFFF92C0275D36838A3200C08443D2D23A2F6A867C58093D5C239A60DD798A6596DF4DC13"
-													 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.10/windowsdesktop-runtime-10.0.10-win-x64.exe"
+				<ExePackagePayload Name="windowsdesktop-runtime-10.0.15-win-x64.exe"
+													 Hash="F838960962172F1A769C49FA600E6F60F56F8D08A28E3CB878890FFC2E3A7A2E1B65697588E23EFA767B8B8E8523EC01F55E875120507DDE16D9A0869102DAB3"
+													 DownloadUrl="https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.15/windowsdesktop-runtime-10.0.15-win-x64.exe"
 													 Size="60082160"
-													 Description="Microsoft .NET Windows Desktop Runtime - 10.0.10 (x64)"
-													 ProductName="Microsoft .NET Windows Desktop Runtime - 10.0.10 (x64)"
-													 Version="10.0.10.50000"
+													 Description="Microsoft .NET Windows Desktop Runtime - 10.0.15 (x64)"
+													 ProductName="Microsoft .NET Windows Desktop Runtime - 10.0.15 (x64)"
+													 Version="10.0.15.50000"
 													 />
 			</ExePackage>
 		</PackageGroup>
